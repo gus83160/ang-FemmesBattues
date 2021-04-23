@@ -1,0 +1,232 @@
+<mat-card class="p-0">
+  <mat-card-title class="">
+    <div class="card-title-text">Demande</div>
+    <mat-divider></mat-divider>
+  </mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="DemandeForm" (ngSubmit)="CreationDemande()">
+      <div >
+      <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="vi_nom"
+                [formControl]="DemandeForm.controls['vi_nom']"
+                placeholder="Nom"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="DemandeForm.controls['vi_nom'].hasError('required') && DemandeForm.controls['vi_nom'].touched"
+              class="form-error-msg"> Nom obligatoire </small>
+            <small
+              *ngIf="DemandeForm.controls['vi_nom'].hasError('maxlength') && DemandeForm.controls['vi_nom'].touched"
+              class="form-error-msg"> Au plus {{DemandeForm.controls['vi_nom'].errors.maxlength.requiredLength}} caractères pour le nom </small>
+          </div>
+         </div>
+        <div fxFlex="100" fxFlex.gt-xs="50">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="vi_nomusage"
+                [formControl]="DemandeForm.controls['vi_nomusage']"
+                placeholder="Nom Usage"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="DemandeForm.controls['vi_nomusage'].hasError('maxlength') && DemandeForm.controls['vi_nomusage'].touched"
+              class="form-error-msg"> Au plus {{DemandeForm.controls['vi_nomusage'].errors.maxlength.requiredLength}} caractères pour le nom usage</small>
+          </div>
+        </div>
+      </div>
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="vi_prenom"
+                [formControl]="DemandeForm.controls['vi_prenom']"
+                placeholder="Prenom"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="DemandeForm.controls['vi_prenom'].hasError('maxlength') && DemandeForm.controls['vi_prenom'].touched"
+              class="form-error-msg"> Au plus {{DemandeForm.controls['vi_prenom'].errors.maxlength.requiredLength}} caractères pour le prenom</small>
+          </div>
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="vi_adresse"
+                [formControl]="DemandeForm.controls['vi_adresse']"
+                placeholder="Adresse"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="DemandeForm.controls['vi_adresse'].hasError('maxlength') && DemandeForm.controls['vi_adresse'].touched"
+              class="form-error-msg"> Au plus {{DemandeForm.controls['vi_adresse'].errors.maxlength.requiredLength}} caractères pour l'adresse</small>
+          </div>
+
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <div class="pb-1">
+              <mat-form-field class="full-width">
+                <input
+                  matInput
+                  name="vi_telephone"
+                  [formControl]="DemandeForm.controls['vi_telephone']"
+                  placeholder="telephone"
+                  value="">
+              </mat-form-field>
+              <small
+                *ngIf="DemandeForm.controls['vi_telephone'].hasError('maxlength') && DemandeForm.controls['vi_telephone'].touched"
+                class="form-error-msg"> Au plus {{DemandeForm.controls['vi_telephone'].errors.maxlength.requiredLength}} caractères pour le telephone</small>
+            </div>
+
+          </div>
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <div class="pb-1">
+              <mat-form-field class="full-width">
+                <input
+                  matInput
+                  name="vi_email"
+                  [formControl]="DemandeForm.controls['vi_email']"
+                  placeholder="Mail"
+                  value="">
+              </mat-form-field>
+              <small
+                *ngIf="DemandeForm.controls['vi_email'].hasError('maxlength') && DemandeForm.controls['vi_email'].touched"
+                class="form-error-msg"> Au plus {{DemandeForm.controls['vi_email'].errors.maxlength.requiredLength}} caractères pour l'email</small>
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <div class="pb-1">
+              <mat-form-field class="full-width">
+                <input
+                  matInput
+                  name="vi_age"
+                  [formControl]="DemandeForm.controls['vi_age']"
+                  placeholder="Age"
+                  value="">
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <div class="pb-1">
+              <mat-form-field class="full-width">
+                <input
+                  matInput
+                  name="vi_enfantcharge"
+                  [formControl]="DemandeForm.controls['vi_enfantcharge']"
+                  placeholder="Enfant à charge"
+                  value="">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="pb-1">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              name="vi_infocomplementaire"
+              [formControl]="DemandeForm.controls['vi_infocomplementaire']"
+              placeholder="Informations complementaires"
+              value="">
+          </mat-form-field>
+          <small
+            *ngIf="DemandeForm.controls['vi_infocomplementaire'].hasError('maxlength') && DemandeForm.controls['vi_infocomplementaire'].touched"
+            class="form-error-msg"> Au plus {{DemandeForm.controls['vi_infocomplementaire'].errors.maxlength.requiredLength}} caractères pour les informations complementaires</small>
+        </div>
+        <div class="pb-1">
+          <mat-form-field class="full-width">
+            <input
+              matInput
+              name="de_motif"
+              [formControl]="DemandeForm.controls['de_motif']"
+              placeholder="Motif de la demande"
+              value="">
+          </mat-form-field>
+          <small
+            *ngIf="DemandeForm.controls['de_motif'].hasError('maxlength') && DemandeForm.controls['de_motif'].touched"
+            class="form-error-msg"> Au plus {{DemandeForm.controls['de_motif'].errors.maxlength.requiredLength}} caractères pour le motif</small>
+        </div>
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <div class="pb-1">
+              <Label>Enfants présent lors du trajet </Label>
+              <mat-radio-group
+                name="de_enfantpresent"
+                formControlName="de_enfantpresent">
+                <mat-radio-button value="O">Oui</mat-radio-button>
+                <mat-radio-button value="N">Non</mat-radio-button>
+              </mat-radio-group>
+            </div>
+          </div>
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <div class="pb-1">
+              <mat-form-field class="full-width">
+                <input
+                  matInput
+                  name="de_nbenfant"
+                  [formControl]="DemandeForm.controls['de_nbenfant']"
+                  placeholder="Si oui nombre?"
+                  value="">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="de_particularite"
+                [formControl]="DemandeForm.controls['de_particularite']"
+                placeholder="Particularité pour le transport"
+                value="">
+            </mat-form-field>
+          </div>
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="de_adressedepart"
+                [formControl]="DemandeForm.controls['de_adressedepart']"
+                placeholder="Adresse depart"
+                value="">
+            </mat-form-field>
+          </div>
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="de_adressearrivee"
+                [formControl]="DemandeForm.controls['de_adressearrivee']"
+                placeholder="Adresse arrivée"
+                value="">
+            </mat-form-field>
+          </div>
+          <div class="pb-1">
+            <Label>Aller/Retour </Label>
+            <mat-radio-group
+              name="de_allerretour"
+              formControlName="de_allerretour">
+              <mat-radio-button value="O">Oui</mat-radio-button>
+              <mat-radio-button value="N">Non</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+
+
+        </div>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="DemandeForm.invalid">Valider
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
+

@@ -1,0 +1,91 @@
+<div class="sidebar-panel">
+    <div id="scroll-area" [perfectScrollbar] class="navigation-hold" fxLayout="column">
+        <div class="sidebar-hold">
+
+            <!-- App Logo -->
+            <div class="branding">
+--              <span class="app-logo-text">Femmes Victimes Violences</span>
+<!--            <div >-->
+<!--                 <img src="assets/images/egsret.png" alt="dzdz" class="app-logo">-->
+<!--                <mat-card>-->
+<!-- -                        class="app-logo-text"> Compta-Driver AGHTaxi</ul>&ndash;&gt;-->
+
+<!--                <div class="app-logo-text"> AGHTaxi</div>-->
+<!--                </mat-card>-->
+<!--                <div class="app-logo-text">
+                    Femmes Battues
+                    <span class="app-soft-text">Femmes Battues</span>
+                </div-->
+<!--                <egret-sidebar class="app-logo-text">-->
+<!--                    <div>Compta-Driver </div><div>AGHTaxi</div>-->
+<!--                </egret-sidebar>-->
+<!--                <span class="app-logo-text">Compta-Driver<br></span>-->
+<!--                <span class="app-logo-text"> AGHTaxi</span>-->
+
+<!--                 <span style="margin: auto">AGH XI</span>-->
+<!--                <div -->
+<!--                class="sidebar-compact-switch"-->
+<!--                [ngClass]="{active: layoutConf.sidebarCompactToggle}"-->
+<!--                (click)="toggleCollapse()" -->
+<!--                *ngIf="layoutConf.sidebarStyle !== 'compact'"><span></span></div>-->
+            </div>
+
+            <!-- Sidebar user -->
+            <!-- <div class="app-user">
+                <div class="app-user-photo">
+                <img src="assets/images/face-7.jpg" class="mat-elevation-z1" alt="">
+                </div>
+                <span class="app-user-name mb-05">
+                <mat-icon class="icon-xs text-muted">lock</mat-icon>
+                Watson Joyce
+                </span>
+
+                <div class="app-user-controls">
+                <button
+                class="text-muted"
+                mat-icon-button
+                mat-xs-button
+                [matMenuTriggerFor]="appUserMenu">
+                    <mat-icon>settings</mat-icon>
+                </button>
+                <button
+                class="text-muted"
+                mat-icon-button
+                mat-xs-button
+                matTooltip="Inbox"
+                routerLink="/inbox">
+                  <mat-icon>email</mat-icon>
+                </button>
+                <button
+                class="text-muted"
+                mat-icon-button
+                mat-xs-button
+                matTooltip="Sign Out"
+                routerLink="/sessions/signin">
+                    <mat-icon>exit_to_app</mat-icon>
+                </button>
+                <mat-menu #appUserMenu="matMenu">
+                    <button mat-menu-item routerLink="/profile/overview">
+                        <mat-icon>account_box</mat-icon>
+                        <span>Profile</span>
+                    </button>
+                    <button mat-menu-item routerLink="/profile/settings">
+                        <mat-icon>settings</mat-icon>
+                        <span>Account Settings</span>
+                    </button>
+                    <button mat-menu-item routerLink="/calendar">
+                        <mat-icon>date_range</mat-icon>
+                        <span>Calendar</span>
+                    </button>
+                    <button mat-menu-item routerLink="/sessions/signin">
+                        <mat-icon>exit_to_app</mat-icon>
+                        <span>Sign out</span>
+                    </button>
+                    </mat-menu>
+                </div>
+            </div> -->
+            <!-- Navigation -->
+            <app-sidenav [items]="menuItems" [hasIconMenu]="hasIconTypeMenuItem" [iconMenuTitle]="iconTypeMenuTitle"></app-sidenav>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+
+<div>
+ <div id="contentToConvert">
+   <div class="container" id="content" #content>
+   <fieldset style="width-full">
+    <legend> Saisine - {{ variables.NomPrescripteur }}</legend>
+    Date : {{ variables.DateDemandeVisu }}
+    <span class="marge">Numéro Demande : {{ variables.NoDemande }}</span>
+  </fieldset>
+
+  <fieldset style="width-full">
+    <legend> Victime - {{ variables.NomVictime }} </legend>
+    Prénom : {{ variables.Prenom }}
+    <span class="marge">Nom Usage : {{ variables.NomUsage }}</span><br>
+    Adresse : {{ variables.Adresse }}<br>
+    Telephone : {{ variables.Telephone }}
+    <span class="marge">Mail : {{ variables.Mail }}</span> <br>
+    Age : {{ variables.Age }}
+    <span class="marge">Enfants à Charge : {{ variables.EnfantCharge }}</span> <br>
+    info Complémentaire : {{ variables.InfoComplementaire }}
+  </fieldset>
+
+  <fieldset style="width-full">
+    <legend> Demande</legend>
+    Motif : {{ variables.Motif }} <br>
+    <div *ngIf ="variables.EnfantPresent  === true">
+      Enfants présents lors du trajet Oui
+      <span class="marge">Si oui Combien ? {{ variables.NbEnfant }}</span>
+    </div>
+    <div *ngIf ="variables.EnfantPresent  === false">
+      Enfants présents lors du trajet Non
+    </div>
+    Particularité : {{ variables.Particularite }} <br>
+    Adresse Départ : {{ variables.AdresseDepart }} <br>
+    Adresse Arrivée : {{ variables.AdresseArrivee }} <br>
+    <div *ngIf ="variables.AllerRetour  === false">
+      Aller
+    </div>
+    <div *ngIf ="variables.AllerRetour  === true">
+      Aller / Retour
+    </div>
+  </fieldset>
+  <div *ngIf ="variables.IdCourse !== 0 && variables.IdTypeUtilisateur !== variables.TypePrescripteur">
+    <fieldset style="width-full">
+      <legend> Course - {{ variables.NomChauffeur }}</legend>
+      Date de la course : {{ variables.DateCourseVisu }}
+      <span class="marge">Heure Début : {{ variables.HeureCourseDebutVisu }}</span>
+      <span class="marge">Heure Fin : {{ variables.HeureCourseFinVisu }}</span> <br>
+      Montant de la course : {{ variables.Montant }}
+      <span class="marge">Péage : {{ variables.Peage }} </span>
+
+    </fieldset>
+  </div>
+ </div>
+ </div>
+
+</div>

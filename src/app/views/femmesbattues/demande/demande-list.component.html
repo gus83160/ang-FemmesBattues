@@ -1,0 +1,46 @@
+<div class="mat-box-shadow margin-333">
+  <ngx-datatable class="material bg-white"
+                 [columnMode]="'force'"
+                 [headerHeight]="50"
+                 [footerHeight]="50"
+                 [rowHeight]="50"
+                 [limit]="8"
+                 [rows]="rows"
+                 [scrollbarH]="true"
+                 >
+                 <ngx-datatable-column name="" prop="idPriseEnCharge" width="250">
+                   <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+
+                     <button (click)="detail(value,'priseencharge')">
+                       <img src="assets/images/transp.png" alt="">
+                     </button>
+                     <button md-button (click)="detail(value,'facture')">
+                       <img src="assets/images/facture.png" alt="">
+                     </button>
+                     <button md-button (click)="PdfVisu()">
+                       <img src="assets/images/pdf.png" alt="">
+                     </button>
+                   </ng-template>
+                 </ngx-datatable-column>
+<!--                 <ngx-datatable-column name="fact" prop="idPriseEnCharge">
+                   <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                     <div *ngIf="value | Facture:row:'a2':'a3'">
+                       <button md-button (click)="detail(idPriseEnCharge,'facture')">
+                         Facture
+                       </button>
+                     </div>
+
+                   </ng-template>
+                 </ngx-datatable-column>-->
+
+                 <ngx-datatable-column name="Date" prop="dateDemandeVisu"></ngx-datatable-column>
+                 <ngx-datatable-column name="Demande" prop="noDemande"></ngx-datatable-column>
+                 <ngx-datatable-column name="Victime" prop="nomVictime"></ngx-datatable-column>
+                 <ngx-datatable-column name="Depart" prop="adresseDepart"></ngx-datatable-column>
+                 <ngx-datatable-column name="Arrivee" prop="adresseArrivee"></ngx-datatable-column>
+                 <ngx-datatable-column name="Montant" prop="montant"></ngx-datatable-column>
+                 <ngx-datatable-column name="Chauffeur" prop="nomChauffeur"></ngx-datatable-column>
+                 <ngx-datatable-column name="Prescripteur" prop="nomPrescripteur"></ngx-datatable-column>
+
+  </ngx-datatable>
+</div>

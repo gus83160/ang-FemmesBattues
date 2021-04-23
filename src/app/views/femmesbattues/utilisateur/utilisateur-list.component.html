@@ -1,0 +1,31 @@
+<div class="mat-box-shadow margin-333">
+  <button md-button (click)="detail(0)">
+    Nouveau
+  </button>
+  <ngx-datatable class="material bg-white"
+                 [columnMode]="'force'"
+                 [headerHeight]="50"
+                 [footerHeight]="50"
+                 [rowHeight]="50"
+                 [limit]="8"
+                 [rows]="rows"
+                 [scrollbarH]="true"
+                 [sorts]="[ {prop: 'ut_nom',dir:'asc'}]"
+  >
+    <ngx-datatable-column name="" prop="id">
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+
+        <button md-button (click)="detail(value)">
+          Detail
+        </button>
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Nom" prop="ut_nom"></ngx-datatable-column>
+    <ngx-datatable-column name="Prenom" prop="ut_prenom"></ngx-datatable-column>
+    <ngx-datatable-column name="Type" prop="idtypeutilisateur">
+      <ng-template let-value="value" ngx-datatable-cell-template> {{ value | LibelleTypeUtilisateur:idtypeutilisateur }}</ng-template>
+    </ngx-datatable-column>
+
+  </ngx-datatable>
+</div>
+

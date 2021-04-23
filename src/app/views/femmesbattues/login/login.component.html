@@ -1,0 +1,56 @@
+<div class="page-wrap height-100 black">
+  <div class="session-form-hold">
+    <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>
+    <mat-card>
+      <mat-card-content>
+        <div class="text-center pt-8 pb-16">
+          <p class="text-muted m-0">Authentification : </p>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="loginin()">
+          <small
+            *ngIf="VerifLogin"
+            class="form-error-msg"> Login / Mot de passe inconnu
+          </small>
+          <div class="">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="login"
+                [formControl]="loginForm.controls['username']"
+                placeholder="login"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched"
+              class="form-error-msg"> Username is required </small>
+          </div>
+
+          <div class="">
+            <mat-form-field class="full-width">
+              <input
+                type="password"
+                name="password"
+                matInput
+                [formControl]="loginForm.controls['password']"
+                placeholder="Mot de Passe"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched"
+              class="form-error-msg"> Password is required </small>
+          </div>
+          <button mat-raised-button class="mat-primary full-width mb-1" [disabled]="loginForm.invalid">Validation</button>
+<!---
+          <div class="text-center">
+            <a [routerLink]="'/sessions/forgot-password'" class="mat-primary text-center full-width">Forgot password</a>
+            <span fxFlex></span>
+            <a [routerLink]="'/sessions/signup'" class="mat-primary text-center full-width">Create a new account</a>
+          </div>
+-->
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+

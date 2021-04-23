@@ -1,0 +1,324 @@
+<mat-card class="p-0">
+  <mat-card-title class="">
+    <div class="card-title-text">Utilisateur</div>
+    <mat-divider></mat-divider>
+  </mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="UtilisateurForm" (ngSubmit)="CreationModification()">
+
+      <div fxLayout="row wrap">
+
+        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_nom"
+                [formControl]="UtilisateurForm.controls['ut_nom']"
+                placeholder="Nom"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_nom'].hasError('required') && UtilisateurForm.controls['ut_nom'].touched"
+              class="form-error-msg"> Nom obligatoire </small>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_nom'].hasError('maxlength') && UtilisateurForm.controls['ut_nom'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_nom'].errors.maxlength.requiredLength}} caractères pour le nom </small>
+          </div>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-xs="50">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_prenom"
+                [formControl]="UtilisateurForm.controls['ut_prenom']"
+                placeholder="Prenom"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_prenom'].hasError('required') && UtilisateurForm.controls['ut_prenom'].touched"
+              class="form-error-msg"> Prénom obligatoire </small>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_prenom'].hasError('maxlength') && UtilisateurForm.controls['ut_prenom'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_prenom'].errors.maxlength.requiredLength}} caractères pour le prénom </small>
+          </div>
+        </div>
+      </div>
+
+      <mat-form-field class="full-width">
+        <input
+           matInput
+           name="ut_adresse"
+           [formControl]="UtilisateurForm.controls['ut_adresse']"
+           placeholder="Adresse"
+           value="">
+      </mat-form-field>
+      <small
+        *ngIf="UtilisateurForm.controls['ut_adresse'].hasError('maxlength') && UtilisateurForm.controls['ut_adresse'].touched"
+        class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_adresse'].errors.maxlength.requiredLength}} caractères pour l'adresse </small>
+
+      <div fxLayout="row wrap">
+
+        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_codepostal"
+                [formControl]="UtilisateurForm.controls['ut_codepostal']"
+                placeholder="Code Postal"
+                value="">
+            </mat-form-field>
+            <small
+            *ngIf="UtilisateurForm.controls['ut_codepostal'].hasError('maxlength') && UtilisateurForm.controls['ut_codepostal'].touched"
+            class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_codpostal'].errors.maxlength.requiredLength}} caractères pour le code postal </small>
+          </div>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-xs="50">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_ville"
+                [formControl]="UtilisateurForm.controls['ut_ville']"
+                placeholder="Ville"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_ville'].hasError('maxlength') && UtilisateurForm.controls['ut_ville'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_ville'].errors.maxlength.requiredLength}} caractères pour la ville </small>
+          </div>
+        </div>
+
+      </div>
+
+      <div fxLayout="row wrap">
+
+        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_Telephone"
+                [formControl]="UtilisateurForm.controls['ut_telephone']"
+                placeholder="Telephone"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_telephone'].hasError('maxlength') && UtilisateurForm.controls['ut_telephone'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_telephone'].errors.maxlength.requiredLength}} caractères pour le telephone</small>
+          </div>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-xs="50">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_email"
+                [formControl]="UtilisateurForm.controls['ut_email']"
+                placeholder="Mail"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_email'].hasError('maxlength') && UtilisateurForm.controls['ut_email'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_email'].errors.maxlength.requiredLength}} caractères pour le mail</small>
+          </div>
+        </div>
+
+      </div>
+
+      <div fxLayout="row wrap">
+
+        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_siren"
+                [formControl]="UtilisateurForm.controls['ut_siren']"
+                placeholder="Siren"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_siren'].hasError('maxlength') && UtilisateurForm.controls['ut_siren'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_siren'].errors.maxlength.requiredLength}} caractères pour le siren</small>
+          </div>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-xs="50">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_rib"
+                [formControl]="UtilisateurForm.controls['ut_rib']"
+                placeholder="RIB"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_rib'].hasError('maxlength') && UtilisateurForm.controls['ut_rib'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_rib'].errors.maxlength.requiredLength}} caractères pour le RIB</small>
+          </div>
+        </div>
+
+      </div>
+      <div fxLayout="row wrap">
+
+        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_login"
+                [formControl]="UtilisateurForm.controls['ut_login']"
+                placeholder="Login"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_login'].hasError('required') && UtilisateurForm.controls['ut_login'].touched"
+              class="form-error-msg"> Login obligatoire </small>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_login'].hasError('maxlength') && UtilisateurForm.controls['ut_login'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_login'].errors.maxlength.requiredLength}} caractères pour le login </small>
+          </div>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-xs="50">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_departement"
+                [formControl]="UtilisateurForm.controls['ut_departement']"
+                placeholder="Departement"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_departement'].hasError('required') && UtilisateurForm.controls['ut_departement'].touched"
+              class="form-error-msg"> Département obligatoire </small>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_departement'].hasError('maxlength') && UtilisateurForm.controls['ut_departement'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_departement'].errors.maxlength.requiredLength}} caractères pour le département </small>
+          </div>
+        </div>
+
+      </div>
+
+      <div fxLayout="row wrap">
+
+        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_adsville"
+                [formControl]="UtilisateurForm.controls['ut_adsville']"
+                placeholder="ADS Ville"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_adsville'].hasError('maxlength') && UtilisateurForm.controls['ut_adsville'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_adsville'].errors.maxlength.requiredLength}} caractères pour l'ADS Ville </small>
+          </div>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-xs="50">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_adsnumero"
+                [formControl]="UtilisateurForm.controls['ut_adsnumero']"
+                placeholder="ADS Numéro"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_adsnumero'].hasError('maxlength') && UtilisateurForm.controls['ut_adsnumero'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_adsnumero'].errors.maxlength.requiredLength}} caractères pour l'ADS Numéro </small>
+          </div>
+        </div>
+
+      </div>
+
+      <div fxLayout="row wrap">
+
+        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_souchefacture"
+                [formControl]="UtilisateurForm.controls['ut_souchefacture']"
+                placeholder="Souche Facture"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_souchefacture'].hasError('maxlength') && UtilisateurForm.controls['ut_souchefacture'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_souchefacture'].errors.maxlength.requiredLength}} caractères pour la souche facture </small>
+          </div>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-xs="50">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_sequencefacture"
+                [formControl]="UtilisateurForm.controls['ut_sequencefacture']"
+                placeholder="Séquence Facture"
+                value="">
+            </mat-form-field>
+          </div>
+        </div>
+
+      </div>
+
+      <div fxLayout="row wrap">
+
+        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+          <div class="pb-1">
+            <mat-form-field class="full-width">
+              <input
+                matInput
+                name="ut_codechauffeur"
+                [formControl]="UtilisateurForm.controls['ut_codechauffeur']"
+                placeholder="Code Chauffeur"
+                value="">
+            </mat-form-field>
+            <small
+              *ngIf="UtilisateurForm.controls['ut_codechauffeur'].hasError('maxlength') && UtilisateurForm.controls['ut_codechauffeur'].touched"
+              class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_codechauffeur'].errors.maxlength.requiredLength}} caractères pour le Code Chauffeur </small>
+          </div>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+          <div class="pb-1">
+            <mat-form-field appearance="fill">
+              <mat-label>Type</mat-label>
+              <mat-select [(value)]="idtype">
+                <mat-option [value]="variables.TypePrescripteur">{{variables.LibellePrescripteur}}</mat-option>
+                <mat-option [value]="variables.TypeChauffeur">{{variables.LibelleChauffeur}}</mat-option>
+                <mat-option [value]="variables.TypeAssociation">{{variables.LibelleAssociation}}</mat-option>
+                <mat-option [value]="variables.TypeAdmin">{{variables.LibelleAdmin}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </div>
+
+      <br>
+      <br>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="UtilisateurForm.invalid">Valider
+      </button>
+
+    </form>
+  </mat-card-content>
+</mat-card>
