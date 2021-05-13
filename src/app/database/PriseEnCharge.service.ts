@@ -21,19 +21,30 @@ export class PriseEnChargeService {
   async PriseEnChargeDemande(demande){
      return await this.http.get<Retour>(environment.url + '/priseencharge/prise_en_charge_demande/'+demande).toPromise();
   }
-  async PriseEnChargeId(id){
-     return await this.http.get<Retour>(environment.url + '/priseencharge/prise_en_charge_id/'+id).toPromise();
+  async PriseEnChargeById(id){
+     return await this.http.get<PriseEnCharge>(environment.url + '/priseencharge/prise_en_charge/'+id).toPromise();
   }
 
+  async PriseEnChargeAllDonnees(id){
+     return await this.http.get<Retour>(environment.url + '/priseencharge/prise_en_charge_all_donnees/'+id).toPromise();
+  }
+
+  async PriseEnChargeDonneesModif(id){
+     return await this.http.get<Retour>(environment.url + '/priseencharge/prise_en_charge_donnees_modif/'+id).toPromise();
+  }
   async GetNoFacture(id){
      return await this.http.get<Retour>(environment.url + '/priseencharge/no_facture/'+id).toPromise();
   }
 
   async updatePriseEnCharge(priseencharge: PriseEnCharge){
-     console.log("Update");
      const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };
      return await this.http.put<any>(environment.url + '/priseencharge/',priseencharge,httpOptions).toPromise();
   }
+
+  async deletePriseEnCharge(id: number){
+     return await this.http.delete<any>(environment.url + '/priseencharge/'+id).toPromise();
+  }
+
   getAllPriseEnCharge(type,id): Observable<Retour[]> {
      return this.http.get<Retour[]>(environment.url + '/priseencharge/liste_prise_en_charge/'+type+'/'+id );
   }

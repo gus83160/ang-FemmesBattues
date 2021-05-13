@@ -6,7 +6,7 @@ import { NgModule, OnInit } from '@angular/core';
 
 
 import { FemmesBattuesRoutingModule } from './FemmesBattues-routing.module';
-import { PdfVisuComponent } from './pdf-visu/pdf-visu.component';
+//import { PdfVisuComponent } from './pdf-visu/pdf-visu.component';
 //import { AppComponent } from './app.component';
 
 // import { TypeUtilisateurComponent } from './typeutilisateur/typeutilisateur.component';

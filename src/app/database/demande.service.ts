@@ -14,11 +14,16 @@ export class DemandeService {
   constructor(private http: HttpClient) { }
 
   async createDemande(demande: Demande) {
-        console.log("createDemande");
-        demande.id = 0;
-        console.log(demande);
+    demande.id = 0;
+    return await this.http.post<Demande>(environment.url + '/demande/', demande).toPromise();
+  }
+  async updateDemande(demande: Demande){
+     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };
+     return await this.http.put<any>(environment.url + '/demande/',demande,httpOptions).toPromise();
+  }
 
-        return await this.http.post<Demande>(environment.url + '/demande/', demande).toPromise();
-      }
+  async deleteDemande(id: number){
+     return await this.http.delete<any>(environment.url + '/demande/'+id).toPromise();
+  }
 
 }

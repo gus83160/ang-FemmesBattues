@@ -34,7 +34,12 @@ export class AppComponent implements OnInit {
 
 	ngOnInit() {
 	//  this.changePageTitle();
+	     window.addEventListener("keyup", disableF5);
+       window.addEventListener("keydown", disableF5);
 
+      function disableF5(e) {
+         if ((e.which || e.keyCode) == 116) e.preventDefault();
+      };
 	}
 	changePageTitle() {
 		this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe((routeChange) => {

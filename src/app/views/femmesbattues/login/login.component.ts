@@ -39,10 +39,12 @@ export class LoginComponent implements OnInit {
         this.variables.IdTypeUtilisateur = utilisateur.idtypeutilisateur;
         this.variables.CodeChauffeur = utilisateur.ut_codechauffeur;
         this.variables.Login = utilisateur.ut_login;
+        localStorage.setItem('Login',utilisateur.ut_login);
         if (utilisateur.ut_mdp === this.variables.MDPInitial)
           this.route.navigate(['loginMDP']);
         else {
              this.variables.MotDePasse = utilisateur.ut_mdp;
+             localStorage.setItem('MotDePasse',utilisateur.ut_mdp);
              this.navigationservice.publishNavigationChange('Demande');
              this.route.navigate(['menu']);
         }

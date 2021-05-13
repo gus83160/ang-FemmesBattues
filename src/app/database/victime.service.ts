@@ -14,7 +14,17 @@ export class VictimeService {
   constructor(private http: HttpClient) { }
 
   async createVictime(victime: Victime) {
-        return await this.http.post<Victime>(environment.url + '/victime/', victime).toPromise();
-      }
+     victime.id = 0;
+     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };
+     return await this.http.post<Victime>(environment.url + '/victime/', victime,httpOptions).toPromise();
+  }
+  async updateVictime(victime: Victime){
+     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };
+     return await this.http.put<any>(environment.url + '/victime/',victime,httpOptions).toPromise();
+  }
+
+  async deleteVictime(id: number){
+     return await this.http.delete<any>(environment.url + '/victime/'+id).toPromise();
+  }
 
 }

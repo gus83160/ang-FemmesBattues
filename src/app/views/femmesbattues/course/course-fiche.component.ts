@@ -59,9 +59,13 @@ export class CourseFicheComponent implements OnInit {
     this.priseencharge.id = this.variables.IdPriseEnCharge;
     this.priseencharge.pe_date = this.variables.DateDemande;
     this.priseencharge.pe_nodemande = this.variables.NoDemande;
+    this.priseencharge.pe_nomdemandeur = this.variables.NomDemandeur;
+    this.priseencharge.pe_telephone = this.variables.TelephoneDemandeur;
+    this.priseencharge.pe_mail = this.variables.MailDemandeur;
     this.priseencharge.idprescripteur = this.variables.IdPrescripteur;
     this.priseencharge.idvictime = this.variables.IdVictime;
     this.priseencharge.iddemande = this.variables.IdDemande;
+    this.priseencharge.idstructurerequerante = this.variables.IdStructureRequerante;
     this.priseencharge.idcourse = this.course.id;
     this.priseencharge.idchauffeur = this.variables.IdUtilisateur;
     this.priseenchargeservice.updatePriseEnCharge(this.priseencharge);

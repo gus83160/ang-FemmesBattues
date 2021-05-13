@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient,HttpResponse } from '@angular/common/http';
+
 import { Variables } from '../global/variables';
+import { UtilService } from '../global/util.service';
 
 @Component({
   selector: 'app-priseencharge',
@@ -12,8 +15,18 @@ import { Variables } from '../global/variables';
 
 export class PriseenchargeComponent implements OnInit {
 
-  constructor(public variables: Variables) { }
+  constructor(private http: HttpClient,
+              public variables: Variables) { }
+
+  util: UtilService;
 
   ngOnInit(): void {
+      this.util = new UtilService(this.http);
+
+  }
+  async DocumentPDF()
+  {
+    var data = document.getElementById('DemandePDF');
+    this.util.GenererPDF(data.outerHTML,null,this.variables.NoDemande,null,null);
   }
 }

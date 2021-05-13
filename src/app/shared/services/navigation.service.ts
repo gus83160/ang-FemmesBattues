@@ -36,6 +36,13 @@ export class NavigationService {
 
 	plainMenu: IMenuItem[] = [
 		{
+			name: "",
+			type: "link",
+//			icon: "dashboard",
+//			  state: "course",
+	  	disabled: true
+		},
+		{
 			name: "Demande",
 			type: "link",
 //			icon: "dashboard",
@@ -53,7 +60,7 @@ export class NavigationService {
 			name: "Nouvelle Demande",
 			type: "link",
 //			icon: "local_taxi",
-			state: "demande",
+			state: "demandenew",
 			disabled: true
 		},
 		{
@@ -78,15 +85,24 @@ export class NavigationService {
 	// Or you can customize this method to supply different menu for
 	// different user type.
 	publishNavigationChange(menuType: string) {
-    this.plainMenu[1].disabled  = false;
+	  if (this.variables.IdTypeUtilisateur == this.variables.TypePrescripteur)
+   	  this.plainMenu[0].name = "Prescripteur"
 	  if (this.variables.IdTypeUtilisateur == this.variables.TypeChauffeur)
-	     this.plainMenu[0].disabled  = false;
+   	  this.plainMenu[0].name = "Chauffeur"
+	  if (this.variables.IdTypeUtilisateur == this.variables.TypeAdmin)
+   	  this.plainMenu[0].name = "Admin"
+    this.plainMenu[0].type  = 'separator';
+    this.plainMenu[0].disabled  = false;
+    this.plainMenu[2].disabled  = false;
+
+	  if (this.variables.IdTypeUtilisateur == this.variables.TypeChauffeur)
+	     this.plainMenu[1].disabled  = false;
 	  else
-	     this.plainMenu[2].disabled  = false;
+	     this.plainMenu[3].disabled  = false;
 
 	  if (this.variables.IdTypeUtilisateur == this.variables.TypeAdmin) {
-	     this.plainMenu[0].disabled  = false;
-	     this.plainMenu[3].disabled  = false;
+	     this.plainMenu[1].disabled  = false;
+	     this.plainMenu[4].disabled  = false;
 	  }
 		this.menuItems.next(this.plainMenu);
 	}

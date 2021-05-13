@@ -2,10 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router } from "@angular/router";
+import { HttpResponse } from '@angular/common/http';
 
 import { Variables } from '../global/variables';
+import { UtilService } from '../global/util.service';
+
 import { Retour } from '../../../database/retour';
+import { PriseEnCharge } from '../../../database/priseencharge';
 import { PriseEnChargeService } from '../../../database/priseencharge.service';
+import { DemandeService } from '../../../database/demande.service';
+import { VictimeService } from '../../../database/victime.service';
+
 import { DialogueService } from '../dialogue/dialogue.service';
 
 @Component({
@@ -17,18 +24,26 @@ export class DemandeListComponent implements OnInit {
 
   rows = [];
   columns = [];
+  bPrescripteur: boolean;
   ret: Retour;
   retFacture: Retour;
   ret2: Retour = new Retour();
-  AfficheFacture: boolean;
   nbRetour: number = 0;
+  priseencharge: PriseEnCharge;
 
   constructor(public dialogueService: DialogueService,
               private route: Router,
+              private utilservice: UtilService,
               private priseenchargeservice: PriseEnChargeService,
+              private demandeservice: DemandeService,
+              private victimeservice: VictimeService,
               private variables: Variables) { }
 
   ngOnInit(): void {
+   this.bPrescripteur = false;
+   if (this.variables.IdTypeUtilisateur == this.variables.TypePrescripteur)
+      this.bPrescripteur = true;
+   this.variables.IdPriseEnCharge = 0;
    this.columns = this.getDataConf();
    this.loadAllPriseEnCharge();
   }
@@ -60,7 +75,7 @@ export class DemandeListComponent implements OnInit {
         name: 'Arrivée'
       },
       {
-        prop: 'nomPrescripteur',
+        prop: 'structure',
         name: 'Prescripteur'
       },
       {
@@ -79,20 +94,13 @@ export class DemandeListComponent implements OnInit {
     var res = this.priseenchargeservice.getAllPriseEnCharge(this.variables.IdTypeUtilisateur,this.variables.IdUtilisateur);
     res.subscribe(ret => { this.rows = ret;
                            this.ret2.montant = ret[this.nbRetour].montant;
-                           console.log(this.ret2.montant + " nb ret " + this.nbRetour);
                            this.nbRetour++;
-                           if (this.ret2.montant > 0 )
-                              this.AfficheFacture = true;
-                           else
-                              this.AfficheFacture = false;
                          });
   }
 
-  PdfVisu() {
-   this.route.navigate(['pdfvisu']);
-  }
+
   async detail(id:number,url:string) {
-    this.ret = await this.priseenchargeservice.PriseEnChargeId(id);
+    this.ret = await this.priseenchargeservice.PriseEnChargeAllDonnees(id);
     if (this.ret != null) {
         if(this.ret.montant > 0 ) {
           if ((this.ret.noFacture == "" || this.ret.noFacture == null ) && url == 'facture') {
@@ -109,12 +117,19 @@ export class DemandeListComponent implements OnInit {
           this.variables.NoFacture = this.ret.noFacture;
           this.variables.DateDemande = this.ret.dateDemande;
           this.variables.DateDemandeVisu = this.ret.dateDemandeVisu;
-          this.variables.NomPrescripteur = this.ret.nomPrescripteur;
           this.variables.DepDemande = this.ret.depDemande;
           this.variables.NomChauffeur = this.ret.nomChauffeur;
+          this.variables.PrenomChauffeur = this.ret.prenomChauffeur;
+          this.variables.StructureRequerante = this.ret.structureRequerante;
+          this.variables.NomDemandeur = this.ret.nomDemandeur;
+          this.variables.TelephoneDemandeur = this.ret.telephoneDemandeur;
+          this.variables.MailDemandeur = this.ret.mailDemandeur;
           this.variables.NomVictime = this.ret.nomVictime;
+          this.variables.NomVictimeComplet = this.ret.nomVictimeComplet;
           this.variables.NomUsage = this.ret.nomUsage;
+          this.variables.NomUsageComplet = this.ret.nomUsageComplet;
           this.variables.Prenom = this.ret.prenom;
+          this.variables.PrenomComplet = this.ret.prenomComplet;
           this.variables.Adresse = this.ret.adresse;
           this.variables.Telephone = this.ret.telephone;
           this.variables.Mail = this.ret.mail;
@@ -124,6 +139,7 @@ export class DemandeListComponent implements OnInit {
           this.variables.Motif = this.ret.motif;
           this.variables.EnfantPresent = this.ret.enfantPresent;
           this.variables.NbEnfant = this.ret.nbEnfant;
+          this.variables.AgeEnfant = this.ret.ageEnfant;
           this.variables.Particularite = this.ret.particularite;
           this.variables.AdresseDepart = this.ret.adresseDepart;
           this.variables.AdresseArrivee = this.ret.adresseArrivee;
@@ -139,12 +155,74 @@ export class DemandeListComponent implements OnInit {
           this.route.navigate([url]);
           }
         else
-          this.dialogueService.confirm({message: "Le montant de le course n'a pas été transmis"});
-
+           this.dialogueService.confirm({message: "Le montant de le course n'a pas été transmis"});
         }
     else
         console.log ("Detail ERREUR " );
 
+  }
+  async modifier(id:number) {
+    this.ret = await this.priseenchargeservice.PriseEnChargeDonneesModif(id);
+    if (this.ret != null) {
+        if(this.ret.montant > 0 )
+           this.dialogueService.confirm({message: "La course a été effectuée, vous ne pouvez pas la  modifier"});
+        else {
+           this.variables.IdPriseEnCharge = this.ret.idPriseEnCharge;
+           this.variables.IdPrescripteur = this.ret.idPrescripteur;
+           this.variables.IdDemande = this.ret.idDemande;
+           this.variables.IdVictime = this.ret.idVictime;
+           this.variables.NoDemande = this.ret.noDemande;
+           this.variables.DateDemande = this.ret.dateDemande;
+           this.route.navigate(["demande"]);
+           }
+        }
+    else
+        console.log ("Detail ERREUR " );
+
+  }
+
+  async supprimer(id:number) {
+    this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
+    if (this.priseencharge != null) {
+        if(this.priseencharge.idcourse > 0 )
+           this.dialogueService.confirm({message: "La course a été effectuée, vous ne pouvez pas la supprimer"});
+        else {
+           await this.demandeservice.deleteDemande(this.priseencharge.iddemande);
+           await this.victimeservice.deleteVictime(this.priseencharge.idvictime);
+           await this.priseenchargeservice.deletePriseEnCharge(this.priseencharge.id);
+           this.route.navigate(["menu"]);
+           }
+        }
+    else
+        console.log ("Detail ERREUR " );
+
+  }
+
+  async PdfVisuFacture(id:number) {
+    this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
+    if (this.priseencharge != null) {
+        if(this.priseencharge.pe_nofacture == "" || this.priseencharge.pe_nofacture ==null)
+           this.dialogueService.confirm({message: "La course n'est pas facturée."});
+        else
+           this.utilservice.DownloadFile(this.priseencharge.pe_nofacture);
+
+        }
+    else
+        console.log ("Detail ERREUR " );
+  }
+  async PdfVisuDemande(id:number) {
+    this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
+    if (this.priseencharge != null) {
+        const rep= this.utilservice.GenererPDF(null,null,this.priseencharge.pe_nodemande,null,null);
+        rep.then(result => {
+                 console.log("open");
+                 this.utilservice.DownloadFile(this.priseencharge.pe_nodemande)
+                 });
+        }
+    else
+        console.log ("Detail ERREUR " );
+  }
+  ExportExcel() {
   }
 
 }

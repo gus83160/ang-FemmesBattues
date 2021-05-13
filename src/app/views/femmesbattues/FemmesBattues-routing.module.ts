@@ -22,10 +22,13 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatTimepickerModule } from 'mat-timepicker';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { LoginComponent } from './login/login.component';
 import { LoginMDPComponent } from './login/login-mdp.component';
 import { DemandeComponent } from './demande/demande.component';
+import { DemandeNewComponent } from './demande/demandenew.component';
 import { DemandeListComponent } from './demande/demande-list.component';
 import { MenuComponent } from './menu/menu.component';
 import { CourseComponent } from './course/course.component';
@@ -35,6 +38,7 @@ import { FactureComponent } from './facture/facture.component';
 import { PdfVisuComponent } from './pdf-visu/pdf-visu.component';
 import { UtilisateurComponent } from './utilisateur/utilisateur.component';
 import { UtilisateurListComponent } from './utilisateur/utilisateur-list.component';
+//import { Variables } from './global/variables'
 
 import { DialogueService } from './dialogue/dialogue.service';
 import { DefaultroutingComponent } from "../../defaultrouting/defaultrouting.component";
@@ -46,7 +50,6 @@ import { ErrorInterceptor } from './Authentification/error.interceptor';
 
 //import { TypeUtilisateurComponent } from '../../typeutilisateur/typeutilisateur.component';
 
-import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 const routes: Routes = [
 	{
@@ -70,7 +73,11 @@ const routes: Routes = [
   		component: DemandeListComponent
   },
   {
-  		path: 'demande',
+  		path: 'demandenew',
+  		component: DemandeNewComponent
+  },
+  {
+   		path: 'demande',
   		component: DemandeComponent
   },
   {
@@ -130,12 +137,15 @@ const routes: Routes = [
     NgxDatatableModule,
     ReactiveFormsModule,
     PdfViewerModule,
+    NgxExtendedPdfViewerModule,
+//    NgxFileSaverService,
 	  RouterModule.forChild(routes)
  	],
  	providers: [
  	   { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
  	   { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
  	   DialogueService],
+// 	   Variables],
 	 declarations: [
 	       LoginComponent,
 	       LoginMDPComponent,

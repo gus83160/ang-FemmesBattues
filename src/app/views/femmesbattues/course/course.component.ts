@@ -50,8 +50,12 @@ export class CourseComponent implements OnInit {
              this.variables.IdPrescripteur = this.ret.idPrescripteur;
              this.variables.IdDemande = this.ret.idDemande;
              this.variables.IdVictime = this.ret.idVictime;
+             this.variables.IdStructureRequerante = this.ret.idStructureRequerante;
              this.variables.NoDemande = this.ret.noDemande;
              this.variables.DateDemande = this.ret.dateDemande;
+             this.variables.NomDemandeur = this.ret.nomDemandeur;
+             this.variables.TelephoneDemandeur = this.ret.telephoneDemandeur;
+             this.variables.MailDemandeur = this.ret.mailDemandeur;
              this.variables.NomVictime = this.ret.nomVictime;
              this.variables.Particularite = this.ret.particularite;
              this.variables.AdresseDepart = this.ret.adresseDepart;

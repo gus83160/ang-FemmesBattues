@@ -1,4 +1,7 @@
 <div class="mat-box-shadow margin-333">
+  <button title="Export excel" (click)="ExportExcel()">
+    <img src="assets/images/excel.png" alt="">
+  </button>
   <ngx-datatable class="material bg-white"
                  [columnMode]="'force'"
                  [headerHeight]="50"
@@ -10,16 +13,28 @@
                  >
                  <ngx-datatable-column name="" prop="idPriseEnCharge" width="250">
                    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-
-                     <button (click)="detail(value,'priseencharge')">
-                       <img src="assets/images/transp.png" alt="">
-                     </button>
-                     <button md-button (click)="detail(value,'facture')">
-                       <img src="assets/images/facture.png" alt="">
-                     </button>
-                     <button md-button (click)="PdfVisu()">
-                       <img src="assets/images/pdf.png" alt="">
-                     </button>
+                     <div *ngIf="bPrescripteur">
+                        <button title="Modifier la Demande" (click)="modifier(value)">
+                           <img src="assets/images/modifier.png" alt="">
+                       </button>
+                        <button title="Supprimer la Demande" (click)="supprimer(value)">
+                           <img src="assets/images/supprimer.png" alt="">
+                        </button>
+                       <button title="Consulter la prise en charge"(click)="PdfVisuDemande(value)">
+                         <img src="assets/images/transp.png" alt="">
+                       </button>
+                     </div>
+                     <div *ngIf="!bPrescripteur">
+                       <button title="Consulter la prise en charge"(click)="PdfVisuDemande(value)">
+                         <img src="assets/images/transp.png" alt="">
+                       </button>
+                       <button title="Facturer la Course" (click)="detail(value,'facture')">
+                         <img src="assets/images/facture.png" alt="">
+                       </button>
+                       <button title="Visualiser la Facture"  (click)="PdfVisuFacture(value)">
+                         <img src="assets/images/pdf.png" alt="">
+                       </button>
+                     </div>
                    </ng-template>
                  </ngx-datatable-column>
 <!--                 <ngx-datatable-column name="fact" prop="idPriseEnCharge">
@@ -34,13 +49,16 @@
                  </ngx-datatable-column>-->
 
                  <ngx-datatable-column name="Date" prop="dateDemandeVisu"></ngx-datatable-column>
-                 <ngx-datatable-column name="Demande" prop="noDemande"></ngx-datatable-column>
                  <ngx-datatable-column name="Victime" prop="nomVictime"></ngx-datatable-column>
+                 <ngx-datatable-column name="Prescripteur" prop="structure"></ngx-datatable-column>
                  <ngx-datatable-column name="Depart" prop="adresseDepart"></ngx-datatable-column>
                  <ngx-datatable-column name="Arrivee" prop="adresseArrivee"></ngx-datatable-column>
-                 <ngx-datatable-column name="Montant" prop="montant"></ngx-datatable-column>
-                 <ngx-datatable-column name="Chauffeur" prop="nomChauffeur"></ngx-datatable-column>
-                 <ngx-datatable-column name="Prescripteur" prop="nomPrescripteur"></ngx-datatable-column>
-
+                 <ngx-datatable-column name="Demande" prop="noDemande"></ngx-datatable-column>
+<!--                 <div *ngIf="!bPrescripteur">
+                    <ngx-datatable-column name="Montant" prop="montant"></ngx-datatable-column>
+                    <ngx-datatable-column name="Chauffeur" prop="nomChauffeur"></ngx-datatable-column>
+                 </div>
+-->
   </ngx-datatable>
+
 </div>

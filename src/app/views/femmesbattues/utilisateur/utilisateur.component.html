@@ -4,7 +4,7 @@
     <mat-divider></mat-divider>
   </mat-card-title>
   <mat-card-content>
-    <form [formGroup]="UtilisateurForm" (ngSubmit)="CreationModification()">
+    <form *ngIf="UtilisateurForm" [formGroup]="UtilisateurForm" (ngSubmit)="CreationModification()">
 
       <div fxLayout="row wrap">
 

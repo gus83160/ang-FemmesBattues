@@ -73,9 +73,7 @@ export class FactureComponent implements OnInit {
   async DocumentPDF()
   {
     var data = document.getElementById('DocumentPDF');
-    //console.log(data.outerHTML);
-    this.resp = await this.util.genererPDF(data.outerHTML);
-    console.log(this.resp.headers.keys());
+    this.util.GenererPDF(data.outerHTML,this.variables.NoFacture,this.variables.NoDemande,this.Payeur.ut_email,this.Chauffeur.ut_email);
 
   }
 

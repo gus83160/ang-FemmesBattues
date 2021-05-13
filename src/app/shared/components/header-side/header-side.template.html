@@ -59,13 +59,13 @@
       <span class="notification-number mat-bg-warn">3</span>
     </button> -->
     <!-- Top left user menu -->
-    <button
+<!--    <button
             mat-icon-button
             [matMenuTriggerFor]="accountMenu"
             class="topbar-button-right img-button">
-        <img src="assets/images/avatar.jpg" alt="" />
+        <img src="assets/images/avatar.jpg" alt="toto" />
     </button>
-
+-->
     <mat-menu #accountMenu="matMenu">
         <!-- <button mat-menu-item [routerLink]="['/profile/overview']">
           <mat-icon>account_box</mat-icon>
@@ -82,10 +82,10 @@
         <button mat-menu-item (click)="profile()" *ngIf="keycloakService.isUserInRole('driver', 'webcompta-api')">
             <mat-icon>settings</mat-icon>
             <span>{{ "SETTINGS" | translate }}</span>
-        </button> -->
+        </button>
         <button mat-menu-item (click)="logout()">
             <mat-icon>exit_to_app</mat-icon>
             <span>{{ "SIGNOUT" | translate }}</span>
-        </button>
+        </button> -->
     </mat-menu>
 </mat-toolbar>

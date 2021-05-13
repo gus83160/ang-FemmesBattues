@@ -1,57 +1,182 @@
-
 <div>
- <div id="contentToConvert">
-   <div class="container" id="content" #content>
-   <fieldset style="width-full">
-    <legend> Saisine - {{ variables.NomPrescripteur }}</legend>
-    Date : {{ variables.DateDemandeVisu }}
-    <span class="marge">Numéro Demande : {{ variables.NoDemande }}</span>
-  </fieldset>
+  <input type="button" value="Demande PDF" (click)="DocumentPDF()"/>
+</div>
+<div id="DemandePDF">
+    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+       <tr><td>&nbsp;&nbsp;&nbsp;Saisine</td></tr>
+    </table>
+    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+       <tr><td>
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+             <tr><td>&nbsp;</td></tr>
+             <tr>
+                <td witdh="50%" align="left" class="demandesize">
+                   Date de la demande: {{ variables.DateDemandeVisu }}
+                </td>
+                <td witdh="50%" align="left" class="demandesize">
+                   Structure Requérante: {{ variables.StructureRequerante }}
+                </td>
+             </tr>
+             <tr>
+                <td witdh="50%" align="left" class="demandesize">
+                   Nom et prénom de la personne en charge du dossier: {{ variables.NomDemandeur }}
+                </td>
+                <td witdh="50%" align="left" class="demandesize">
+                  Téléphone (Ligne directe si possible): {{ variables.TelephoneDemandeur }}
+                </td>
+             </tr>
+             <tr>
+                <td class="demandesize">
+                   Mail: {{ variables.MailDemandeur }}
+                </td>
+             </tr>
+             <tr><td>&nbsp;</td></tr>
+          </table>
+       </td></tr>
+    </table>
+    <br>
+    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+       <tr><td>&nbsp;&nbsp;&nbsp;Personne à véhiculer</td></tr>
+    </table>
+    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+       <tr><td>
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+             <tr><td>&nbsp;</td></tr>
+             <tr>
+                <td witdh="50%" align="left" class="demandesize">
+                   Nom de Naissance: {{ variables.NomVictimeComplet }}
+                </td>
+                <td witdh="50%" align="left" class="demandesize">
+                   Prénom: {{ variables.PrenomComplet }}
+                </td>
+             </tr>
+             <tr>
+                <td class="demandesize">
+                   Nom Usage: {{ variables.NomUsageComplet }}
+                </td>
+             </tr>
+             <tr>
+                <td class="demandesize">
+                    Adresse: {{ variables.Adresse }}
+                </td>
+             </tr>
+             <tr>
+                <td witdh="300" align="left" class="demandesize">
+                   Téléphone: {{ variables.Telephone }}
+                </td>
+                <td witdh="300" align="left" class="demandesize">
+                   Mail: {{ variables.Mail }}
+                </td>
+             </tr>
+             <tr>
+                <td witdh="300" align="left" class="demandesize">
+                   Age: {{ variables.Age }}
+                </td>
+                <td witdh="300" align="left" class="demandesize">
+                   Enfant à charge: {{ variables.EnfantCharge }}
+                </td>
+             </tr>
+             <tr>
+                <td class="demandesize">
+                   Informations Complémentaires : {{ variables.InfoComplementaire }}
+                </td>
+             </tr>
+             <tr><td>&nbsp;</td></tr>
+          </table>
+       </td></tr>
+    </table>
+    <br>
+    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+       <tr><td>&nbsp;&nbsp;&nbsp;Demande</td></tr>
+    </table>
+    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+       <tr><td>
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+             <tr><td>&nbsp;</td></tr>
+             <tr>
+                <td class="demandesize">
+                   Motif: {{ variables.Motif }}
+                </td>
+             </tr>
+             <tr>
+                <td *ngIf="variables.EnfantPresent  === true" witdh="34%" align="left" class="demandesize">
+                   Enfant présent lors du trajet: Oui
+                </td>
+                <td *ngIf="variables.EnfantPresent  === false" witdh="34%" align="left" class="demandesize">
+                   Enfant présent lors du trajet: Non
+                </td>
+                <td witdh="33%" align="left" class="demandesize">
+                   Si oui nombre? {{ variables.NbEnfant }}
+                </td>
+                <td witdh="33%" align="left" class="demandesize">
+                   Age des enfants: {{ variables.AgeEnfant }}
+                </td>
+             </tr>
+             <tr>
+                <td class="demandesize">
+                   Particularité : {{ variables.Particularite }}
+                </td>
+             </tr>
+             <tr>
+                <td class="demandesize">
+                   Adresse Départ : {{ variables.AdresseDepart }}
+                </td>
+             </tr>
+             <tr>
+                <td class="demandesize">
+                   Adresse Arrivée : {{ variables.AdresseArrivee }}
+                </td>
+             </tr>
+             <tr>
+                <td *ngIf="variables.AllerRetour  === false" class="demandesize">
+                   Aller
+                </td>
+                <td *ngIf="variables.AllerRetour  === true" class="demandesize">
+                   Aller / Retour
+                </td>
+             </tr>
+             <tr><td>&nbsp;</td></tr>
+          </table>
+       </td></tr>
+    </table>
+    <br>
+    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+       <tr><td>&nbsp;&nbsp;&nbsp;Encadré réservé au taxi en charge de la course</td></tr>
+    </table>
+    <table border="1" cellpadding="0" cellspacing="0" width="100%">
+       <tr><td>
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+             <tr><td>&nbsp;</td></tr>
+             <tr>
+                <td witdh="50%" align="left" class="demandesize">
+                   Date de prise en charge: {{ variables.DateCourseVisu }}
+                </td>
+                <td witdh="50%" align="left" class="demandesize">
+                   Heure de début de prise en charge: {{ variables.HeureCourseDebutVisu }}
+                </td>
+             </tr>
 
-  <fieldset style="width-full">
-    <legend> Victime - {{ variables.NomVictime }} </legend>
-    Prénom : {{ variables.Prenom }}
-    <span class="marge">Nom Usage : {{ variables.NomUsage }}</span><br>
-    Adresse : {{ variables.Adresse }}<br>
-    Telephone : {{ variables.Telephone }}
-    <span class="marge">Mail : {{ variables.Mail }}</span> <br>
-    Age : {{ variables.Age }}
-    <span class="marge">Enfants à Charge : {{ variables.EnfantCharge }}</span> <br>
-    info Complémentaire : {{ variables.InfoComplementaire }}
-  </fieldset>
+             <tr>
+                <td witdh="50%" align="left" class="demandesize">
+                    &nbsp;
+                </td>
+                <td witdh="50%" align="left" class="demandesize">
+                   Heure de fin de prise en charge: {{ variables.HeureCourseFinVisu }}
+                </td>
+            </tr>
 
-  <fieldset style="width-full">
-    <legend> Demande</legend>
-    Motif : {{ variables.Motif }} <br>
-    <div *ngIf ="variables.EnfantPresent  === true">
-      Enfants présents lors du trajet Oui
-      <span class="marge">Si oui Combien ? {{ variables.NbEnfant }}</span>
-    </div>
-    <div *ngIf ="variables.EnfantPresent  === false">
-      Enfants présents lors du trajet Non
-    </div>
-    Particularité : {{ variables.Particularite }} <br>
-    Adresse Départ : {{ variables.AdresseDepart }} <br>
-    Adresse Arrivée : {{ variables.AdresseArrivee }} <br>
-    <div *ngIf ="variables.AllerRetour  === false">
-      Aller
-    </div>
-    <div *ngIf ="variables.AllerRetour  === true">
-      Aller / Retour
-    </div>
-  </fieldset>
-  <div *ngIf ="variables.IdCourse !== 0 && variables.IdTypeUtilisateur !== variables.TypePrescripteur">
-    <fieldset style="width-full">
-      <legend> Course - {{ variables.NomChauffeur }}</legend>
-      Date de la course : {{ variables.DateCourseVisu }}
-      <span class="marge">Heure Début : {{ variables.HeureCourseDebutVisu }}</span>
-      <span class="marge">Heure Fin : {{ variables.HeureCourseFinVisu }}</span> <br>
-      Montant de la course : {{ variables.Montant }}
-      <span class="marge">Péage : {{ variables.Peage }} </span>
-
-    </fieldset>
-  </div>
- </div>
- </div>
-
+             <tr>
+                <td class="demandesize">
+                   Nom: {{ variables.NomChauffeur}}
+                </td>
+             </tr>
+             <tr>
+                <td class="demandesize">
+                   Prénom: {{ variables.PrenomChauffeur}}
+                </td>
+             </tr>
+             <tr><td>&nbsp;</td></tr>
+          </table>
+       </td></tr>
+    </table>
 </div>

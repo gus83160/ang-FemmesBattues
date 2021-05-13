@@ -11,6 +11,7 @@ export class Variables {
   IdPrescripteur: number ;
   IdDemande: number ;
   IdVictime: number ;
+  IdStructureRequerante: number;
   IdPriseEnCharge: number;
   IdChauffeur: number;
   IdCourse: number ;
@@ -20,10 +21,18 @@ export class Variables {
   DateDemandeVisu: string;
   NomPrescripteur : string;
   DepDemande : String;
+  StructureRequerante: string;
+  NomDemandeur: string;
+  TelephoneDemandeur: string;
+  MailDemandeur: string;
   NomChauffeur : string;
+  PrenomChauffeur : string;
   NomVictime : string;
+  NomVictimeComplet : string;
   NomUsage : string;
+  NomUsageComplet : string;
   Prenom : string;
+  PrenomComplet : string;
   Adresse : string;
   Telephone : string;
   Mail : string;
@@ -33,6 +42,7 @@ export class Variables {
   Motif: string;
   EnfantPresent: boolean;
   NbEnfant: number;
+  AgeEnfant: string;
   Particularite: string;
   AdresseDepart: string;
   AdresseArrivee: string;

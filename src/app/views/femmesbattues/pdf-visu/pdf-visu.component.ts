@@ -8,11 +8,12 @@ import { environment } from '../../../../environments/environment';
   styleUrls: ['./pdf-visu.component.scss']
 })
 export class PdfVisuComponent implements OnInit {
-  FichierPDF = "http://localhost:4200/tmp6E5F.pdf";
-  //FichierPDF =  "D:\\FranceTaxi\\FemmesBattues\\FemmesBattues\\tmp6E5F.pdf";
-  //FichierPDF =  "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
+  //FichierPDF = "http://localhost:4200/tmp6E5F.pdf";
+  //FichierPDF =  "D:/FranceTaxi/FemmesBattues/FemmesBattues/FVV1935000001.pdf";
+  FichierPDF =  "https://fvvback.france-taxi.com/FVV1935000001.pdf";
   ngOnInit(): void {
      console.log(this.FichierPDF);
+     window.open(this.FichierPDF);
   }
 
 }
