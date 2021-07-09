@@ -1,5 +1,5 @@
 <div class="mat-box-shadow margin-333">
-  <button title="Export excel" (click)="ExportExcel()">
+  <button *ngIf="bAdmin" title="Export excel" (click)="ExportExcel()">
     <img src="assets/images/excel.png" alt="">
   </button>
   <ngx-datatable class="material bg-white"
@@ -50,7 +50,7 @@
 
                  <ngx-datatable-column name="Date" prop="dateDemandeVisu"></ngx-datatable-column>
                  <ngx-datatable-column name="Victime" prop="nomVictime"></ngx-datatable-column>
-                 <ngx-datatable-column name="Prescripteur" prop="structure"></ngx-datatable-column>
+                 <ngx-datatable-column name="Structure Requerante" prop="structureRequerante"></ngx-datatable-column>
                  <ngx-datatable-column name="Depart" prop="adresseDepart"></ngx-datatable-column>
                  <ngx-datatable-column name="Arrivee" prop="adresseArrivee"></ngx-datatable-column>
                  <ngx-datatable-column name="Demande" prop="noDemande"></ngx-datatable-column>

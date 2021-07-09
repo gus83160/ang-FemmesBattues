@@ -18,6 +18,7 @@ export class Utilisateur {
   ut_souchefacture: string;
   ut_sequencefacture: number;
   ut_codechauffeur: string;
+  ut_typestructurerequerante: number;
   idtypeutilisateur: number;
 
   constructor () {

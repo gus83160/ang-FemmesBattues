@@ -5,6 +5,7 @@ export class Retour {
   dateDemande : Date;
   dateDemandeVisu : string;
   noFacture: string;
+  dateFacture : string;
   idPrescripteur: number;
   idVictime: number;
   idDemande: number;
@@ -33,6 +34,8 @@ export class Retour {
   enfantCharge : number;
   infoComplementaire : string;
   motif: string;
+  dateAller:Date;
+  heureAller:string;
   enfantPresent: boolean;
   nbEnfant: number;
   ageEnfant: string;
@@ -40,6 +43,8 @@ export class Retour {
   adresseDepart: string;
   adresseArrivee: string;
   allerRetour: boolean;
+  dateRetour:Date;
+ heureRetour:string;
   dateCourse: Date;
   heureCourseDebut: Date;
   heureCourseFin: Date;

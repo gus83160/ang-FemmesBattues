@@ -22,5 +22,7 @@ export class DialogueService {
       data: { message: data.message}
     });
     return dialogRef.afterClosed();
+
+
   }
 }

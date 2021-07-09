@@ -35,11 +35,10 @@ export class LoginMDPComponent implements OnInit {
 
   async ValidationMDP () {
      const loginMDPData = this.loginMDPForm.value;
-     console.log('id ' + this.variables.IdUtilisateur + ' MDP ' + loginMDPData.oldmdp);
      var utilisateur = await this.utilisateurservice.VerificationIdMDP(this.variables.IdUtilisateur,loginMDPData.oldmdp);
      if (utilisateur != null) {
          utilisateur.ut_mdp = loginMDPData.mdp;
-         this.utilisateurservice.UpdateUtilisateur(utilisateur);
+         await this.utilisateurservice.UpdateUtilisateur(utilisateur);
          this.variables.MotDePasse = utilisateur.ut_mdp;
          this.navigationservice.publishNavigationChange('Demande');
          this.route.navigate(['menu']);

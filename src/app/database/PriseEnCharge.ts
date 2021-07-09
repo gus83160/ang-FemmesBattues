@@ -4,6 +4,7 @@ export class PriseEnCharge {
   pe_nodemande: string;
   pe_date: Date;
   pe_nofacture: string;
+  pe_datefacture: Date;
   pe_nomdemandeur: string;
   pe_telephone: string;
   pe_mail: string;

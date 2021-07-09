@@ -43,10 +43,17 @@ export class NavigationService {
 	  	disabled: true
 		},
 		{
+			name: "Information",
+			type: "link",
+//			icon: "dashboard",
+			  state: "information",
+	  	disabled: true
+		},
+		{
 			name: "Demande",
 			type: "link",
 //			icon: "dashboard",
-			  state: "course",
+			  state: "recupcourse",
 	  	disabled: true
 		},
 		{
@@ -93,16 +100,18 @@ export class NavigationService {
    	  this.plainMenu[0].name = "Admin"
     this.plainMenu[0].type  = 'separator';
     this.plainMenu[0].disabled  = false;
-    this.plainMenu[2].disabled  = false;
+    this.plainMenu[3].disabled  = false;
 
-	  if (this.variables.IdTypeUtilisateur == this.variables.TypeChauffeur)
+	  if (this.variables.IdTypeUtilisateur == this.variables.TypeChauffeur)  {
 	     this.plainMenu[1].disabled  = false;
+	     this.plainMenu[2].disabled  = false;
+	     }
 	  else
-	     this.plainMenu[3].disabled  = false;
+	     this.plainMenu[4].disabled  = false;
 
 	  if (this.variables.IdTypeUtilisateur == this.variables.TypeAdmin) {
 	     this.plainMenu[1].disabled  = false;
-	     this.plainMenu[4].disabled  = false;
+	     this.plainMenu[5].disabled  = false;
 	  }
 		this.menuItems.next(this.plainMenu);
 	}

@@ -28,7 +28,7 @@
             <div class="pb-1">
               <mat-form-field appearance="fill" class="full-width">
                 <mat-label>Structure Requérante</mat-label>
-                <mat-select [(value)]="idStructureRequerante" formControlName="idStructureRequerante">
+                <mat-select [(value)]="idstructurerequerante" formControlName="idstructurerequerante">
                   <mat-option *ngFor="let StructureRequerante of allStructureRequerantes" [value]="StructureRequerante.id">
                     {{StructureRequerante.sr_libelle }}
                   </mat-option>
@@ -238,16 +238,44 @@
         </fieldset>
 
         <fieldset style="width-full">
+
+          <div fxLayout="row wrap">
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <div class="pb-1">
+                <mat-form-field class="full-width">
+                  <input
+                    matInput
+                    name="de_datealler"
+                    formControlName="de_datealler"
+                    placeholder="Date Aller"
+                    [matDatepicker]="appDateAllerpicker">
+                  <mat-datepicker-toggle matSuffix [for]="appDateAllerpicker"></mat-datepicker-toggle>
+                </mat-form-field>
+                <mat-datepicker #appDateAllerpicker></mat-datepicker>
+              </div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <div class="pb-1">
+                <label for="de_heurealler"><br>Heure Aller&nbsp;&nbsp;&nbsp;</label>
+                <input type="time"
+                       name="de_heurealler"
+                       formControlName="de_heurealler">
+              </div>
+            </div>
+          </div>
+
+
         <div class="pb-1">
           <mat-form-field appearance="fill" class="full-width">
             <mat-label>Motif</mat-label>
-            <mat-select [(value)]="idMotif" formControlName="idMotif">
+            <mat-select [(value)]="idmotif" formControlName="idmotif">
               <mat-option *ngFor="let motif of allMotifs" [value]="motif.id">
                 {{motif.mo_libelle }}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
+
         <div fxLayout="row wrap">
           <div fxFlex="100" fxFlex.gt-xs="33" class="pr-1">
             <div class="pb-1">
@@ -315,15 +343,45 @@
                 value="">
             </mat-form-field>
           </div>
-          <div class="pb-1">
-            <Label>Aller/Retour </Label>
-            <mat-radio-group
-              name="de_allerretour"
-              formControlName="de_allerretour">
-              <mat-radio-button value="O">Oui</mat-radio-button>
-              <mat-radio-button value="N">Non</mat-radio-button>
-            </mat-radio-group>
+
+          <div fxLayout="row wrap">
+            <div fxFlex="100" fxFlex.gt-xs="34" class="pr-1">
+              <div class="pb-1">
+                <Label><br>Aller/Retour </Label>
+                <mat-radio-group
+                  name="de_allerretour"
+                  formControlName="de_allerretour">
+                  <mat-radio-button value="O">Oui</mat-radio-button>
+                  <mat-radio-button value="N">Non</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="33" class="pr-1">
+              <div class="pb-1">
+                <mat-form-field class="full-width">
+                  <input
+                    matInput
+                    name="de_dateretour"
+                    formControlName="de_dateretour"
+                    placeholder="Date Retour"
+                    [matDatepicker]="appDateRetourpicker">
+                  <mat-datepicker-toggle matSuffix [for]="appDateRetourpicker"></mat-datepicker-toggle>
+                </mat-form-field>
+                <mat-datepicker #appDateRetourpicker></mat-datepicker>
+              </div>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="33" class="pr-1">
+              <div class="pb-1">
+                <label for="de_heureretour"><br>Heure Retour&nbsp;&nbsp;&nbsp;</label>
+                <input type="time"
+                       name="de_heureretour"
+                       formControlName="de_heureretour">
+              </div>
+            </div>
           </div>
+
+
         </fieldset>
 
       <br>

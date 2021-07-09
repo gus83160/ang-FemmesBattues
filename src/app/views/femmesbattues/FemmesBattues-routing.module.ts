@@ -32,6 +32,8 @@ import { DemandeNewComponent } from './demande/demandenew.component';
 import { DemandeListComponent } from './demande/demande-list.component';
 import { MenuComponent } from './menu/menu.component';
 import { CourseComponent } from './course/course.component';
+import { RecupCourseComponent } from './course/recup-course.component';
+import { InformationComponent } from './course/information.component';
 import { CourseFicheComponent } from './course/course-fiche.component';
 import { PriseenchargeComponent } from './priseencharge/priseencharge.component';
 import { FactureComponent } from './facture/facture.component';
@@ -60,9 +62,16 @@ const routes: Routes = [
 		path: 'loginMDP',
 		component: LoginMDPComponent
 	},
+	{ path: 'information',
+		component: InformationComponent
+	},
 	{
 		path: 'course',
 		component: CourseComponent
+	},
+	{
+		path: 'recupcourse',
+		component: RecupCourseComponent
 	},
 	{
 		path: 'coursefiche',

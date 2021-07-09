@@ -6,12 +6,13 @@ import { environment } from '../../environments/environment';
 
 import { Utilisateur } from './utilisateur';
 import { Variables } from '../views/femmesbattues/global/variables';
+import { ParmsLogin } from '../views/femmesbattues/global/parmslogin';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilisateurService {
-
+  parms : ParmsLogin;
 
   constructor(private http: HttpClient,
               private variables : Variables) { }
@@ -29,7 +30,10 @@ export class UtilisateurService {
 
 
   async VerificationLoginMDP(login,mdp) {
-      return await this.http.get<Utilisateur>(environment.url + '/utilisateur/verifloginmdp/'+login+'/'+mdp).toPromise();
+      this.parms = new ParmsLogin();
+      this.parms.login = login;
+      this.parms.mdp = mdp;
+      return await this.http.put<Utilisateur>(environment.url + '/utilisateur/verifloginmdp',this.parms).toPromise();
   }
   async VerificationIdMDP(id,mdp) {
       return await this.http.get<Utilisateur>(environment.url + '/utilisateur/verifidmdp/'+id+'/'+mdp).toPromise();

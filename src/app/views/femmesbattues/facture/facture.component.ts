@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,AfterViewInit } from '@angular/core';
 import { HttpClient,HttpResponse } from '@angular/common/http';
 import { formatDate } from '@angular/common';
 
@@ -13,7 +13,7 @@ import { UtilisateurService} from '../../../database/utilisateur.service';
   templateUrl: './facture.component.html',
   styleUrls: ['./facture.component.scss']
 })
-export class FactureComponent implements OnInit {
+export class FactureComponent implements OnInit,AfterViewInit {
 
   util: UtilService;
   Chauffeur : Utilisateur;
@@ -46,6 +46,10 @@ export class FactureComponent implements OnInit {
     this.DateDuJour = formatDate(new Date(),'dd/MM/yyyy','fr');
 
     this.AdresseChauffeurPayeur();
+  }
+  ngAfterViewInit():void {
+    var data = document.getElementById('DocumentPDF');
+    this.util.GenererPDF(data.outerHTML,this.variables.NoFacture,null,null,null);
   }
 
   async  AdresseChauffeurPayeur() {

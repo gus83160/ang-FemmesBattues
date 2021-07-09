@@ -28,24 +28,25 @@ constructor(private http: HttpClient) { }
         this.pdf.mailPayeur = payeur;
         this.pdf.mailChauffeur = chauffeur;
         const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'})};
-//        var tmp = await this.http.put<any>(environment.url + '/util/generer_pdf',this.pdf,httpOptions).toPromise();
        await this.http.put<any>(environment.url + '/util/generer_pdf',this.pdf,httpOptions).toPromise();
-//        return tmp;
     }
-   async Autorisation() {
-        return await this.http.get<RepAutorisation>(environment.url + '/util/autorisation/' + environment.urlAutorisation).toPromise();
-   }
-   async RechCourseHub(demande,token) {
+   async RechCourseHub(demande) {
          this.rchcourse = new RechCourse();
-         this.rchcourse.url = environment.urlHub;
          this.rchcourse.dossier = demande;
-         this.rchcourse.token = token;
-
-        return await this.http.put<RepCourseHub>(environment.url + '/util/rech_course_hub', this.rchcourse).toPromise();
-
+        console.log("avant put");
+        let re = await this.http.put<RepCourseHub>(environment.url + '/util/rech_course_hub', this.rchcourse).toPromise()
+                        .catch(error => {console.log(error); return null});
+        console.log("apres put");
+      return re;
    }
 
    async DownloadFile(fichier: string) {
      window.open(environment.url + '/util/download/'+fichier,"application/pdf");
+     }
+   async CSV(fichier:string){
+       await this.http.get(environment.url + '/util/csv/'+fichier).toPromise();
+   }
+   async DownloadFileCSV(fichier: string) {
+     window.open(environment.url + '/util/download_csv/'+fichier,"text/csv");
      }
 }

@@ -7,6 +7,7 @@ export class Variables {
   CodeChauffeur: string;
   Login: string;
   MotDePasse: string;
+  TypeStructureRequerante: number;
   IdTypeUtilisateur: number;
   IdPrescripteur: number ;
   IdDemande: number ;
@@ -17,6 +18,7 @@ export class Variables {
   IdCourse: number ;
   NoDemande: string;
   NoFacture: string;
+  DateFacture : string;
   DateDemande : Date;
   DateDemandeVisu: string;
   NomPrescripteur : string;
@@ -61,6 +63,7 @@ export class Variables {
   DateFin: Date;
   HeureDebut: string;
   HeureFin: string;
+  Information: boolean;
 
 
   TypePrescripteur:    number = 1;

@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router } from "@angular/router";
 import { HttpResponse } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Variables } from '../global/variables';
 import { UtilService } from '../global/util.service';
@@ -14,6 +15,7 @@ import { DemandeService } from '../../../database/demande.service';
 import { VictimeService } from '../../../database/victime.service';
 
 import { DialogueService } from '../dialogue/dialogue.service';
+import { SupprimerComponent } from '../dialogue/supprimer.component';
 
 @Component({
   selector: 'app-demande-list',
@@ -25,6 +27,7 @@ export class DemandeListComponent implements OnInit {
   rows = [];
   columns = [];
   bPrescripteur: boolean;
+  bAdmin: boolean;
   ret: Retour;
   retFacture: Retour;
   ret2: Retour = new Retour();
@@ -33,6 +36,7 @@ export class DemandeListComponent implements OnInit {
 
   constructor(public dialogueService: DialogueService,
               private route: Router,
+              private dialog: MatDialog,
               private utilservice: UtilService,
               private priseenchargeservice: PriseEnChargeService,
               private demandeservice: DemandeService,
@@ -43,6 +47,9 @@ export class DemandeListComponent implements OnInit {
    this.bPrescripteur = false;
    if (this.variables.IdTypeUtilisateur == this.variables.TypePrescripteur)
       this.bPrescripteur = true;
+   this.bAdmin = false;
+   if (this.variables.IdTypeUtilisateur == this.variables.TypeAdmin)
+      this.bAdmin = true;
    this.variables.IdPriseEnCharge = 0;
    this.columns = this.getDataConf();
    this.loadAllPriseEnCharge();
@@ -75,8 +82,8 @@ export class DemandeListComponent implements OnInit {
         name: 'Arrivée'
       },
       {
-        prop: 'structure',
-        name: 'Prescripteur'
+        prop: 'structureRequerante',
+        name: 'Structure Requerante'
       },
       {
         prop: 'nomChauffeur',
@@ -106,6 +113,7 @@ export class DemandeListComponent implements OnInit {
           if ((this.ret.noFacture == "" || this.ret.noFacture == null ) && url == 'facture') {
              this.retFacture = await this.priseenchargeservice.GetNoFacture(id);
              this.ret.noFacture = this.retFacture.noFacture;
+             this.ret.dateFacture = this.retFacture.dateFacture;
           }
           this.variables.IdPriseEnCharge = this.ret.idPriseEnCharge;
           this.variables.IdPrescripteur = this.ret.idPrescripteur;
@@ -115,6 +123,7 @@ export class DemandeListComponent implements OnInit {
           this.variables.IdCourse = this.ret.idCourse;
           this.variables.NoDemande = this.ret.noDemande;
           this.variables.NoFacture = this.ret.noFacture;
+          this.variables.DateFacture = this.ret.dateFacture;
           this.variables.DateDemande = this.ret.dateDemande;
           this.variables.DateDemandeVisu = this.ret.dateDemandeVisu;
           this.variables.DepDemande = this.ret.depDemande;
@@ -164,7 +173,7 @@ export class DemandeListComponent implements OnInit {
   async modifier(id:number) {
     this.ret = await this.priseenchargeservice.PriseEnChargeDonneesModif(id);
     if (this.ret != null) {
-        if(this.ret.montant > 0 )
+        if(this.ret.idCourse > 0 )
            this.dialogueService.confirm({message: "La course a été effectuée, vous ne pouvez pas la  modifier"});
         else {
            this.variables.IdPriseEnCharge = this.ret.idPriseEnCharge;
@@ -182,6 +191,13 @@ export class DemandeListComponent implements OnInit {
   }
 
   async supprimer(id:number) {
+    let dialogRef = this.dialog.open(SupprimerComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result == 'oui')
+        this.deleteDemande(id);
+    });
+  }
+  async deleteDemande(id:number) {
     this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
     if (this.priseencharge != null) {
         if(this.priseencharge.idcourse > 0 )
@@ -215,7 +231,6 @@ export class DemandeListComponent implements OnInit {
     if (this.priseencharge != null) {
         const rep= this.utilservice.GenererPDF(null,null,this.priseencharge.pe_nodemande,null,null);
         rep.then(result => {
-                 console.log("open");
                  this.utilservice.DownloadFile(this.priseencharge.pe_nodemande)
                  });
         }
@@ -223,6 +238,11 @@ export class DemandeListComponent implements OnInit {
         console.log ("Detail ERREUR " );
   }
   ExportExcel() {
+        const rep= this.utilservice.CSV("export");
+        rep.then(result => {
+                 this.utilservice.DownloadFileCSV("export")
+                 });
+
   }
 
 }

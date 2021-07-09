@@ -45,8 +45,6 @@ export class DemandeComponent  {
   retour : Retour;
   enfantPresent: string;
   allerRetour: string;
-  idMotif: number;
-  idStructureRequerante: number;
 
   async ngOnInit() {
       await this.InitDemande();
@@ -63,7 +61,7 @@ export class DemandeComponent  {
 
       this.DemandeForm = new FormGroup({
       pe_datedemande : new FormControl(this.retour.dateDemande),
-      idStructureRequerante : new FormControl(this.retour.idStructureRequerante, [
+      idstructurerequerante : new FormControl(this.retour.idStructureRequerante, [
             Validators.required
       ]),
       pe_nomdemandeur : new FormControl(this.retour.nomDemandeur, [
@@ -100,14 +98,13 @@ export class DemandeComponent  {
       vi_infocomplementaire : new FormControl(this.retour.infoComplementaire, [
             Validators.maxLength(200)
       ]),
-      idMotif : new FormControl(this.retour.idMotif, [
+      de_datealler : new FormControl(this.retour.dateAller),
+      de_heurealler : new FormControl(this.retour.heureAller),
+      idmotif : new FormControl(this.retour.idMotif, [
             Validators.required
       ]),
       de_enfantpresent : new FormControl(this.enfantPresent),
       de_nbenfant : new FormControl(this.retour.nbEnfant
-/*      ,[
-            this.ControleEnfant()
-      ]*/
       ),
       de_ageenfant : new FormControl(this.retour.ageEnfant),
       de_particularite : new FormControl(this.retour.particularite, [
@@ -122,34 +119,57 @@ export class DemandeComponent  {
             Validators.maxLength(150)
       ]),
       de_allerretour : new FormControl(this.allerRetour),
+      de_dateretour : new FormControl(this.retour.dateRetour),
+      de_heureretour : new FormControl(this.retour.heureRetour),
       encadredate : new FormControl("")
       },
-      { validators: this.ControleEnfant('de_enfantpresent','de_nbenfant','de_ageenfant')}
+      { validators: this.ControleEnfant('de_enfantpresent','de_nbenfant','de_ageenfant','de_allerretour','de_dateretour','de_heureretour')}
       );
       this.victime = new Victime();
       this.demande = new Demande();
       this.priseencharge = new PriseEnCharge();
   }
 
-  ControleEnfant (enfant:string, nb:string, age:string): ValidatorFn {
-     return (group: FormGroup): {[key:string]: boolean} | null  => {
+  ControleEnfant (enfant:string, nb:string, age:string, ar:string, dretour:string, hretour:string): ValidatorFn {
+       return (group: FormGroup): {[key:string]: boolean} | null  => {
        let enfantPresent = group.controls[enfant];
        let nbEnfant = group.controls[nb];
        let ageEnfant = group.controls[age];
-       if (enfantPresent.value == 'O' &&( nbEnfant == undefined || nbEnfant.value == 0 || nbEnfant.value == "" || nbEnfant.value == null))
+       let allerRetour = group.controls[ar];
+       let dateRetour = group.controls[dretour];
+       let heureRetour = group.controls[hretour];
+       if (enfantPresent.value == 'O' &&( nbEnfant == undefined || nbEnfant.value == 0 || nbEnfant.value == "" || nbEnfant.value == null)) {
            return {'nbenfant':true};
-       if (enfantPresent.value == 'O' &&( ageEnfant == undefined || ageEnfant.value == 0 || ageEnfant.value == "" || ageEnfant.value == null))
+           }
+       if (enfantPresent.value == 'O' &&( ageEnfant == undefined || ageEnfant.value == 0 || ageEnfant.value == "" || ageEnfant.value == null )) {
            return {'ageenfant':true};
+           }
+       if (allerRetour.value == 'O' &&( dateRetour == undefined || dateRetour.value == '' || dateRetour.value == null)) {
+           return {'dateRetour':true};
+           }
+       if (allerRetour.value == 'O' &&( heureRetour == undefined || heureRetour.value == '' || heureRetour.value == null)) {
+           return {'heureRetour':true};
+           }
        return null;
        }
   }
 
   async InitDemande() {
-      if (this.variables.IdPriseEnCharge > 0 )
+      if (this.variables.IdPriseEnCharge > 0 ) {
           this.retour = await this.priseenchargeService.PriseEnChargeDonneesModif(this.variables.IdPriseEnCharge);
+          this.dt = formatDate(this.retour.dateRetour,'yyyy-MM-dd','Fr');
+          if (this.dt == '2001-01-01') {
+             this.retour.dateRetour = null;
+             this.retour.heureRetour = "";
+          }
+      }
       else {
           this.retour = new Retour();
           this.retour.dateDemande = new Date();
+          this.retour.dateAller = new Date();
+          this.retour.heureAller = formatDate(Date(),'HH:mm','fr');
+//          this.retour.dateRetour = new Date();
+//          this.retour.heureRetour = formatDate(Date(),'HH:mm','fr');;
           }
       this.loadAllMotif();
       this.loadAllStructureRequerante();
@@ -160,12 +180,11 @@ export class DemandeComponent  {
     res.subscribe(tm => { this.allMotifs = tm; });
   }
   loadAllStructureRequerante() {
-    var res = this.structureRequeranteService.getAllStructureRequerante();
+    var res = this.structureRequeranteService.getAllStructureRequerante(this.variables.TypeStructureRequerante);
     res.subscribe(ts => { this.allStructureRequerantes = ts; });
   }
 
   async CreationDemande() {
-      console.log("CreationDemande");
       const data = this.DemandeForm.value;
       if (data.vi_nom == "")
         this.victime.vi_nom = " ";
@@ -211,7 +230,6 @@ export class DemandeComponent  {
         this.victime.vi_infocomplementaire = " ";
       else
         this.victime.vi_infocomplementaire = data.vi_infocomplementaire;
-      console.log("BDD Victime");
       if (this.variables.IdPriseEnCharge > 0) {
          this.victime.id = this.variables.IdVictime;
          this.victimeret = await this.victimeService.updateVictime(this.victime);
@@ -221,8 +239,10 @@ export class DemandeComponent  {
          this.variables.IdVictime = this.victimeret.id;
          }
 
-      console.log("Demande");
-      this.demande.idmotif = this.idMotif;
+      this.dt=formatDate(data.de_datealler,'yyyy-MM-ddT','Fr') + data.de_heurealler + ":00";
+      this.demande.de_datealler = new Date(this.dt);
+
+      this.demande.idmotif = data.idmotif;
 
       if (data.de_enfantpresent == "O" )
         this.demande.de_enfantpresent = true;
@@ -253,20 +273,17 @@ export class DemandeComponent  {
       else
         this.demande.de_adressearrivee = data.de_adressearrivee;
 
-      if (data.de_allerretour == "O")
-        this.demande.de_allerretour = true;
-      else
+      if (data.de_allerretour == "O") {
+         this.demande.de_allerretour = true;
+         this.dt=formatDate(data.de_dateretour,'yyyy-MM-ddT','Fr') + data.de_heureretour + ":00";
+         this.demande.de_dateretour = new Date(this.dt);
+         }
+      else {
         this.demande.de_allerretour = false;
+        this.dt = '2001-01-01T00:00:00'
+        this.demande.de_dateretour = new Date(this.dt);
+       }
 
-      console.log("BBD Demande");
-      console.log(this.demande.de_enfantpresent);
-      console.log(this.demande.de_nbenfant);
-      console.log(this.demande.de_ageenfant);
-      console.log(this.demande.de_particularite);
-      console.log(this.demande.de_adressedepart);
-      console.log(this.demande.de_adressearrivee);
-      console.log(this.demande.de_allerretour);
-      console.log(this.demande.idmotif);
       if (this.variables.IdPriseEnCharge > 0) {
           this.demande.id = this.variables.IdDemande;
           this.demande = await this.demandeService.updateDemande(this.demande);
@@ -276,10 +293,9 @@ export class DemandeComponent  {
          this.variables.IdDemande = this.demande.id;
          }
 
-      console.log("PriseEnCharge");
 
       this.priseencharge.pe_date = data.pe_datedemande;
-      this.priseencharge.idstructurerequerante = this.idStructureRequerante;
+      this.priseencharge.idstructurerequerante = data.idstructurerequerante
       if (data.pe_nomdemandeur == "" || data.pe_nomdemandeur == null)
         this.priseencharge.pe_nomdemandeur = " ";
       else
@@ -302,7 +318,6 @@ export class DemandeComponent  {
          this.priseencharge.id = this.variables.IdPriseEnCharge;
          this.priseencharge.pe_nodemande = this.variables.NoDemande,
          this.priseencharge = await this.priseenchargeService.updatePriseEnCharge(this.priseencharge);
-         console.log("Retour UPD");
          this.variables.IdPriseEnCharge = 0;
          this.router.navigate(['demandeliste']);
          }

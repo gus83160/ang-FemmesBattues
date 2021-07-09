@@ -1,8 +1,10 @@
-import { APP_INITIALIZER, NgModule, LOCALE_ID, ErrorHandler } from '@angular/core';
+import { APP_INITIALIZER, NgModule, LOCALE_ID, ErrorHandler,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Component, OnInit, Input, ViewChild, ViewContainerRef, AfterViewInit, ComponentFactoryResolver, OnDestroy, ComponentRef } from "@angular/core";
 import { RouterModule, Routes  } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+
 import {
 	PerfectScrollbarModule,
 	PERFECT_SCROLLBAR_CONFIG,
@@ -34,6 +36,7 @@ import {DefaultroutingComponent}                from "./defaultrouting/defaultro
 import { Variables }                            from './views/femmesbattues/global/variables';
 import { BasicAuthInterceptor }                 from './views/femmesbattues/Authentification/basic-auth.interceptor';
 import { ErrorInterceptor }                     from './views/femmesbattues/Authentification/error.interceptor';
+import { SupprimerComponent }                   from './views/femmesbattues/dialogue/supprimer.component';
 
 
 
@@ -71,6 +74,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   	BrowserModule,
 		BrowserAnimationsModule,
 		SharedModule,
+		MatDialogModule,
 //		SharedMaterialModule,
 		HttpClientModule,
 		PerfectScrollbarModule,
@@ -87,7 +91,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 	//	SharedPipesModule
 	],
 	// declarations: [AppComponent, DefaultroutingComponent, MycurrencyPipe],
-	declarations: [AppComponent, DefaultroutingComponent],
+	declarations: [AppComponent, DefaultroutingComponent, SupprimerComponent],
 	providers: [
 		{ provide: ErrorHandler, useClass: ErrorHandlerService },
 		{ provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG },
@@ -98,7 +102,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 		Variables
 	],
 	exports: [RouterModule],
-	bootstrap: [AppComponent]
+	bootstrap: [AppComponent],
+	schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule implements OnInit {
 	ngOnInit(): void {
