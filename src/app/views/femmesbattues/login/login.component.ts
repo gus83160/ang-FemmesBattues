@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { Router } from "@angular/router";
-
-import { Variables } from '../global/variables';
-import { Utilisateur } from '../../../database/utilisateur';
-import { UtilisateurService} from '../../../database/utilisateur.service';
-import { NavigationService } from "../../../shared/services/navigation.service";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Validators, FormGroup, FormControl} from '@angular/forms';
+import {Router} from '@angular/router';
+import {UtilisateurService} from '../../../models/utilisateur.service';
+import {NavigationService} from '../../../shared/services/navigation.service';
+import {GlobalVariables} from '../global/global_variables';
+import {RoutesEnum} from '../RoutesEnum';
 
 @Component({
   selector: 'app-login',
@@ -16,44 +15,43 @@ import { NavigationService } from "../../../shared/services/navigation.service";
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  VerifLogin: boolean;
+  ErrorLogin: boolean;
+  executing: boolean;
 
   constructor(private route: Router,
               private utilisateurservice: UtilisateurService,
               private navigationservice: NavigationService,
-              private variables : Variables) { }
+              private variables: GlobalVariables) {
+    variables.currentUser = null;
+  }
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
       username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),
     });
-    this.VerifLogin = false;
+    this.ErrorLogin = false;
   }
 
-  async loginin() {
-      const loginData = this.loginForm.value
-      var utilisateur = await this.utilisateurservice.VerificationLoginMDP(loginData.username,loginData.password);
+  async loginin(): Promise<void> {
+    try {
+      this.executing = true;
+
+      const loginData = this.loginForm.value;
+      const utilisateur = await this.utilisateurservice.VerificationLoginMDP(loginData.username, loginData.password);
       if (utilisateur != null) {
-        this.variables.IdUtilisateur = utilisateur.id;
-        this.variables.IdTypeUtilisateur = utilisateur.idtypeutilisateur;
-        this.variables.CodeChauffeur = utilisateur.ut_codechauffeur;
-        this.variables.Login = utilisateur.ut_login;
-        this.variables.TypeStructureRequerante = utilisateur.ut_typestructurerequerante;
-        localStorage.setItem('Login',utilisateur.ut_login);
         if (utilisateur.ut_mdp === this.variables.MDPInitial) {
-          this.variables.MotDePasse = utilisateur.ut_mdp;
-          this.route.navigate(['loginMDP']);
-          }
-        else {
-             this.variables.MotDePasse = utilisateur.ut_mdp;
-             localStorage.setItem('MotDePasse',utilisateur.ut_mdp);
-             this.navigationservice.publishNavigationChange('Demande');
-             this.route.navigate(['menu']);
+          await this.route.navigate([RoutesEnum.LOGINMDP]);
+        } else {
+          // localStorage.setItem('MotDePasse',utilisateur.ut_mdp);
+          this.navigationservice.publishNavigationChange('Demande');
+          await this.route.navigate([RoutesEnum.ROOT]);
         }
-     }
-      else {
-        this.VerifLogin = true;
+      } else {
+        this.ErrorLogin = true;
       }
+    } finally {
+      this.executing = false;
     }
+  }
 }

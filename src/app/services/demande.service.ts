@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Demande } from './demande';
-import { Retour } from './retour';
+import { Demande } from '../models/demande';
+import { Retour } from '../models/retour';
 
 @Injectable({
   providedIn: 'root'

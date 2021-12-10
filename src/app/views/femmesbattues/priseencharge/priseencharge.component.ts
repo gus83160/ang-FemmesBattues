@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient,HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
-import { Variables } from '../global/variables';
+import { GlobalVariables } from '../global/global_variables';
 import { UtilService } from '../global/util.service';
 
 @Component({
@@ -16,7 +16,7 @@ import { UtilService } from '../global/util.service';
 export class PriseenchargeComponent implements OnInit {
 
   constructor(private http: HttpClient,
-              public variables: Variables) { }
+              public variables: GlobalVariables) { }
 
   util: UtilService;
 

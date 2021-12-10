@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { DialogueComponent } from './dialogue.component';
 
 interface confirmData {
-  message?: string
+  message?: string;
 }
 
 @Injectable()
@@ -13,16 +13,14 @@ export class DialogueService {
 
   constructor(private dialog: MatDialog) { }
 
-  public confirm(data:confirmData = {}): Observable<boolean> {
-    data.message = data.message || 'Are you sure?';
+  public confirm(data: confirmData = {}): Observable<boolean> {
+    data.message = data.message || 'Etes vous sûr ?';
     let dialogRef: MatDialogRef<DialogueComponent>;
     dialogRef = this.dialog.open(DialogueComponent, {
-      width: '380px',
+      width: '500px',
       disableClose: true,
       data: { message: data.message}
     });
     return dialogRef.afterClosed();
-
-
   }
 }

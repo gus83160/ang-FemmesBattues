@@ -66,9 +66,9 @@ export class LayoutService {
     this.layoutConf$ = this.layoutConfSubject.asObservable();
     this.applyMatTheme(this.layoutConf.matTheme);
 
-    //******* Only for demo purpose ***
-    this.setLayoutFromQuery();
-    //**********************
+    // //******* Only for demo purpose ***
+    // this.setLayoutFromQuery();
+    // //**********************
   }
 
   publishLayoutChange(lc: ILayoutConf, opt: ILayoutChangeOptions = {}) {
@@ -84,14 +84,14 @@ export class LayoutService {
     this.themeService.applyMatTheme(this.layoutConf.matTheme);
   }
 
-  setLayoutFromQuery() {
-    let layoutConfString = getQueryParam("layout");
-    let prevTheme = this.layoutConf.matTheme;
-    try {
-      this.layoutConf = JSON.parse(layoutConfString);
-      this.themeService.changeTheme(prevTheme, this.layoutConf.matTheme);
-    } catch (e) {}
-  }
+  // setLayoutFromQuery() {
+  //   let layoutConfString = getQueryParam("layout");
+  //   let prevTheme = this.layoutConf.matTheme;
+  //   try {
+  //     this.layoutConf = JSON.parse(layoutConfString);
+  //     this.themeService.changeTheme(prevTheme, this.layoutConf.matTheme);
+  //   } catch (e) {}
+  // }
 
   adjustLayout(options: IAdjustScreenOptions = {}) {
     let sidebarStyle: string;

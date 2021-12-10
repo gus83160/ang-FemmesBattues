@@ -1,1 +1,65 @@
-
+<!--&lt;!&ndash;<button (click)="test()">Debug test</button>&ndash;&gt;-->
+<!--<mat-card class="p-0">-->
+<!--  &lt;!&ndash;  <mat-card-title class="">-->
+<!--      <div class="card-title-text"><br><br>Demande<br><br></div>-->
+<!--    </mat-card-title>&ndash;&gt;-->
+<!--  <mat-card-content>-->
+<!--    <form *ngIf="DemandeForm" [formGroup]="DemandeForm" (ngSubmit)="CreationDemande()">-->
+<!--      <div>-->
+<!--        <fieldset class="width-full">-->
+<!--          <div class="card-title-text">Saisine</div>-->
+<!--        </fieldset>-->
+<!--        <fieldset class="width-full">-->
+<!--          <div fxLayout="row wrap">-->
+<!--            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">-->
+<!--              <div class="pb-1">-->
+<!--                <mat-form-field class="full-width">-->
+<!--                  <input-->
+<!--                    matInput-->
+<!--                    name="vi_nom"-->
+<!--                    formControlName="vi_nom"-->
+<!--                    placeholder="Nom de Naissance"-->
+<!--                    value="">-->
+<!--                </mat-form-field>-->
+<!--                <app-show-errors [ctrl]="DemandeForm.controls['vi_nom']"></app-show-errors>-->
+<!--                &lt;!&ndash;            <small&ndash;&gt;-->
+<!--                &lt;!&ndash;              *ngIf="DemandeForm.controls['vi_nom'].hasError('required') && DemandeForm.controls['vi_nom'].touched"&ndash;&gt;-->
+<!--                &lt;!&ndash;              class="form-error-msg"> Nom obligatoire </small>&ndash;&gt;-->
+<!--                &lt;!&ndash;            <small&ndash;&gt;-->
+<!--                &lt;!&ndash;              *ngIf="DemandeForm.controls['vi_nom'].hasError('maxlength') && DemandeForm.controls['vi_nom'].touched"&ndash;&gt;-->
+<!--                &lt;!&ndash;              class="form-error-msg"> Au plus {{DemandeForm.controls['vi_nom'].errors.maxlength.requiredLength}} caractères pour le nom </small>&ndash;&gt;-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div fxLayout="row wrap">-->
+<!--            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">-->
+<!--              <div class="pb-1">-->
+<!--                <mat-form-field class="full-width">-->
+<!--                  <input-->
+<!--                    matInput-->
+<!--                    name="pe_datedemande"-->
+<!--                    formControlName="pe_datedemande"-->
+<!--                    placeholder="Date de la demande"-->
+<!--                    [matDatepicker]="appDatepicker">-->
+<!--                  <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>-->
+<!--                </mat-form-field>-->
+<!--                <mat-datepicker #appDatepicker></mat-datepicker>-->
+<!--                <app-show-errors [ctrl]="DemandeForm.controls['pe_datedemande']"></app-show-errors>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </fieldset>-->
+<!--      </div>-->
+<!--      &lt;!&ndash;      <small&ndash;&gt;-->
+<!--      &lt;!&ndash;        *ngIf="this.errorService.globalErrorMessage"&ndash;&gt;-->
+<!--      &lt;!&ndash;        class="form-error-msg"> {{this.errorService.globalErrorMessage}}</small>&ndash;&gt;-->
+<!--      <button-->
+<!--        mat-raised-button-->
+<!--        color="primary"-->
+<!--        [disabled]="executing"-->
+<!--        >Valider-->
+<!--      </button>-->
+<!--      <app-show-errors [errorService]="this.errorService"></app-show-errors>-->
+<!--    </form>-->
+<!--  </mat-card-content>-->
+<!--</mat-card>-->

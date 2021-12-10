@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { TypeUtilisateurService } from '../typeutilisateur.service';
-import { TypeUtilisateur } from '../typeutilisateur';
+import {TypeUtilisateur} from '../models/typeutilisateur';
+import {TypeUtilisateurService} from '../models/typeutilisateur.service';
 
 
 @Component({

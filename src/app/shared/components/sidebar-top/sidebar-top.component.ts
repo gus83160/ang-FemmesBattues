@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 // import PerfectScrollbar from 'perfect-scrollbar';
 import { NavigationService } from "../../../shared/services/navigation.service";
 import { Subscription } from "rxjs";
+import {GlobalVariables} from '../../../views/femmesbattues/global/global_variables';
 
 @Component({
   selector: 'app-sidebar-top',
@@ -11,9 +12,12 @@ export class SidebarTopComponent implements OnInit, OnDestroy, AfterViewInit {
   // private sidebarPS: PerfectScrollbar;
   public menuItems: any[];
   private menuItemsSub: Subscription;
+
   constructor(
-    private navService: NavigationService
-  ) { }
+    private navService: NavigationService,
+    variables: GlobalVariables,
+  ) {
+  }
 
   ngOnInit() {
     this.menuItemsSub = this.navService.menuItems$.subscribe(menuItem => {
@@ -31,8 +35,8 @@ export class SidebarTopComponent implements OnInit, OnDestroy, AfterViewInit {
     // if(this.sidebarPS) {
     //   this.sidebarPS.destroy();
     // }
-    if( this.menuItemsSub ) {
-      this.menuItemsSub.unsubscribe()
+    if (this.menuItemsSub ) {
+      this.menuItemsSub.unsubscribe();
     }
   }
 

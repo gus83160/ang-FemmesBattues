@@ -1,139 +1,99 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import {LOCALE_ID, NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+// import {MatNativeDateModule} from '@angular/material/core';
+// import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatListModule} from '@angular/material/list';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
+import {MatStepperModule} from '@angular/material/stepper';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {QuillModule} from 'ngx-quill';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatTimepickerModule} from 'mat-timepicker';
+import {PdfViewerModule} from 'ng2-pdf-viewer';
+import {NgxExtendedPdfViewerModule} from 'ngx-extended-pdf-viewer';
+import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 
-//import { BrowserModule } from '@angular/platform-browser';
-//import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatListModule } from '@angular/material/list';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatSelectModule } from '@angular/material/select';
-import { MatStepperModule } from '@angular/material/stepper';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { QuillModule } from 'ngx-quill';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { ReactiveFormsModule } from "@angular/forms";
-import { MatTimepickerModule } from 'mat-timepicker';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {LoginComponent} from './login/login.component';
+import {LoginMDPComponent} from './login/login-mdp.component';
+import {DemandeComponent} from './demande/demande.component';
+import {DemandeNewComponent} from './demande/demandenew.component';
+import {DemandeListComponent} from './demande/demande-list.component';
+import {MenuComponent} from './menu/menu.component';
+import {CourseComponent} from './course/course.component';
+import {RecupCourseComponent} from './course/recup-course.component';
+import {InformationComponent} from './course/information.component';
+import {CourseFicheComponent} from './course/course-fiche.component';
+import {PriseenchargeComponent} from './priseencharge/priseencharge.component';
+import {FactureComponent} from './facture/facture.component';
+import {PdfVisuComponent} from './pdf-visu/pdf-visu.component';
+import {UtilisateurComponent} from './utilisateur/utilisateur.component';
+import {UtilisateurListComponent} from './utilisateur/utilisateur-list.component';
+// import { Variables } from './global/variables'
 
-import { LoginComponent } from './login/login.component';
-import { LoginMDPComponent } from './login/login-mdp.component';
-import { DemandeComponent } from './demande/demande.component';
-import { DemandeNewComponent } from './demande/demandenew.component';
-import { DemandeListComponent } from './demande/demande-list.component';
-import { MenuComponent } from './menu/menu.component';
-import { CourseComponent } from './course/course.component';
-import { RecupCourseComponent } from './course/recup-course.component';
-import { InformationComponent } from './course/information.component';
-import { CourseFicheComponent } from './course/course-fiche.component';
-import { PriseenchargeComponent } from './priseencharge/priseencharge.component';
-import { FactureComponent } from './facture/facture.component';
-import { PdfVisuComponent } from './pdf-visu/pdf-visu.component';
-import { UtilisateurComponent } from './utilisateur/utilisateur.component';
-import { UtilisateurListComponent } from './utilisateur/utilisateur-list.component';
-//import { Variables } from './global/variables'
+import {DialogueService} from './dialogue/dialogue.service';
+import {DefaultroutingComponent} from '../../defaultrouting/defaultrouting.component';
+import {LibelleTypeUtilisateurPipe} from './libelle-type-utilisateur.pipe';
+import {BasicAuthInterceptor} from './Authentification/basic-auth.interceptor';
+import {ErrorInterceptor} from './Authentification/error.interceptor';
+import {LogoutComponent} from './logout/logout.component';
+import {ShowErrorsComponent} from '../../show-errors.component';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MAT_MOMENT_DATE_FORMATS, MatMomentDateModule, MomentDateAdapter} from '@angular/material-moment-adapter';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {RoutesEnum} from './RoutesEnum';
 
-import { DialogueService } from './dialogue/dialogue.service';
-import { DefaultroutingComponent } from "../../defaultrouting/defaultrouting.component";
-import { LibelleTypeUtilisateurPipe } from './libelle-type-utilisateur.pipe';
-import { BasicAuthInterceptor } from './Authentification/basic-auth.interceptor';
-import { ErrorInterceptor } from './Authentification/error.interceptor';
-
-//import { FacturePipe } from './facture.pipe';
-
-//import { TypeUtilisateurComponent } from '../../typeutilisateur/typeutilisateur.component';
+// import { BrowserModule } from '@angular/platform-browser';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import { FacturePipe } from './facture.pipe';
+// import { TypeUtilisateurComponent } from '../../typeutilisateur/typeutilisateur.component';
 
 
 const routes: Routes = [
-	{
-		path: 'login',
-		component: LoginComponent
-	},
-	{
-		path: 'loginMDP',
-		component: LoginMDPComponent
-	},
-	{ path: 'information',
-		component: InformationComponent
-	},
-	{
-		path: 'course',
-		component: CourseComponent
-	},
-	{
-		path: 'recupcourse',
-		component: RecupCourseComponent
-	},
-	{
-		path: 'coursefiche',
-		component: CourseFicheComponent
-	},
-  {
-  		path: 'demandeliste',
-  		component: DemandeListComponent
-  },
-  {
-  		path: 'demandenew',
-  		component: DemandeNewComponent
-  },
-  {
-   		path: 'demande',
-  		component: DemandeComponent
-  },
-  {
-  		path: 'utilisateurliste',
-   		component: UtilisateurListComponent
-  },
-  {
-   		path: 'utilisateur',
-   		component: UtilisateurComponent
-  },
-  {
-  		path: 'admin',
-  		component: DefaultroutingComponent
-  },
-  {
-  		path: 'menu',
-  		component: MenuComponent
-  },
-  {
-  		path: 'priseencharge',
-  		component: PriseenchargeComponent
-  },
-  {
-  		path: 'facture',
-  		component: FactureComponent
-  },
-  {
-  		path: 'pdfvisu',
-  		component: PdfVisuComponent
-  }
-
+  {path: RoutesEnum.LOGIN, component: LoginComponent},
+  {path: RoutesEnum.LOGOUT, component: LogoutComponent},
+  {path: RoutesEnum.LOGINMDP, component: LoginMDPComponent},
+  {path: RoutesEnum.INFORMATION, component: InformationComponent},
+  {path: RoutesEnum.COURSE, component: CourseComponent},
+  {path: RoutesEnum.RECUP_COURSE, component: RecupCourseComponent},
+  {path: RoutesEnum.COURSE_FICHE, component: CourseFicheComponent},
+  {path: RoutesEnum.DEMANDE_LISTE, component: DemandeListComponent},
+  {path: RoutesEnum.DEMANDE_NEW, component: DemandeNewComponent},
+  {path: RoutesEnum.DEMANDE, component: DemandeComponent},
+  {path: RoutesEnum.UTILISATEUR_LISTE, component: UtilisateurListComponent},
+  {path: RoutesEnum.UTILISATEUR, component: UtilisateurComponent},
+  {path: RoutesEnum.ADMIN, component: DefaultroutingComponent},
+  {path: RoutesEnum.MENU, component: MenuComponent},
+  {path: RoutesEnum.PRISE_EN_CHARGE, component: PriseenchargeComponent},
+  {path: RoutesEnum.FACTURE, component: FactureComponent},
+  {path: RoutesEnum.PDF_VISU, component: PdfVisuComponent},
+  {path: RoutesEnum.ROOT, component: MenuComponent},
+  {path: '**', redirectTo: RoutesEnum.ROOT},
 ];
 
 
 @NgModule({
-	imports: [
+  imports: [
 //    BrowserModule,
 //    BrowserAnimationsModule,
     HttpClientModule,
     CommonModule,
-//   ReactiveFormsModule,
     MatInputModule,
     MatListModule,
     MatCardModule,
     MatDatepickerModule,
-    MatTimepickerModule,
     MatNativeDateModule,
+    MatMomentDateModule,
+    MatTimepickerModule,
     MatProgressBarModule,
     MatRadioModule,
     MatSelectModule,
@@ -148,28 +108,41 @@ const routes: Routes = [
     PdfViewerModule,
     NgxExtendedPdfViewerModule,
 //    NgxFileSaverService,
-	  RouterModule.forChild(routes)
- 	],
- 	providers: [
- 	   { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
- 	   { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
- 	   DialogueService],
+    RouterModule.forChild(routes),
+    MatToolbarModule
+  ],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    DialogueService,
+    {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    {provide: LOCALE_ID, useValue: 'fr'}
+  ],
 // 	   Variables],
-	 declarations: [
-	       LoginComponent,
-	       LoginMDPComponent,
-	       DemandeComponent,
-	       DemandeListComponent,
-	       CourseComponent,
-	       CourseFicheComponent,
-	       PriseenchargeComponent,
-	       FactureComponent,
-         UtilisateurComponent,
-         UtilisateurListComponent,
-         PdfVisuComponent,
-         LibelleTypeUtilisateurPipe
-         //FacturePipe
-   ],
-   exports: [RouterModule]
+  declarations: [
+    LoginComponent,
+    LoginMDPComponent,
+    LogoutComponent,
+    DemandeComponent,
+    DemandeListComponent,
+    CourseComponent,
+    CourseFicheComponent,
+    PriseenchargeComponent,
+    FactureComponent,
+    UtilisateurComponent,
+    UtilisateurListComponent,
+    PdfVisuComponent,
+    LibelleTypeUtilisateurPipe,
+    ShowErrorsComponent,
+    MenuComponent,
+    // FacturePipe
+  ],
+  exports: [RouterModule]
 })
-export class FemmesBattuesRoutingModule { }
+export class FemmesBattuesRoutingModule {
+
+  constructor() {
+  }
+}

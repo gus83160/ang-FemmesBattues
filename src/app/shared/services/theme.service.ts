@@ -45,12 +45,12 @@ export class ThemeService {
   // Invoked in AppComponent and apply 'activatedTheme' on startup
   applyMatTheme( themeName: string) {
 
-    this.activatedTheme = this.egretThemes.find(t => t.name === themeName); 
+    this.activatedTheme = this.egretThemes.find(t => t.name === themeName);
     this.flipActiveFlag(themeName);
 
-    // *********** ONLY FOR DEMO **********
-    this.setThemeFromQuery();
-    // ************************************
+    // // *********** ONLY FOR DEMO **********
+    // this.setThemeFromQuery();
+    // // ************************************
 
     // this.changeTheme(themeName);
     this.renderer.addClass(this.document.body, themeName);
@@ -74,14 +74,14 @@ export class ThemeService {
     });
   }
 
-  // *********** ONLY FOR DEMO **********
-  setThemeFromQuery() {
-    let themeStr = getQueryParam('theme');
-    try {
-      this.activatedTheme = JSON.parse(themeStr);
-      console.log(this.activatedTheme);
-      
-      this.flipActiveFlag(this.activatedTheme.name);
-    } catch(e) {}
-  }
+  // // *********** ONLY FOR DEMO **********
+  // setThemeFromQuery() {
+  //   let themeStr = getQueryParam('theme');
+  //   try {
+  //     this.activatedTheme = JSON.parse(themeStr);
+  //     console.log(this.activatedTheme);
+  //
+  //     this.flipActiveFlag(this.activatedTheme.name);
+  //   } catch(e) {}
+  // }
 }

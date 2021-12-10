@@ -2,7 +2,7 @@
   <input type="button" value="Envoi Facture par Mail" (click)="DocumentPDF()"/>
 </div>
 
-<div id="DocumentPDF">
+<div id="DocumentPDF" *ngIf="Chauffeur && Payeur">
   {{ Chauffeur.ut_nom }} {{ Chauffeur.ut_prenom }}<br>
   {{ Chauffeur.ut_adresse }} <br>
   {{ Chauffeur.ut_codepostal }} {{ Chauffeur.ut_ville }}<br>

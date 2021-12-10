@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { formatDate} from '@angular/common';
-import { Router } from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {Validators, FormGroup, FormControl} from '@angular/forms';
+import {formatDate} from '@angular/common';
+import {Router} from '@angular/router';
 
-import { Variables } from '../global/variables';
-import { PriseEnCharge } from '../../../database/priseencharge';
-import { PriseEnChargeService } from '../../../database/priseencharge.service';
-import { Course } from '../../../database/course';
-import { CourseService } from '../../../database/course.service';
+import {GlobalVariables} from '../global/global_variables';
+import {PriseEnCharge} from '../../../models/priseencharge';
+import {PriseEnChargeService} from '../../../models/priseencharge.service';
+import {Course} from '../../../models/course';
+import {CourseService} from '../../../models/course.service';
+import {RoutesEnum} from '../RoutesEnum';
 
 @Component({
   selector: 'app-course-fiche',
@@ -24,16 +25,17 @@ export class CourseFicheComponent implements OnInit {
   constructor(private route: Router,
               private priseenchargeservice: PriseEnChargeService,
               private courseservice: CourseService,
-              public variables : Variables) { }
+              public variables: GlobalVariables) {
+  }
 
   ngOnInit(): void {
     this.CourseForm = new FormGroup({
-    co_date : new FormControl(this.variables.DateDebut ,Validators.required),
-    co_heuredebut : new FormControl(this.variables.HeureDebut,Validators.required),
-    co_heurefin : new FormControl(this.variables.HeureFin,Validators.required),
-    co_montant : new FormControl(this.variables.Prix,Validators.required),
-    co_peage : new FormControl('')
-    })
+      co_date: new FormControl(this.variables.DateDebut, Validators.required),
+      co_heuredebut: new FormControl(this.variables.HeureDebut, Validators.required),
+      co_heurefin: new FormControl(this.variables.HeureFin, Validators.required),
+      co_montant: new FormControl(this.variables.Prix, Validators.required),
+      co_peage: new FormControl('')
+    });
   }
 
   async CreationCourse() {
@@ -43,15 +45,16 @@ export class CourseFicheComponent implements OnInit {
     this.course.co_heuredebut = courseData.co_heuredebut;
     this.course.co_heurefin = courseData.co_heurefin;
     this.course.co_montant = courseData.co_montant;
-    this.dt=formatDate(this.course.co_date,'yyyy-MM-ddT','Fr') + this.course.co_heuredebut + ":00";
+    this.dt = formatDate(this.course.co_date, 'yyyy-MM-ddT', 'Fr') + this.course.co_heuredebut + ':00';
     this.course.co_heuredebut = new Date(this.dt);
-    this.dt=formatDate(this.course.co_date,'yyyy-MM-ddT','Fr') + this.course.co_heurefin + ":00";
+    this.dt = formatDate(this.course.co_date, 'yyyy-MM-ddT', 'Fr') + this.course.co_heurefin + ':00';
     this.course.co_heurefin = new Date(this.dt);
 
-    if (courseData.co_peage == "")
+    if (courseData.co_peage == '') {
       this.course.co_peage = 0;
-    else
+    } else {
       this.course.co_peage = courseData.co_peage;
+    }
 
     this.course = await this.courseservice.createCourse(this.course);
 
@@ -67,9 +70,9 @@ export class CourseFicheComponent implements OnInit {
     this.priseencharge.iddemande = this.variables.IdDemande;
     this.priseencharge.idstructurerequerante = this.variables.IdStructureRequerante;
     this.priseencharge.idcourse = this.course.id;
-    this.priseencharge.idchauffeur = this.variables.IdUtilisateur;
+    this.priseencharge.idchauffeur = this.variables.currentUser.id;
     this.priseenchargeservice.updatePriseEnCharge(this.priseencharge);
-    this.route.navigate(['menu']);
+    this.route.navigate([RoutesEnum.ROOT]);
   }
 
 

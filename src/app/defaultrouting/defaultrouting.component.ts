@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-//import {KeycloakService} from "keycloak-angular";
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {GlobalVariables} from '../views/femmesbattues/global/global_variables';
+import {RoutesEnum} from '../views/femmesbattues/RoutesEnum';
 
 @Component({
-	selector: 'app-defaultrouting',
-	template: '',
+  selector: 'app-defaultrouting',
+  template: '',
 })
 export class DefaultroutingComponent {
-  constructor(protected router: Router) {
-	  console.log("defaultrouting");
-    this.router.navigate(['/login']);
+  constructor(
+    protected router: Router
+  ) {
+    // console.log("defaultrouting");
+
+    this.router.navigate([RoutesEnum.ROOT]);
   }
 
 // 	constructor(private keycloakService: KeycloakService, protected router: Router) {

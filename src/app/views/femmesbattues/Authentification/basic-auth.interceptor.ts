@@ -3,20 +3,20 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable } from 'rxjs';
 
 import { AuthentificationService } from './Authentification.service';
-import { Variables } from '../global/variables';
+import { GlobalVariables } from '../global/global_variables';
 
 @Injectable()
 export class BasicAuthInterceptor implements HttpInterceptor {
     constructor(private authentificationService: AuthentificationService,
-                private variables : Variables) { }
+                private variables: GlobalVariables) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // add authorization header with basic auth credentials if available
-        const currentUser = this.authentificationService.userValue;
-        if (currentUser) {
+        const currentCredential = this.authentificationService.userAuth;
+        if (currentCredential != null) {
            request = request.clone({
               setHeaders: {
-                 Authorization: `Basic ${currentUser}`
+                 Authorization: `Basic ${currentCredential}`
               }
            });
         }

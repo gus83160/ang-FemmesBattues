@@ -1,0 +1,5 @@
+<div *ngIf="shouldShowErrors()">
+  <small class="form-error-msg" *ngFor="let error of listOfErrors()">
+    {{error}}
+  </small>
+</div>

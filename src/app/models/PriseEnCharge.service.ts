@@ -18,8 +18,8 @@ export class PriseEnChargeService {
   async createPriseEnCharge(priseencharge: PriseEnCharge) {
      return await this.http.post<PriseEnCharge>(environment.url + '/priseencharge/', priseencharge).toPromise();
   }
-  async PriseEnChargeDemande(demande){
-     return await this.http.get<Retour>(environment.url + '/priseencharge/prise_en_charge_demande/'+demande).toPromise();
+  async PriseEnChargeDemande(demande): Promise<Retour> {
+     return this.http.get<Retour>(environment.url + '/priseencharge/prise_en_charge_demande/' + demande).toPromise();
   }
   async PriseEnChargeById(id){
      return await this.http.get<PriseEnCharge>(environment.url + '/priseencharge/prise_en_charge/'+id).toPromise();

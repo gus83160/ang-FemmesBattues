@@ -42,7 +42,7 @@ $primary-dark: darken( map-get($mat-primary, 500), 8% );
         border-color: map-get($mat-primary, 500) !important;
     }
     .sidebar-panel {
-        background: url('../../assets/images/sidebar-bg.jpg') no-repeat;
+        background: url('../../../../assets/images/sidebar-bg.jpg') no-repeat;
     }
     .sidebar-compact ul.submenu,
     .default-bg {
@@ -51,7 +51,7 @@ $primary-dark: darken( map-get($mat-primary, 500), 8% );
     .default-light-bg {
       background: #fafafa !important;
     }
-    /* White Background */ 
+    /* White Background */
     .topbar-white {
         background: #ffffff;
         // .mat-icon {
@@ -62,7 +62,7 @@ $primary-dark: darken( map-get($mat-primary, 500), 8% );
         }
     }
 
-    /* Hopscotch Tour */ 
+    /* Hopscotch Tour */
     div.hopscotch-bubble {
         border-color: $primary-dark;
     }

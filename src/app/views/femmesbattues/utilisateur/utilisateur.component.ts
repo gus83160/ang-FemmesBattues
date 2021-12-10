@@ -4,9 +4,10 @@ import { Router } from "@angular/router";
 import { HttpClient } from '@angular/common/http';
 
 
-import { Variables } from '../global/variables';
-import { Utilisateur } from '../../../database/utilisateur';
-import { UtilisateurService } from '../../../database/utilisateur.service';
+import { GlobalVariables } from '../global/global_variables';
+import { Utilisateur } from '../../../models/utilisateur';
+import { UtilisateurService } from '../../../models/utilisateur.service';
+import {RoutesEnum} from '../RoutesEnum';
 
 @Component({
   selector: 'app-utilisateur',
@@ -18,7 +19,7 @@ export class UtilisateurComponent implements OnInit {
   constructor(private route: Router,
               private http: HttpClient,
               private utilisateurService: UtilisateurService,
-              public variables: Variables) {
+              public variables: GlobalVariables) {
 
                }
 
@@ -62,7 +63,7 @@ export class UtilisateurComponent implements OnInit {
       ]),
       ut_login : new FormControl(this.utilisateur.ut_login, [
         Validators.required,
-        Validators.maxLength(15)
+        Validators.maxLength(30)
       ]),
       ut_departement : new FormControl(this.utilisateur.ut_departement, [
         Validators.required,
@@ -192,7 +193,7 @@ export class UtilisateurComponent implements OnInit {
       }
 
 
-     this.route.navigate(['utilisateurliste']);
+     this.route.navigate([RoutesEnum.UTILISATEUR_LISTE]);
 
   }
 

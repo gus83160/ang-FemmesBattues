@@ -28,7 +28,7 @@
                        <button title="Consulter la prise en charge"(click)="PdfVisuDemande(value)">
                          <img src="assets/images/transp.png" alt="">
                        </button>
-                       <button title="Facturer la Course" (click)="detail(value,'facture')">
+                       <button *ngIf="bChauffeur" title="Facturer la Course" (click)="detail(value)">
                          <img src="assets/images/facture.png" alt="">
                        </button>
                        <button title="Visualiser la Facture"  (click)="PdfVisuFacture(value)">

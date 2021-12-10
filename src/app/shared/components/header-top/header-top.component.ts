@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy, Renderer2 } from '@angular/core';
 import { NavigationService } from "../../../shared/services/navigation.service";
 import { Subscription } from 'rxjs';
 import { ThemeService } from '../../../shared/services/theme.service';
-import { TranslateService } from '@ngx-translate/core';
+//import { TranslateService } from '@ngx-translate/core';
 import { LayoutService } from '../../services/layout.service';
 
 @Component({
@@ -14,23 +14,23 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
   menuItems:any;
   menuItemSub: Subscription;
   egretThemes: any[] = [];
-  currentLang = 'fr';
-  availableLangs = [{
-    name: 'English',
-    code: 'en',
-  }, {
-    name: 'Spanish',
-    code: 'es',
-  }, {
-    name: 'French',
-    code: 'fr',
-  }]
+  // currentLang = 'fr';
+  // availableLangs = [{
+  //   name: 'English',
+  //   code: 'en',
+  // }, {
+  //   name: 'Spanish',
+  //   code: 'es',
+  // }, {
+  //   name: 'French',
+  //   code: 'fr',
+  // }]
   @Input() notificPanel;
   constructor(
     private layout: LayoutService,
     private navService: NavigationService,
     public themeService: ThemeService,
-    public translate: TranslateService,
+//    public translate: TranslateService,
     private renderer: Renderer2
   ) { }
 
@@ -59,9 +59,9 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.menuItemSub.unsubscribe()
   }
-  setLang() {
-    this.translate.use(this.currentLang)
-  }
+  // setLang() {
+  //   this.translate.use(this.currentLang)
+  // }
   changeTheme(theme) {
     this.layout.publishLayoutChange({matTheme: theme.name})
   }

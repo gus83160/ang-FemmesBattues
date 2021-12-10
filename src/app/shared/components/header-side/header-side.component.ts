@@ -1,105 +1,142 @@
 import {
-	Component,
-	OnInit,
-	EventEmitter,
-	Input,
-	Output,
-	Renderer2,
-	ChangeDetectionStrategy,
-	ChangeDetectorRef, NgZone
+  Component,
+  OnInit,
+  Input,
+  Renderer2, OnDestroy,
 } from '@angular/core';
-import { ThemeService } from '../../services/theme.service';
-import { LayoutService } from '../../services/layout.service';
-import { TranslateService } from '@ngx-translate/core';
-//import {KeycloakService} from "keycloak-angular";
-import {Router} from "@angular/router";
-import {ConfigurationService} from "../../services/configuration.service";
-import {FiscalPeriod} from "../../models/fiscalPeriod.model";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
-import {map} from "rxjs/operators";
+import {ThemeService} from '../../services/theme.service';
+import {LayoutService} from '../../services/layout.service';
+import {FiscalPeriod} from '../../models/fiscalPeriod.model';
+import {BehaviorSubject, Subscription} from 'rxjs';
+import {GlobalVariables} from '../../../views/femmesbattues/global/global_variables';
+import {RoutesEnum} from '../../../views/femmesbattues/RoutesEnum';
+import {Router} from '@angular/router';
 
 @Component({
-	selector: 'app-header-side',
-	templateUrl: './header-side.template.html'
+  selector: 'app-header-side',
+  templateUrl: './header-side.template.html'
 })
-export class HeaderSideComponent implements OnInit {
-	@Input() notificPanel;
-	public availableLangs = [{
-		name: 'FR',
-		code: 'fr',
-		flag: 'flag-icon-fr'
-	}]
-	currentLang = this.availableLangs[0];
+export class HeaderSideComponent implements OnInit, OnDestroy {
+  @Input() notificPanel;
+  // public availableLangs = [{
+  //   name: 'FR',
+  //   code: 'fr',
+  //   flag: 'flag-icon-fr'
+  // }];
+  // currentLang = this.availableLangs[0];
 
-	public egretThemes;
-	public layoutConf:any;
+  public egretThemes;
+  public layoutConf: any;
 
-	public fiscalPeriods: BehaviorSubject<FiscalPeriod[]> = new BehaviorSubject<FiscalPeriod[]>([]);
-	public fiscalPeriod: BehaviorSubject<FiscalPeriod> = new BehaviorSubject<FiscalPeriod>(null);
+  public fiscalPeriods: BehaviorSubject<FiscalPeriod[]> = new BehaviorSubject<FiscalPeriod[]>([]);
+  public fiscalPeriod: BehaviorSubject<FiscalPeriod> = new BehaviorSubject<FiscalPeriod>(null);
 
-	constructor(
-//		public keycloakService:KeycloakService,
-		private themeService: ThemeService,
-		private layout: LayoutService,
-		public translate: TranslateService,
-		private renderer: Renderer2,
-		private router: Router,
-		public configurationService: ConfigurationService
-	) {}
+  private isLogged$: Subscription;
+  public isLogged: boolean;
+  public identite: string;
+  public type: string;
 
-	ngOnInit() {
-		this.egretThemes = this.themeService.egretThemes;
-		this.layoutConf = this.layout.layoutConf;
-		this.translate.use(this.currentLang.code);
-	}
-	setLang(lng) {
-		this.currentLang = lng;
-		this.translate.use(lng.code);
-	}
-	changeTheme(theme) {
-		// this.themeService.changeTheme(theme);
-	}
-	toggleNotific() {
-		this.notificPanel.toggle();
-	}
-	toggleSidenav() {
-		if(this.layoutConf.sidebarStyle === 'closed') {
-			return this.layout.publishLayoutChange({
-				sidebarStyle: 'full'
-			})
-		}
-		this.layout.publishLayoutChange({
-			sidebarStyle: 'closed'
-		})
-	}
+  constructor(
+    private themeService: ThemeService,
+    private layout: LayoutService,
+    private renderer: Renderer2,
+    private variables: GlobalVariables,
+    private router: Router
+  ) {
+    this.isLogged$ = variables.isUserLoggedIn$.subscribe((value) => {
+      this.isLogged = value;
+      if (this.isLogged) {
+        this.identite =
+          (variables.currentUser.ut_prenom ? variables.currentUser.ut_prenom + ' ' : '')
+            + (variables.currentUser.ut_nom ? variables.currentUser.ut_nom : '');
 
-	toggleCollapse() {
-		// compact --> full
-		if(this.layoutConf.sidebarStyle === 'compact') {
-			return this.layout.publishLayoutChange({
-				sidebarStyle: 'full',
-				sidebarCompactToggle: false
-			}, {transitionClass: true})
-		}
+        if (this.variables.currentUser.idtypeutilisateur === this.variables.TypePrescripteur) {
+          this.type = 'Prescripteur';
+        }
+        if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeChauffeur) {
+          this.type = 'Chauffeur';
+        }
+        if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAssociation) {
+          this.type = 'Association';
+        }
+        if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAdmin) {
+          this.type = 'Admin';
+        }
+      } else {
+        this.identite = '';
+        this.type = '';
+      }
+    });
+  }
 
-		// * --> compact
-		this.layout.publishLayoutChange({
-			sidebarStyle: 'compact',
-			sidebarCompactToggle: true
-		}, {transitionClass: true})
+  ngOnInit(): void {
+    this.egretThemes = this.themeService.egretThemes;
+    this.layoutConf = this.layout.layoutConf;
+    // this.translate.use(this.currentLang.code);
+  }
 
-	}
+  // setLang(lng) {
+  // 	this.currentLang = lng;
+  // 	// this.translate.use(lng.code);
+  // }
+  // changeTheme(theme) {
+  //   // this.themeService.changeTheme(theme);
+  // }
 
-	onSearch(e) {
-		//   console.log(e)
-	}
+  // toggleNotific() {
+  //   this.notificPanel.toggle();
+  // }
 
-	logout() {
-//		this.keycloakService.logout(document.baseURI);
-	}
+  toggleSidenav(): void {
+    if (this.layoutConf.sidebarStyle === 'closed') {
+      return this.layout.publishLayoutChange({
+        sidebarStyle: 'full'
+      });
+    }
+    this.layout.publishLayoutChange({
+      sidebarStyle: 'closed'
+    });
+  }
 
-	profile() {
-		this.router.navigate(["/comptaweb/my-profile"]);
-	}
+  // toggleCollapse() {
+  //   // compact --> full
+  //   if (this.layoutConf.sidebarStyle === 'compact') {
+  //     return this.layout.publishLayoutChange({
+  //       sidebarStyle: 'full',
+  //       sidebarCompactToggle: false
+  //     }, {transitionClass: true});
+  //   }
+  //
+  //   // * --> compact
+  //   this.layout.publishLayoutChange({
+  //     sidebarStyle: 'compact',
+  //     sidebarCompactToggle: true
+  //   }, {transitionClass: true});
+  // }
 
+  // onSearch(e) {
+  //   //   console.log(e)
+  // }
+
+//   logout() {
+// //		this.keycloakService.logout(document.baseURI);
+//   }
+
+  // profile() {
+  //   // this.router.navigate(['/comptaweb/my-profile']);
+  // }
+
+  ngOnDestroy(): void {
+    if (this.isLogged$) {
+      this.isLogged$.unsubscribe();
+    }
+  }
+
+  connexion(): void {
+    this.router.navigate([RoutesEnum.LOGIN]);
+  }
+
+  deconnexion(): void {
+    this.router.navigate([RoutesEnum.LOGOUT]);
+  }
 }

@@ -9,17 +9,17 @@ import {
   Renderer2,
   ElementRef,
   ChangeDetectorRef
-} from "@angular/core";
-import { MatchMediaService } from "app/shared/services/match-media.service";
-import { MediaObserver } from "@angular/flex-layout";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-import { EgretSidebarHelperService } from "./egret-sidebar-helper.service";
+} from '@angular/core';
+import { MatchMediaService } from 'app/shared/services/match-media.service';
+import { MediaObserver } from '@angular/flex-layout';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { EgretSidebarHelperService } from './egret-sidebar-helper.service';
 
 @Component({
-  selector: "egret-sidebar",
-  templateUrl: "./egret-sidebar.component.html",
-  styleUrls: ["./egret-sidebar.component.scss"]
+  selector: 'egret-sidebar',
+  templateUrl: './egret-sidebar.component.html',
+  styleUrls: ['./egret-sidebar.component.scss']
 })
 export class EgretSidebarComponent implements OnInit, OnDestroy {
   // Name
@@ -28,23 +28,23 @@ export class EgretSidebarComponent implements OnInit, OnDestroy {
 
   // right
   @Input()
-  @HostBinding("class.position-right")
+  @HostBinding('class.position-right')
   right: boolean;
 
   // Open
-  @HostBinding("class.open")
+  @HostBinding('class.open')
   opened: boolean;
 
-  @HostBinding("class.sidebar-locked-open")
+  @HostBinding('class.sidebar-locked-open')
   sidebarLockedOpen: boolean;
 
-  //mode
-  @HostBinding("class.is-over")
+  // mode
+  @HostBinding('class.is-over')
   isOver: boolean;
 
   private backdrop: HTMLElement | null = null;
 
-  private lockedBreakpoint = "gt-sm";
+  private lockedBreakpoint = 'gt-sm';
   private unsubscribeAll: Subject<any>;
 
   constructor(
@@ -104,8 +104,8 @@ export class EgretSidebarComponent implements OnInit, OnDestroy {
   }
 
   showBackdrop() {
-    this.backdrop = this._renderer.createElement("div");
-    this.backdrop.classList.add("egret-sidebar-overlay");
+    this.backdrop = this._renderer.createElement('div');
+    this.backdrop.classList.add('egret-sidebar-overlay');
 
     this._renderer.appendChild(
       this._elementRef.nativeElement.parentElement,
@@ -113,7 +113,7 @@ export class EgretSidebarComponent implements OnInit, OnDestroy {
     );
 
     // Close sidebar onclick
-    this.backdrop.addEventListener("click", () => {
+    this.backdrop.addEventListener('click', () => {
       this.close();
     });
 
@@ -137,15 +137,15 @@ export class EgretSidebarComponent implements OnInit, OnDestroy {
 }
 
 @Directive({
-  selector: "[egretSidebarToggler]"
+  selector: '[egretSidebarToggler]'
 })
 export class EgretSidebarTogglerDirective {
-  @Input("egretSidebarToggler")
+  @Input('egretSidebarToggler')
   public id: any;
 
   constructor(private egretSidebarHelperService: EgretSidebarHelperService) {}
 
-  @HostListener("click")
+  @HostListener('click')
   onClick() {
     this.egretSidebarHelperService.getSidebar(this.id).toggle();
   }

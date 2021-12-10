@@ -1,6 +1,5 @@
 <div class="page-wrap height-100 black">
   <div class="session-form-hold">
-    <mat-progress-bar mode="determinate" class="session-progress"></mat-progress-bar>
     <mat-card>
       <mat-card-content>
         <div class="text-center pt-8 pb-16">
@@ -25,7 +24,7 @@
             </mat-form-field>
             <small
               *ngIf="loginMDPForm.controls['oldmdp'].hasError('required') && loginMDPForm.controls['oldmdp'].touched"
-              class="form-error-msg"> Ancien mot de passe obligatoire </small>
+              class="form-error-msg">Ancien mot de passe obligatoire</small>
           </div>
 
           <div class="">

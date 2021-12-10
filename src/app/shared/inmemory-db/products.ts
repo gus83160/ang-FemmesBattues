@@ -24,7 +24,7 @@ export class ProductDB {
         'nulla laboris',
         'pariatur consequat'
       ],
-      'photo': '../../../../assets/images/products/speaker-1.jpg',
+      'photo': '~assets/images/products/speaker-1.jpg',
       'gallery': [
         '../../../../assets/images/products/speaker-1.jpg',
         '../../../../assets/images/products/speaker-2.jpg'
@@ -693,6 +693,6 @@ export class ProductDB {
         'color': 'red'
       }
     }
-    
+
   ]
 }
