@@ -1,4 +1,4 @@
-import {Component, Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
@@ -21,7 +21,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       data: message,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
     });
   }
 
@@ -45,7 +45,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         } else if (err.status === 403) {
           const result = new ErrorMessage('Accés interdit.');
           return throwError(result);
-        } else if (err.status === 404) {
+        // } else if (err.status === 404) {
         } else {
           const error = err.message || err.statusText;
           this.openDialog(error);
