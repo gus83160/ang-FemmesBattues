@@ -56,15 +56,15 @@ export class AppComponent implements OnInit {
       this.variables.currentUrl = event.url;
     });
 
-    //  this.changePageTitle();
-    window.addEventListener('keyup', disableF5);
-    window.addEventListener('keydown', disableF5);
-
-    function disableF5(e) {
-      if ((e.which || e.keyCode) == 116) {
-        e.preventDefault();
-      }
-    };
+    // //  this.changePageTitle();
+    // window.addEventListener('keyup', disableF5);
+    // window.addEventListener('keydown', disableF5);
+    //
+    // function disableF5(e) {
+    //   if ((e.which || e.keyCode) == 116) {
+    //     e.preventDefault();
+    //   }
+    // }
   }
 
   // changePageTitle() {
