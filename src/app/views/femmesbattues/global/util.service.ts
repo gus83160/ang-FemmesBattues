@@ -30,7 +30,12 @@ export class UtilService {
     this.pdf.mailPayeur = payeur;
     this.pdf.mailChauffeur = chauffeur;
     const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
-    await this.http.put<any>(environment.url + '/util/generer_pdf', this.pdf, httpOptions);
+    const re = await this.http.put<any>(environment.url + '/util/generer_pdf', this.pdf, httpOptions).toPromise()
+      .catch(error => {
+        console.log(error);
+        return null;
+      });
+    return re;
   }
 
   async RechCourseHub(demande): Promise<RepCourseHub> {
