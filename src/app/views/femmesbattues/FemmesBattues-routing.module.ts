@@ -51,6 +51,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MAT_MOMENT_DATE_FORMATS, MatMomentDateModule, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {RoutesEnum} from './RoutesEnum';
+import {AuthGuard} from '../../shared/services/auth/auth.guard';
 
 // import { BrowserModule } from '@angular/platform-browser';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -60,22 +61,22 @@ import {RoutesEnum} from './RoutesEnum';
 
 const routes: Routes = [
   {path: RoutesEnum.LOGIN, component: LoginComponent},
-  {path: RoutesEnum.LOGOUT, component: LogoutComponent},
-  {path: RoutesEnum.LOGINMDP, component: LoginMDPComponent},
-  {path: RoutesEnum.INFORMATION, component: InformationComponent},
-  {path: RoutesEnum.COURSE, component: CourseComponent},
-  {path: RoutesEnum.RECUP_COURSE, component: RecupCourseComponent},
-  {path: RoutesEnum.COURSE_FICHE, component: CourseFicheComponent},
-  {path: RoutesEnum.DEMANDE_LISTE, component: DemandeListComponent},
-  {path: RoutesEnum.DEMANDE_NEW, component: DemandeNewComponent},
-  {path: RoutesEnum.DEMANDE, component: DemandeComponent},
-  {path: RoutesEnum.UTILISATEUR_LISTE, component: UtilisateurListComponent},
-  {path: RoutesEnum.UTILISATEUR, component: UtilisateurComponent},
-  {path: RoutesEnum.ADMIN, component: DefaultroutingComponent},
-  {path: RoutesEnum.MENU, component: MenuComponent},
-  {path: RoutesEnum.PRISE_EN_CHARGE, component: PriseenchargeComponent},
-  {path: RoutesEnum.FACTURE, component: FactureComponent},
-  {path: RoutesEnum.PDF_VISU, component: PdfVisuComponent},
+  {path: RoutesEnum.LOGOUT, component: LogoutComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.LOGINMDP, component: LoginMDPComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.INFORMATION, component: InformationComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.COURSE, component: CourseComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.RECUP_COURSE, component: RecupCourseComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.COURSE_FICHE, component: CourseFicheComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.DEMANDE_LISTE, component: DemandeListComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.DEMANDE_NEW, component: DemandeNewComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.DEMANDE, component: DemandeComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.UTILISATEUR_LISTE, component: UtilisateurListComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.UTILISATEUR, component: UtilisateurComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.ADMIN, component: DefaultroutingComponent, canActivate: [AuthGuard]},
+//  {path: RoutesEnum.MENU, component: MenuComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.PRISE_EN_CHARGE, component: PriseenchargeComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.FACTURE, component: FactureComponent, canActivate: [AuthGuard]},
+  {path: RoutesEnum.PDF_VISU, component: PdfVisuComponent, canActivate: [AuthGuard]},
   {path: RoutesEnum.ROOT, component: MenuComponent},
   {path: '**', redirectTo: RoutesEnum.ROOT},
 ];

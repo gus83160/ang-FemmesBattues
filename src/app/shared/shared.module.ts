@@ -11,8 +11,9 @@ import {AppLoaderService} from './services/app-loader/app-loader.service';
 import {SharedComponentsModule} from './components/shared-components.module';
 import {SharedPipesModule} from './pipes/shared-pipes.module';
 import {SharedDirectivesModule} from './directives/shared-directives.module';
-import {AuthGuard} from './auth.guard';
+// import {KeycloackAuthGuard} from './keycloack-auth-guard.service';
 import {OnlyNumberDirective} from './directives/only-number.directive';
+import {AuthGuard} from './services/auth/auth.guard';
 
 @NgModule({
   imports: [
@@ -25,9 +26,10 @@ import {OnlyNumberDirective} from './directives/only-number.directive';
     ThemeService,
     NavigationService,
     RoutePartsService,
-    AuthGuard,
+//    KeycloackAuthGuard,
     AppConfirmService,
-    AppLoaderService
+    AppLoaderService,
+    AuthGuard
   ],
   declarations: [
     OnlyNumberDirective

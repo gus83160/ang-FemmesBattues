@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { AuthentificationService } from './Authentification.service';
+import { AuthService } from './auth.service';
 import { GlobalVariables } from '../global/global_variables';
 
 @Injectable()
 export class BasicAuthInterceptor implements HttpInterceptor {
-    constructor(private authentificationService: AuthentificationService,
+    constructor(private authentificationService: AuthService,
                 private variables: GlobalVariables) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

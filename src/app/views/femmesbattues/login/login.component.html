@@ -7,11 +7,11 @@
         </div>
 
         <form [formGroup]="loginForm" (ngSubmit)="loginin()">
-          <div class="">
             <mat-form-field class="full-width">
               <input
                 matInput
-                name="login"
+                name="username"
+                autocomplete="name"
                 [formControl]="loginForm.controls['username']"
                 placeholder="login"
                 value="">
@@ -19,13 +19,12 @@
             <small
               *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched"
               class="form-error-msg"> Username is required </small>
-          </div>
 
-          <div class="">
             <mat-form-field class="full-width">
               <input
                 type="password"
                 name="password"
+                autocomplete="password"
                 matInput
                 [formControl]="loginForm.controls['password']"
                 placeholder="Mot de Passe"
@@ -34,7 +33,7 @@
             <small
               *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched"
               class="form-error-msg"> Password is required </small>
-          </div>
+
           <small *ngIf="ErrorLogin" class="form-error-msg">Login / Mot de passe inconnu></small>
           <button mat-raised-button class="mat-primary full-width mb-1" [disabled]="loginForm.invalid || executing">Validation</button>
 <!---

@@ -10,7 +10,8 @@ import {FiscalPeriod} from '../../models/fiscalPeriod.model';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {GlobalVariables} from '../../../views/femmesbattues/global/global_variables';
 import {RoutesEnum} from '../../../views/femmesbattues/RoutesEnum';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-header-side',
@@ -36,6 +37,9 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
   public identite: string;
   public type: string;
 
+  title = '';
+  private routeSubs$: Subscription;
+
   constructor(
     private themeService: ThemeService,
     private layout: LayoutService,
@@ -43,6 +47,13 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
     private variables: GlobalVariables,
     private router: Router
   ) {
+    this.setTitle(router.url);
+    this.routeSubs$ = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.setTitle(event.url);
+    });
+
     this.isLogged$ = variables.isUserLoggedIn$.subscribe((value) => {
       this.isLogged = value;
       if (this.isLogged) {
@@ -67,6 +78,27 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
         this.type = '';
       }
     });
+  }
+
+  private setTitle(url: string): void {
+    this.title = '';
+    if (url === '/') {
+      this.title = 'Accueil';
+    } else if (url === '/' + RoutesEnum.DEMANDE_LISTE) {
+      this.title = 'Courses';
+    } else if (url === '/' + RoutesEnum.COURSE) {
+      this.title = 'Demande d\'information';
+    } else if (url === '/' + RoutesEnum.LOGIN) {
+      this.title = 'Connexion';
+    } else if (url === '/' + RoutesEnum.DEMANDE) {
+      this.title = 'Création demande';
+    } else if (url === '/' + RoutesEnum.UTILISATEUR_LISTE) {
+      this.title = 'Utilisateurs';
+    } else if (url === '/' + RoutesEnum.UTILISATEUR) {
+      this.title = 'Utilisateur';
+    } else if (url === '/' + RoutesEnum.FACTURE) {
+      this.title = 'Facture';
+    }
   }
 
   ngOnInit(): void {
@@ -129,6 +161,9 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.isLogged$) {
       this.isLogged$.unsubscribe();
+    }
+    if (this.routeSubs$) {
+      this.routeSubs$.unsubscribe();
     }
   }
 

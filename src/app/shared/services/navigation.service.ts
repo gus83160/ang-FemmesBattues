@@ -74,7 +74,7 @@ export class NavigationService {
       disabled: true
     },
     {
-      name: 'Utilisateur',
+      name: 'Utilisateurs',
       type: 'link',
       icon: 'person',
       state: 'utilisateurliste',

@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {RoutesEnum} from '../../../views/femmesbattues/RoutesEnum';
 
 @Component({
   selector: 'app-sidenav',
@@ -9,22 +11,21 @@ export class SidenavComponent {
   @Input('hasIconMenu') public hasIconTypeMenuItem: boolean;
   @Input('iconMenuTitle') public iconTypeMenuTitle: string;
 
-  constructor() {}
-  ngOnInit() {
+  constructor() {
   }
 
-  // Only for demo purpose
-  addMenuItem() {
-    this.menuItems.push({
-      name: 'ITEM',
-      type: 'dropDown',
-      tooltip: 'Item',
-      icon: 'done',
-      state: 'material',
-      sub: [
-        {name: 'SUBITEM', state: 'cards'},
-        {name: 'SUBITEM', state: 'buttons'}
-      ]
-    });
-  }
+  // // Only for demo purpose
+  // addMenuItem() {
+  //   this.menuItems.push({
+  //     name: 'ITEM',
+  //     type: 'dropDown',
+  //     tooltip: 'Item',
+  //     icon: 'done',
+  //     state: 'material',
+  //     sub: [
+  //       {name: 'SUBITEM', state: 'cards'},
+  //       {name: 'SUBITEM', state: 'buttons'}
+  //     ]
+  //   });
+  // }
 }

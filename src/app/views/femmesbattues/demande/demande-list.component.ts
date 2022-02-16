@@ -47,6 +47,8 @@ export class DemandeListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // console.log('DemandeListComponent');
+    // console.log(this.variables.currentUser);
     this.bPrescripteur = (this.variables.currentUser.idtypeutilisateur === this.variables.TypePrescripteur);
     this.bChauffeur = (this.variables.currentUser.idtypeutilisateur === this.variables.TypeChauffeur);
     this.bAdmin = (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAdmin);
@@ -227,7 +229,7 @@ export class DemandeListComponent implements OnInit {
       if (this.priseencharge.pe_nofacture == '' || this.priseencharge.pe_nofacture == null) {
         this.dialogueService.confirm({message: 'La course n\'est pas facturée.'});
       } else {
-        this.utilservice.DownloadFile(this.priseencharge.pe_nofacture);
+        await this.utilservice.DownloadFile(this.priseencharge.pe_nofacture);
       }
 
     } else {
@@ -239,8 +241,8 @@ export class DemandeListComponent implements OnInit {
     this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
     if (this.priseencharge != null) {
       const rep = this.utilservice.GenererPDF(null, null, this.priseencharge.pe_nodemande, null, null);
-      rep.then(result => {
-        this.utilservice.DownloadFile(this.priseencharge.pe_nodemande);
+      rep.then(async (result) => {
+        await this.utilservice.DownloadFile(this.priseencharge.pe_nodemande);
       });
     } else {
       console.log("Detail ERREUR ");

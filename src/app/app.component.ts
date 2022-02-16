@@ -12,6 +12,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {environment} from '../environments/environment';
 import {GlobalVariables} from './views/femmesbattues/global/global_variables';
 import {UtilisateurService} from './models/utilisateur.service';
+import {AuthService} from './views/femmesbattues/Authentification/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -32,22 +33,15 @@ export class AppComponent implements OnInit {
     private configurationService: ConfigurationService,
     private dialog: MatDialog,
     private variables: GlobalVariables,
+    private authService: AuthService,
     private utilisateurService: UtilisateurService,
   ) {
   }
 
-  checkLoggedState(): void {
-    if (this.variables.currentUser == null) {
-      const login = sessionStorage.getItem('login');
-      const password = sessionStorage.getItem('password');
-      if (login && password) {
-        const utilisateur = this.utilisateurService.VerificationLoginMDP(login, password);
-      }
-    }
-  }
-
-  ngOnInit() {
-    this.checkLoggedState();
+  async ngOnInit(): Promise<void> {
+    // await this.authService.checkLoggedState();
+    // console.log('AppComponent');
+    // console.log(this.variables.currentUser);
 
     this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd)

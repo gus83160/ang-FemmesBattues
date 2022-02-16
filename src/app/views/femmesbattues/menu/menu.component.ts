@@ -10,6 +10,7 @@ import {Victime} from '../../../models/victime';
 import {VictimeService} from '../../../services/victime.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ErrorService} from '../../../services/error.service';
+import {AuthService} from '../Authentification/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -25,31 +26,33 @@ export class MenuComponent implements OnInit {
   constructor(
     private route: Router,
     private victimeService: VictimeService,
+    private authService: AuthService
     ) {
   }
 
   async ngOnInit(): Promise<void> {
-    this.DemandeForm = new FormGroup({
-      vi_nom: new FormControl('aaaa', [
-        Validators.required,
-        Validators.maxLength(50)
-      ]),
-      pe_datedemande: new FormControl(),
-    });
-    this.errorService = new ErrorService(this.DemandeForm);
+    await this.authService.tryLoadFromSession();
+    // this.DemandeForm = new FormGroup({
+    //   vi_nom: new FormControl('aaaa', [
+    //     Validators.required,
+    //     Validators.maxLength(50)
+    //   ]),
+    //   pe_datedemande: new FormControl(),
+    // });
+    // this.errorService = new ErrorService(this.DemandeForm);
   }
 
-  async CreationDemande() {
-    const victime: Victime = {
-      vi_nom: this.DemandeForm.value.vi_nom,
-      vi_prenom: 'test',
-      vi_nomusage: 'test',
-    } as Victime;
-
-    this.executing = true;
-    await this.errorService.try(async () => {
-      await this.victimeService.createVictime(victime);
-    });
-    this.executing = false;
-  }
+  // async CreationDemande() {
+  //   const victime: Victime = {
+  //     vi_nom: this.DemandeForm.value.vi_nom,
+  //     vi_prenom: 'test',
+  //     vi_nomusage: 'test',
+  //   } as Victime;
+  //
+  //   this.executing = true;
+  //   await this.errorService.try(async () => {
+  //     await this.victimeService.createVictime(victime);
+  //   });
+  //   this.executing = false;
+  // }
 }

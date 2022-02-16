@@ -18,7 +18,7 @@ export class EgretExampleViewerComponent implements OnInit, AfterViewInit, OnDes
     if (exampleId) {
       this._exampleId = exampleId;
     } else {
-      console.log("EXAMPLE ID MISSING");
+      //console.log("EXAMPLE ID MISSING");
     }
   }
   // Title and component Ref
@@ -35,7 +35,7 @@ export class EgretExampleViewerComponent implements OnInit, AfterViewInit, OnDes
 
   constructor(
     private cfr: ComponentFactoryResolver
-  ) { 
+  ) {
 
   }
 
@@ -44,7 +44,7 @@ export class EgretExampleViewerComponent implements OnInit, AfterViewInit, OnDes
   }
   ngAfterViewInit() {
     if(!this.data) {
-      console.log('EXAMPLE COMPONENT MISSING');
+      //console.log('EXAMPLE COMPONENT MISSING');
       return;
     }
     let componentFactory = this.cfr.resolveComponentFactory(this.data.component);

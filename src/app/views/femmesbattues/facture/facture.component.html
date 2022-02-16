@@ -1,8 +1,8 @@
 <div>
   <input type="button" value="Envoi Facture par Mail" (click)="DocumentPDF()"/>
 </div>
-
-<div id="DocumentPDF" *ngIf="Chauffeur && Payeur">
+<div id="DocumentPDF" #documentpdf>
+<div *ngIf="Chauffeur && Payeur">
   {{ Chauffeur.ut_nom }} {{ Chauffeur.ut_prenom }}<br>
   {{ Chauffeur.ut_adresse }} <br>
   {{ Chauffeur.ut_codepostal }} {{ Chauffeur.ut_ville }}<br>
@@ -125,4 +125,5 @@
        <p class="parag">Sans escompte pour paiement anticipé.Pénalités pour paiement tardif : XXXX fois le taux d'intérêts légal. En plus de ces pénalités, est aussi due une
           indemnité forfaitaire pour frais de recouvrement dont le montant est fixé à ZZZZZ€.</p>
   </div>
+</div>
 </div>

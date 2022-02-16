@@ -16,7 +16,7 @@ export enum RoutesEnum {
   UTILISATEUR_LISTE = 'utilisateurliste',
   UTILISATEUR = 'utilisateur',
   ADMIN = 'admin',
-  MENU = 'menu',
+//  MENU = 'menu',
   PRISE_EN_CHARGE = 'priseencharge',
   FACTURE = 'facture',
   PDF_VISU = 'pdfvisu',

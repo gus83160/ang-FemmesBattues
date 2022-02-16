@@ -13,7 +13,7 @@ export class CourseService {
   constructor(private http: HttpClient) { }
 
   async createCourse(course: Course) {
-        console.log("createcourse");
+        //console.log("createcourse");
 
         return await this.http.post<Course>(environment.url + '/course/', course).toPromise();
       }

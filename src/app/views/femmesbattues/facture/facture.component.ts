@@ -1,6 +1,15 @@
-import {Component, OnInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  ViewChild,
+  ElementRef,
+  ViewContainerRef, Inject
+} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
-import {formatDate} from '@angular/common';
+import {DOCUMENT, formatDate} from '@angular/common';
 import {GlobalVariables} from '../global/global_variables';
 import {UtilService} from '../global/util.service';
 import {Utilisateur} from '../../../models/utilisateur';
@@ -15,6 +24,24 @@ import {Router} from '@angular/router';
   styleUrls: ['./facture.component.scss']
 })
 export class FactureComponent implements OnInit, AfterViewInit  {
+  // documentPdf: ElementRef;
+
+  pdfGenerated = false;
+
+  @ViewChild('documentpdf', { static: false })
+  set _documentPdf(value) {
+    const htmlTemplate = value.nativeElement.innerHTML;
+    // console.log(htmlTemplate);
+
+    // la page est d'abord généré sans données à cause du *ngIf et du coup renvoi un html sans rien
+    // au deuxième passage le html est ok
+    if (htmlTemplate.length > 100 && !this.pdfGenerated) {
+      if (htmlTemplate && this.variables.NoFacture) {
+        this.util.GenererPDF(htmlTemplate, this.variables.NoFacture, null, null, null);
+        this.pdfGenerated = true;
+      }
+    }
+  }
 
   util: UtilService;
   Chauffeur: Utilisateur;
@@ -43,7 +70,8 @@ export class FactureComponent implements OnInit, AfterViewInit  {
               public variables: GlobalVariables,
               private dialogService: DialogueService,
               private ref: ChangeDetectorRef,
-              private router: Router) {
+              private router: Router,
+              @Inject(DOCUMENT) private document) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -54,10 +82,13 @@ export class FactureComponent implements OnInit, AfterViewInit  {
   }
 
   async ngAfterViewInit(): Promise<void> {
-    const data = document.getElementById('DocumentPDF');
-    if (data?.outerHTML) {
-      await this.util.GenererPDF(data.outerHTML, this.variables.NoFacture, null, null, null);
-    }
+    // const htmlTemplate = this.document.getElementById('DocumentPDF')?.outerHTML;
+    // const htmlTemplate = this.documentPdf?.nativeElement?.innerHTML;
+
+    // console.log(htmlTemplate);
+    // if (htmlTemplate && this.variables.NoFacture) {
+    //   await this.util.GenererPDF(htmlTemplate, this.variables.NoFacture, null, null, null);
+    // }
   }
 
   async AdresseChauffeurPayeur(): Promise<void> {

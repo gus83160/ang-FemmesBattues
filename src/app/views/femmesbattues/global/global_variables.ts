@@ -28,7 +28,7 @@ export class GlobalVariables {
   }
 
   set currentUser(value: Utilisateur) {
-    if (value != null) {
+    if (value !== null) {
       sessionStorage.setItem('login', value.ut_login);
       sessionStorage.setItem('password', value.ut_mdp);
     }
@@ -37,7 +37,7 @@ export class GlobalVariables {
     this.isUserLoggedInSource.next((value != null));
   }
 
-  private _currentUser: Utilisateur;
+  private _currentUser: Utilisateur = null;
 //  IdUtilisateur: number;
 //  CodeChauffeur: string;
 //  Login: string;
