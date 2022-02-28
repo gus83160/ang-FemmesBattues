@@ -1,4 +1,4 @@
-<mat-toolbar [hidden]="!isDevMode" class="sticky-toolbar">
+<mat-toolbar class="sticky-toolbar" *ngIf="isDevMode">
   <button
     mat-raised-button
     color="primary"
