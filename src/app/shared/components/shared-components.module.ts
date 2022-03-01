@@ -58,20 +58,19 @@ const components = [
 ];
 
 @NgModule({
-  imports: [
-  CommonModule,
-    FormsModule,
-    RouterModule,
-    // TranslateModule,
-    FlexLayoutModule,
-    PerfectScrollbarModule,
-    SearchModule,
-    SharedPipesModule,
-    SharedDirectivesModule,
-    SharedMaterialModule
-  ],
-  declarations: components,
-  entryComponents: [AppComfirmComponent, AppLoaderComponent, BottomSheetShareComponent],
-  exports: components
+    imports: [
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        // TranslateModule,
+        FlexLayoutModule,
+        PerfectScrollbarModule,
+        SearchModule,
+        SharedPipesModule,
+        SharedDirectivesModule,
+        SharedMaterialModule
+    ],
+    declarations: components,
+    exports: components
 })
 export class SharedComponentsModule {}
