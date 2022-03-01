@@ -1,4 +1,4 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 $mat-primary: map-get($material-colors, light-blue);
 $mat-accent: map-get($material-colors, amber);
 
