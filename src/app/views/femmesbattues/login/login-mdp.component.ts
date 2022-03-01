@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Validators, FormGroup, FormControl} from '@angular/forms';
+import {Validators, FormGroup, FormControl, AbstractControl} from '@angular/forms';
 import {Router} from '@angular/router';
-import {CustomValidators} from 'ngx-custom-validators';
+// import {CustomValidators} from 'ngx-custom-validators';
 import {GlobalVariables} from '../global/global_variables';
 import {UtilisateurService} from '../../../models/utilisateur.service';
 import {NavigationService} from '../../../shared/services/navigation.service';
@@ -28,9 +28,15 @@ export class LoginMDPComponent implements OnInit {
     this.loginMDPForm = new FormGroup({
       oldmdp: new FormControl('', Validators.required),
       mdp: mdp,
-      mdpConfirm: new FormControl('', CustomValidators.equalTo(mdp)),
+      mdpConfirm: new FormControl('', this.passwordConfirming),
     });
     this.VerifMDP = false;
+  }
+
+  passwordConfirming(c: AbstractControl): { invalid: boolean } {
+    if (c.get('oldmdp').value !== c.get('mdpConfirm').value) {
+      return {invalid: true};
+    }
   }
 
   async ValidationMDP() {

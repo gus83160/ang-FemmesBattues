@@ -34,10 +34,7 @@
 //     border-bottom: 5px solid #ddd;
 //     display: block;
 //   }
-//   /*
-//   .mat-table .mat-row:nth-child(even) {background: #CCC}
-//   .mat-table .mat-row:nth-child(odd) {background: #FFF}
-//   */
+//   __<<ngThemingMigrationEscapedComment0>>__
 //   mat-cell:first-of-type, mat-cell:last-of-type, 
 //   mat-footer-cell:last-of-type, mat-header-cell:last-of-type {
 //     padding: 0;
@@ -53,10 +50,7 @@
 //     margin-bottom: 4%;
 //   }
 //   .mat-table .mat-cell:before {
-//     /*
-//     * aria-label has no advantage, it won't be read inside a table
-//     content: attr(aria-label);
-//     */
+//     __<<ngThemingMigrationEscapedComment1>>__
 //     content: attr(data-label);
 //     float: left;
 //     text-transform: uppercase;

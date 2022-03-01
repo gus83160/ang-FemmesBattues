@@ -1,17 +1,18 @@
+@use '~@angular/material' as mat;
 $mat-primary: map-get($material-colors, pink);
 $mat-accent: map-get($material-colors, blue-grey);
 
-$egret-primary: mat-palette($mat-primary);
-$egret-accent:  mat-palette($mat-accent);
+$egret-primary: mat.define-palette($mat-primary);
+$egret-accent:  mat.define-palette($mat-accent);
 
 // custom theme palettes are passed into a theme function
-$egret-theme: mat-dark-theme($egret-primary, $egret-accent);
+$egret-theme: mat.define-dark-theme($egret-primary, $egret-accent);
 
 $primary-dark: darken( map-get($mat-primary, 500), 8% );
 
 // Material theme is wrapped by a parent class
 .egret-dark-pink {
-    @include angular-material-theme($egret-theme);
+    @include mat.all-component-themes($egret-theme);
 
     .mat-bg-primary,
     .topbar,

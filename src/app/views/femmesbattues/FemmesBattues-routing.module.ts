@@ -19,7 +19,7 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ReactiveFormsModule} from '@angular/forms';
 // import {MatTimepickerModule} from 'mat-timepicker';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
-import {NgxExtendedPdfViewerModule} from 'ngx-extended-pdf-viewer';
+// import {NgxExtendedPdfViewerModule} from 'ngx-extended-pdf-viewer';
 import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import {LoginComponent} from './login/login.component';
@@ -108,7 +108,7 @@ const routes: Routes = [
     NgxDatatableModule,
     ReactiveFormsModule,
     PdfViewerModule,
-    NgxExtendedPdfViewerModule,
+//    NgxExtendedPdfViewerModule,
 //    NgxFileSaverService,
     RouterModule.forChild(routes),
     MatToolbarModule,
