@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import {ConfigurationProperty} from "../models/configurationProperty.model";
-import {BehaviorSubject, Observable} from "rxjs";
-//import {KeycloakService} from "keycloak-angular";
+// import {ConfigurationProperty} from "../models/configurationProperty.model";
+// import {BehaviorSubject, Observable} from "rxjs";
+// import {KeycloakService} from "keycloak-angular";
 
 @Injectable({
 	providedIn: 'root'
 })
 export class ConfigurationService {
 
-	private _configurationProperties: BehaviorSubject<ConfigurationProperty[]> = new BehaviorSubject<ConfigurationProperty[]>([]);
-
-	constructor() {
-
-	}
+	// private _configurationProperties: BehaviorSubject<ConfigurationProperty[]> = new BehaviorSubject<ConfigurationProperty[]>([]);
+  //
+	// constructor() {
+  //
+	// }
 
 // 	loadConfiguration() {
 // 		this.updateConfigurationProperties();

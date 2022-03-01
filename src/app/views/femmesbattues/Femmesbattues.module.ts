@@ -6,6 +6,7 @@ import {RoutesEnum} from './RoutesEnum';
 import {ErrorComponent} from './Authentification/error/error.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {DevExtremeModule} from 'devextreme-angular';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -13,9 +14,12 @@ import {DevExtremeModule} from 'devextreme-angular';
     FemmesBattuesRoutingModule,
     MatDialogModule,
     DevExtremeModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
-    ErrorComponent],
+    ErrorComponent
+  ],
   exports: [],
   providers: [],
 

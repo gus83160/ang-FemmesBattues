@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 import {ThemeService} from '../../services/theme.service';
 import {LayoutService} from '../../services/layout.service';
-import {FiscalPeriod} from '../../models/fiscalPeriod.model';
+// import {FiscalPeriod} from '../../models/fiscalPeriod.model';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {GlobalVariables} from '../../../views/femmesbattues/global/global_variables';
 import {RoutesEnum} from '../../../views/femmesbattues/RoutesEnum';
@@ -29,8 +29,8 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
   public egretThemes;
   public layoutConf: any;
 
-  public fiscalPeriods: BehaviorSubject<FiscalPeriod[]> = new BehaviorSubject<FiscalPeriod[]>([]);
-  public fiscalPeriod: BehaviorSubject<FiscalPeriod> = new BehaviorSubject<FiscalPeriod>(null);
+  // public fiscalPeriods: BehaviorSubject<FiscalPeriod[]> = new BehaviorSubject<FiscalPeriod[]>([]);
+  // public fiscalPeriod: BehaviorSubject<FiscalPeriod> = new BehaviorSubject<FiscalPeriod>(null);
 
   private isLogged$: Subscription;
   public isLogged: boolean;

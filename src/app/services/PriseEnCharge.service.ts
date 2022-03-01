@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { PriseEnCharge } from './priseencharge';
-import { Retour } from './retour';
+import { PriseEnCharge } from '../models/PriseEnCharge';
+import { Retour } from '../models/retour';
 
 @Injectable({
   providedIn: 'root'

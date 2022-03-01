@@ -34,7 +34,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatMomentDateModule} from '@angular/material-moment-adapter';
+// import {MatMomentDateModule} from '@angular/material-moment-adapter';
 
 
 @NgModule({
@@ -70,7 +70,7 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
     MatSortModule,
     MatPaginatorModule,
     MatNativeDateModule,
-    MatMomentDateModule,
+//    MatMomentDateModule,
     MatTreeModule,
     MatRippleModule,
     MatBadgeModule,
@@ -109,7 +109,7 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
     MatSortModule,
     MatPaginatorModule,
     MatNativeDateModule,
-    MatMomentDateModule,
+    // MatMomentDateModule,
     MatTreeModule,
     MatRippleModule,
     MatBadgeModule,

@@ -24,9 +24,9 @@ import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/h
 
 import {LoginComponent} from './login/login.component';
 import {LoginMDPComponent} from './login/login-mdp.component';
-import {DemandeComponent} from './demande/demande.component';
-import {DemandeNewComponent} from './demande/demandenew.component';
-import {DemandeListComponent} from './demande/demande-list.component';
+import {DemandeComponent} from './demande/edit/demande.component';
+import {DemandeNewComponent} from './demande/new/demandenew.component';
+import {DemandeListComponent} from './demande/list/demande-list.component';
 import {MenuComponent} from './menu/menu.component';
 import {CourseComponent} from './course/course.component';
 import {RecupCourseComponent} from './course/recup-course.component';
@@ -48,7 +48,7 @@ import {LogoutComponent} from './logout/logout.component';
 import {ShowErrorsComponent} from '../../show-errors.component';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MAT_MOMENT_DATE_FORMATS, MatMomentDateModule, MomentDateAdapter} from '@angular/material-moment-adapter';
+// import {MAT_MOMENT_DATE_FORMATS, MatMomentDateModule, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {RoutesEnum} from './RoutesEnum';
 import {AuthGuard} from '../../shared/services/auth/auth.guard';
@@ -94,7 +94,7 @@ const routes: Routes = [
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatMomentDateModule,
+    // MatMomentDateModule,
     // MatTimepickerModule,
     MatProgressBarModule,
     MatRadioModule,
@@ -119,8 +119,8 @@ const routes: Routes = [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     DialogueService,
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    // {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+    // {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     {provide: LOCALE_ID, useValue: 'fr'}
   ],
 // 	   Variables],

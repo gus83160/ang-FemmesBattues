@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 
-import { GlobalVariables } from '../global/global_variables';
-import {RoutesEnum} from '../RoutesEnum';
+import { GlobalVariables } from '../../global/global_variables';
+import {RoutesEnum} from '../../RoutesEnum';
 
 @Component({
   selector: 'app-demandenew',

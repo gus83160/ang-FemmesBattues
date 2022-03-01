@@ -4,8 +4,8 @@ import {formatDate} from '@angular/common';
 import {Router} from '@angular/router';
 
 import {GlobalVariables} from '../global/global_variables';
-import {PriseEnCharge} from '../../../models/priseencharge';
-import {PriseEnChargeService} from '../../../models/priseencharge.service';
+import {PriseEnCharge} from '../../../models/PriseEnCharge';
+import {PriseEnChargeService} from '../../../services/PriseEnCharge.service';
 import {Course} from '../../../models/course';
 import {CourseService} from '../../../models/course.service';
 import {RoutesEnum} from '../RoutesEnum';

@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {GlobalVariables} from '../global/global_variables';
 import {UtilService} from '../global/util.service';
 import {RepCourseHub} from '../global/repcoursehub';
-import {PriseEnChargeService} from '../../../models/priseencharge.service';
+import {PriseEnChargeService} from '../../../services/PriseEnCharge.service';
 import {Retour} from '../../../models/retour';
 import {RoutesEnum} from '../RoutesEnum';
 import {ErrorService} from '../../../services/error.service';

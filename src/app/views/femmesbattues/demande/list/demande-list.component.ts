@@ -5,18 +5,18 @@ import {Router} from '@angular/router';
 import {HttpResponse} from '@angular/common/http';
 import {MatDialog} from '@angular/material/dialog';
 
-import {GlobalVariables} from '../global/global_variables';
-import {UtilService} from '../global/util.service';
+import {GlobalVariables} from '../../global/global_variables';
+import {UtilService} from '../../global/util.service';
 
-import {Retour} from '../../../models/retour';
-import {PriseEnCharge} from '../../../models/priseencharge';
-import {PriseEnChargeService} from '../../../models/priseencharge.service';
-import {DemandeService} from '../../../services/demande.service';
-import {VictimeService} from '../../../services/victime.service';
+import {Retour} from '../../../../models/retour';
+import {PriseEnCharge} from '../../../../models/PriseEnCharge';
+import {PriseEnChargeService} from '../../../../services/PriseEnCharge.service';
+import {DemandeService} from '../../../../services/demande.service';
+import {VictimeService} from '../../../../services/victime.service';
 
-import {DialogueService} from '../dialogue/dialogue.service';
-import {SupprimerComponent} from '../dialogue/supprimer.component';
-import {RoutesEnum} from '../RoutesEnum';
+import {DialogueService} from '../../dialogue/dialogue.service';
+import {SupprimerComponent} from '../../dialogue/supprimer.component';
+import {RoutesEnum} from '../../RoutesEnum';
 
 @Component({
   selector: 'app-demande-list',
