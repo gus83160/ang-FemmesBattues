@@ -14,10 +14,10 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatStepperModule} from '@angular/material/stepper';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {QuillModule} from 'ngx-quill';
+// import {QuillModule} from 'ngx-quill';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ReactiveFormsModule} from '@angular/forms';
-import {MatTimepickerModule} from 'mat-timepicker';
+// import {MatTimepickerModule} from 'mat-timepicker';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
 import {NgxExtendedPdfViewerModule} from 'ngx-extended-pdf-viewer';
 import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -95,7 +95,7 @@ const routes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatMomentDateModule,
-    MatTimepickerModule,
+    // MatTimepickerModule,
     MatProgressBarModule,
     MatRadioModule,
     MatSelectModule,
@@ -104,7 +104,7 @@ const routes: Routes = [
     MatIconModule,
     MatStepperModule,
     FlexLayoutModule,
-    QuillModule,
+//    QuillModule,
     NgxDatatableModule,
     ReactiveFormsModule,
     PdfViewerModule,

@@ -8,7 +8,7 @@ import { DropdownAnchorDirective } from './dropdown-anchor.directive';
 import { DropdownLinkDirective } from './dropdown-link.directive';
 import { EgretSideNavToggleDirective } from './egret-side-nav-toggle.directive';
 import { EgretSidenavHelperDirective, EgretSidenavTogglerDirective } from './egret-sidenav-helper/egret-sidenav-helper.directive';
-import { EgretHighlightDirective } from './egret-highlight.directive';
+// import { EgretHighlightDirective } from './egret-highlight.directive';
 
 
 
@@ -21,8 +21,8 @@ const directives = [
   EgretSideNavToggleDirective,
   EgretSidenavHelperDirective,
   EgretSidenavTogglerDirective,
-  EgretHighlightDirective
-]
+//  EgretHighlightDirective
+];
 
 @NgModule({
   imports: [

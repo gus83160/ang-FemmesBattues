@@ -19,7 +19,7 @@ import { HeaderTopComponent } from './header-top/header-top.component';
 import { SidebarTopComponent } from './sidebar-top/sidebar-top.component';
 
 // ONLY FOR DEMO
-import { CustomizerComponent } from './customizer/customizer.component';
+// import { CustomizerComponent } from './customizer/customizer.component';
 
 // ALWAYS REQUIRED
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
@@ -33,8 +33,6 @@ import { AppLoaderComponent } from '../services/app-loader/app-loader.component'
 import { ButtonLoadingComponent } from './button-loading/button-loading.component';
 import { EgretSidebarComponent, EgretSidebarTogglerDirective } from './egret-sidebar/egret-sidebar.component';
 import { BottomSheetShareComponent } from './bottom-sheet-share/bottom-sheet-share.component';
-import { EgretExampleViewerComponent } from './example-viewer/example-viewer.component';
-import { EgretExampleViewerTemplateComponent } from './example-viewer-template/example-viewer-template.component';
 
 
 const components = [
@@ -49,15 +47,15 @@ const components = [
   BreadcrumbComponent,
   AppComfirmComponent,
   AppLoaderComponent,
-  CustomizerComponent,
+//  CustomizerComponent,
   ButtonLoadingComponent,
   EgretSidebarComponent,
   FooterComponent,
   EgretSidebarTogglerDirective,
   BottomSheetShareComponent,
-  EgretExampleViewerComponent,
-  EgretExampleViewerTemplateComponent
-]
+  // EgretExampleViewerComponent,
+  // EgretExampleViewerTemplateComponent
+];
 
 @NgModule({
   imports: [
