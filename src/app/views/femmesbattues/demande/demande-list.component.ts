@@ -101,7 +101,7 @@ export class DemandeListComponent implements OnInit {
   }
 
   loadAllPriseEnCharge() {
-    var res = this.priseenchargeservice.getAllPriseEnCharge(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
+    const res = this.priseenchargeservice.getAllPriseEnCharge(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
     res.subscribe(ret => {
       if (ret) {
         this.rows = ret;
@@ -198,7 +198,7 @@ export class DemandeListComponent implements OnInit {
   }
 
   async supprimer(id: number) {
-    let dialogRef = this.dialog.open(SupprimerComponent);
+    const dialogRef = this.dialog.open(SupprimerComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result == 'oui') {
         this.deleteDemande(id);
@@ -223,10 +223,14 @@ export class DemandeListComponent implements OnInit {
 
   }
 
-  async PdfVisuFacture(id: number) {
+  PdfVisuFactureSelected = async (e): Promise<void> => {
+    await this.PdfVisuFacture(e.row.data.idDemande);
+  }
+
+  async PdfVisuFacture(id: number): Promise<void> {
     this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
     if (this.priseencharge != null) {
-      if (this.priseencharge.pe_nofacture == '' || this.priseencharge.pe_nofacture == null) {
+      if (this.priseencharge.pe_nofacture === '' || this.priseencharge.pe_nofacture == null) {
         this.dialogueService.confirm({message: 'La course n\'est pas facturée.'});
       } else {
         await this.utilservice.DownloadFile(this.priseencharge.pe_nofacture);
@@ -237,7 +241,11 @@ export class DemandeListComponent implements OnInit {
     }
   }
 
-  async PdfVisuDemande(id: number) {
+  PdfVisuDemandeSelected = async (e): Promise<void> => {
+    await this.PdfVisuDemande(e.row.data.idDemande);
+  }
+
+  async PdfVisuDemande(id: number): Promise<void> {
     this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
     if (this.priseencharge != null) {
       const rep = this.utilservice.GenererPDF(null, null, this.priseencharge.pe_nodemande, null, null);
@@ -245,14 +253,14 @@ export class DemandeListComponent implements OnInit {
         await this.utilservice.DownloadFile(this.priseencharge.pe_nodemande);
       });
     } else {
-      console.log("Detail ERREUR ");
+      console.log('Detail ERREUR ');
     }
   }
 
   ExportExcel() {
-    const rep = this.utilservice.CSV("export");
+    const rep = this.utilservice.CSV('export');
     rep.then(result => {
-      this.utilservice.DownloadFileCSV("export")
+      this.utilservice.DownloadFileCSV('export');
     });
 
   }

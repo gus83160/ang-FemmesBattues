@@ -52,6 +52,7 @@ import {MAT_MOMENT_DATE_FORMATS, MatMomentDateModule, MomentDateAdapter} from '@
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {RoutesEnum} from './RoutesEnum';
 import {AuthGuard} from '../../shared/services/auth/auth.guard';
+import {DevExtremeModule} from 'devextreme-angular';
 
 // import { BrowserModule } from '@angular/platform-browser';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -110,7 +111,8 @@ const routes: Routes = [
     NgxExtendedPdfViewerModule,
 //    NgxFileSaverService,
     RouterModule.forChild(routes),
-    MatToolbarModule
+    MatToolbarModule,
+    DevExtremeModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},

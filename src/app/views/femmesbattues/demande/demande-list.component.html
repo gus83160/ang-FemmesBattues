@@ -60,5 +60,73 @@
                  </div>
 -->
   </ngx-datatable>
+  <dx-data-grid
+    id="gridContainer"
+    [dataSource]="rows"
+    [remoteOperations]="false"
+    [focusedRowEnabled]="true"
+    [showBorders]="true"
+    [columnAutoWidth]="true"
+    keyExpr="idPriseEnCharge"
+    wordWrapEnabled="true"
+  >
+    <dxo-paging [pageSize]="10"> </dxo-paging>
+    <dxo-pager
+      [visible]="true"
+      [allowedPageSizes]="[10, 20, 50]"
+      [showPageSizeSelector]="true"
+      [showInfo]="true"
+      [showNavigationButtons]="true"
+    >
+    </dxo-pager>
 
+    <!--    [allowColumnReordering]="true"-->
+    <!--    [rowAlternationEnabled]="true"-->
+
+    <dxi-column type="buttons" [width]="110">
+      <dxi-button
+        hint="Consulter la prise en charge"
+        icon="assets/images/transp.png"
+        cssClass="dx-link"
+        [onClick]="PdfVisuDemandeSelected"
+      ></dxi-button>
+        <dxi-button
+          hint="Visualiser la Facture"
+          icon="assets/images/pdf.png"
+          class="canClick"
+          [onClick]="PdfVisuFactureSelected"
+        ></dxi-button>
+<!--      <dxi-button-->
+<!--        hint="Consulter la prise en charge"-->
+<!--        icon="car"-->
+<!--        [onClick]="PdfVisuDemandeSelected"-->
+<!--      ></dxi-button>-->
+<!--      <dxi-button-->
+<!--        hint="Visualiser la Facture"-->
+<!--        text="PEC"-->
+<!--        icon="pdffile"-->
+<!--        [onClick]="PdfVisuFactureSelected"-->
+<!--      ></dxi-button>-->
+    </dxi-column>
+
+    <dxi-column dataField="dateDemandeVisu" caption="Date"></dxi-column>
+    <dxi-column dataField="nomVictime" caption="Victime"></dxi-column>
+    <dxi-column dataField="structureRequerante" caption="Structure Requérante"></dxi-column>
+<!--    <dxi-column-->
+<!--      dataField="adresseDepart"-->
+<!--      caption="Départ"-->
+<!--      [width]="250"-->
+<!--      [allowFiltering]="false"-->
+<!--      [allowSorting]="false"-->
+<!--      cellTemplate="cellTemplate"-->
+<!--    ></dxi-column>-->
+    <dxi-column dataField="adresseDepart" caption="Départ" [width]="300"></dxi-column>
+    <dxi-column dataField="adresseArrivee" caption="Arrivée" [width]="300"></dxi-column>
+    <dxi-column dataField="noDemande" caption="Demande"></dxi-column>
+
+    <div *dxTemplate="let data of 'cellTemplate'">
+      <div>{{ data.value }}</div>
+    </div>
+
+  </dx-data-grid>
 </div>

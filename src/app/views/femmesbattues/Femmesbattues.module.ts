@@ -5,12 +5,14 @@ import {Router} from '@angular/router';
 import {RoutesEnum} from './RoutesEnum';
 import {ErrorComponent} from './Authentification/error/error.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import {DevExtremeModule} from 'devextreme-angular';
 
 
 @NgModule({
   imports: [
     FemmesBattuesRoutingModule,
     MatDialogModule,
+    DevExtremeModule,
   ],
   declarations: [
     ErrorComponent],
