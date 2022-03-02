@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { PriseEnCharge } from '../models/PriseEnCharge';
 import { Retour } from '../models/retour';
+import {createStore} from 'devextreme-aspnet-data-nojquery';
+import CustomStore from 'devextreme/data/custom_store';
+import {DataSourceFactoryService} from './datasource/data-source-factory.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +16,7 @@ export class PriseEnChargeService {
         html: string;
 
 //  ret : Victime;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dataSourceService: DataSourceFactoryService) { }
 
   async createPriseEnCharge(priseencharge: PriseEnCharge) {
      return await this.http.post<PriseEnCharge>(environment.url + '/priseencharge/', priseencharge).toPromise();
@@ -49,4 +52,8 @@ export class PriseEnChargeService {
      return this.http.get<Retour[]>(environment.url + '/priseencharge/liste_prise_en_charge/'+type+'/'+id );
   }
 
+  getAllPriseEnChargeStore(type,id): CustomStore {
+    const serviceUrl = environment.url + '/priseencharge/datasource/liste_prise_en_charge/'+type+'/'+id;
+    return this.dataSourceService.createStore<Retour>('idPriseEnCharge', serviceUrl)
+  }
 }

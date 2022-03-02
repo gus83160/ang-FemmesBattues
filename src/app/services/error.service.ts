@@ -41,7 +41,7 @@ export class ErrorService {
       // this.globalErrorMessage = e;
     } else if (e.error instanceof ErrorEvent) {
       // erreur locale au navigateur
-      const result = new ErrorMessage('Erreur : ' + e.error.message);
+      const result = new ErrorMessage(0,'Erreur : ' + e.error.message);
     } else {
       this.addError('Erreur innatendue.');
       // this.globalErrorMessage = 'Erreur innatendue.';

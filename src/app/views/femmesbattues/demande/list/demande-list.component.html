@@ -1,127 +1,164 @@
 <div class="mat-box-shadow margin-333">
-  <button *ngIf="bAdmin" title="Export excel" (click)="ExportExcel()">
-    <img src="../../../../../assets/images/excel.png" alt="">
-  </button>
-  <ngx-datatable class="material bg-white"
-                 [columnMode]="'force'"
-                 [headerHeight]="50"
-                 [footerHeight]="50"
-                 [rowHeight]="60"
-                 [limit]="8"
-                 [rows]="rows"
-                 [scrollbarH]="true"
-                 >
-                 <ngx-datatable-column name="" prop="idPriseEnCharge" width="250">
-                   <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                     <div *ngIf="bPrescripteur">
-                        <button title="Modifier la Demande" (click)="modifier(value)">
-                           <img src="../../../../../assets/images/modifier.png" alt="">
-                       </button>
-                        <button title="Supprimer la Demande" (click)="supprimer(value)">
-                           <img src="../../../../../assets/images/supprimer.png" alt="">
-                        </button>
-                       <button title="Consulter la prise en charge"(click)="PdfVisuDemande(value)">
-                         <img src="../../../../../assets/images/transp.png" alt="">
-                       </button>
-                     </div>
-                     <div *ngIf="!bPrescripteur">
-                       <button title="Consulter la prise en charge"(click)="PdfVisuDemande(value)">
-                         <img src="../../../../../assets/images/transp.png" alt="">
-                       </button>
-                       <button *ngIf="bChauffeur" title="Facturer la Course" (click)="detail(value)">
-                         <img src="../../../../../assets/images/facture.png" alt="">
-                       </button>
-                       <button title="Visualiser la Facture"  (click)="PdfVisuFacture(value)">
-                         <img src="../../../../../assets/images/pdf.png" alt="">
-                       </button>
-                     </div>
-                   </ng-template>
-                 </ngx-datatable-column>
-<!--                 <ngx-datatable-column name="fact" prop="idPriseEnCharge">
-                   <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                     <div *ngIf="value | Facture:row:'a2':'a3'">
-                       <button md-button (click)="detail(idPriseEnCharge,'facture')">
-                         Facture
-                       </button>
-                     </div>
+  <!--  <button *ngIf="bAdmin" title="Export excel" (click)="ExportExcel()">-->
+  <!--    <img src="assets/images/excel.png" alt="">-->
+  <!--  </button>-->
+  <!--  <ngx-datatable class="material bg-white"-->
+  <!--                 [columnMode]="'force'"-->
+  <!--                 [headerHeight]="50"-->
+  <!--                 [footerHeight]="50"-->
+  <!--                 [rowHeight]="60"-->
+  <!--                 [limit]="8"-->
+  <!--                 [rows]="rows"-->
+  <!--                 [scrollbarH]="true"-->
+  <!--                 >-->
+  <!--                 <ngx-datatable-column name="" prop="idPriseEnCharge" width="250">-->
+  <!--                   <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>-->
+  <!--                     <div *ngIf="bPrescripteur">-->
+  <!--                        <button title="Modifier la Demande" (click)="modifier(value)">-->
+  <!--                           <img src="../../../../../assets/images/modifier.png" alt="">-->
+  <!--                       </button>-->
+  <!--                        <button title="Supprimer la Demande" (click)="supprimer(value)">-->
+  <!--                           <img src="../../../../../assets/images/supprimer.png" alt="">-->
+  <!--                        </button>-->
+  <!--                       <button title="Consulter la prise en charge"(click)="PdfVisuDemande(value)">-->
+  <!--                         <img src="../../../../../assets/images/transp.png" alt="">-->
+  <!--                       </button>-->
+  <!--                     </div>-->
+  <!--                     <div *ngIf="!bPrescripteur">-->
+  <!--                       <button title="Consulter la prise en charge"(click)="PdfVisuDemande(value)">-->
+  <!--                         <img src="../../../../../assets/images/transp.png" alt="">-->
+  <!--                       </button>-->
+  <!--                       <button *ngIf="bChauffeur" title="Facturer la Course" (click)="detail(value)">-->
+  <!--                         <img src="../../../../../assets/images/facture.png" alt="">-->
+  <!--                       </button>-->
+  <!--                       <button title="Visualiser la Facture"  (click)="PdfVisuFacture(value)">-->
+  <!--                         <img src="../../../../../assets/images/pdf.png" alt="">-->
+  <!--                       </button>-->
+  <!--                     </div>-->
+  <!--                   </ng-template>-->
+  <!--                 </ngx-datatable-column>-->
+  <!--&lt;!&ndash;                 <ngx-datatable-column name="fact" prop="idPriseEnCharge">-->
+  <!--                   <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>-->
+  <!--                     <div *ngIf="value | Facture:row:'a2':'a3'">-->
+  <!--                       <button md-button (click)="detail(idPriseEnCharge,'facture')">-->
+  <!--                         Facture-->
+  <!--                       </button>-->
+  <!--                     </div>-->
 
-                   </ng-template>
-                 </ngx-datatable-column>-->
+  <!--                   </ng-template>-->
+  <!--                 </ngx-datatable-column>&ndash;&gt;-->
 
-                 <ngx-datatable-column name="Date" prop="dateDemandeVisu"></ngx-datatable-column>
-                 <ngx-datatable-column name="Victime" prop="nomVictime"></ngx-datatable-column>
-                 <ngx-datatable-column name="Structure Requerante" prop="structureRequerante"></ngx-datatable-column>
-                 <ngx-datatable-column name="Depart" prop="adresseDepart"></ngx-datatable-column>
-                 <ngx-datatable-column name="Arrivee" prop="adresseArrivee"></ngx-datatable-column>
-                 <ngx-datatable-column name="Demande" prop="noDemande"></ngx-datatable-column>
-<!--                 <div *ngIf="!bPrescripteur">
-                    <ngx-datatable-column name="Montant" prop="montant"></ngx-datatable-column>
-                    <ngx-datatable-column name="Chauffeur" prop="nomChauffeur"></ngx-datatable-column>
-                 </div>
--->
-  </ngx-datatable>
+  <!--                 <ngx-datatable-column name="Date" prop="dateDemandeVisu"></ngx-datatable-column>-->
+  <!--                 <ngx-datatable-column name="Victime" prop="nomVictime"></ngx-datatable-column>-->
+  <!--                 <ngx-datatable-column name="Structure Requerante" prop="structureRequerante"></ngx-datatable-column>-->
+  <!--                 <ngx-datatable-column name="Depart" prop="adresseDepart"></ngx-datatable-column>-->
+  <!--                 <ngx-datatable-column name="Arrivee" prop="adresseArrivee"></ngx-datatable-column>-->
+  <!--                 <ngx-datatable-column name="Demande" prop="noDemande"></ngx-datatable-column>-->
+  <!--&lt;!&ndash;                 <div *ngIf="!bPrescripteur">-->
+  <!--                    <ngx-datatable-column name="Montant" prop="montant"></ngx-datatable-column>-->
+  <!--                    <ngx-datatable-column name="Chauffeur" prop="nomChauffeur"></ngx-datatable-column>-->
+  <!--                 </div>-->
+  <!--&ndash;&gt;-->
+  <!--  </ngx-datatable>-->
+
+  <!--  [dataSource]="rows"-->
   <dx-data-grid
     id="gridContainer"
-    [dataSource]="rows"
-    [remoteOperations]="false"
+    [dataSource]="dataSource"
+    [remoteOperations]="true"
     [focusedRowEnabled]="true"
     [showBorders]="true"
     [columnAutoWidth]="true"
     keyExpr="idPriseEnCharge"
     wordWrapEnabled="true"
   >
-    <dxo-paging [pageSize]="10"> </dxo-paging>
+    <dxo-paging [pageSize]="10"></dxo-paging>
     <dxo-pager
       [visible]="true"
-      [allowedPageSizes]="[10, 20, 50]"
+      [allowedPageSizes]="[7, 10, 20, 50]"
       [showPageSizeSelector]="true"
       [showInfo]="true"
       [showNavigationButtons]="true"
     >
     </dxo-pager>
+    <!--    <dxo-column-chooser [enabled]="true"></dxo-column-chooser>-->
 
-    <!--    [allowColumnReordering]="true"-->
-    <!--    [rowAlternationEnabled]="true"-->
+    <dxo-toolbar>
+      <dxi-item location="before">
+        <div class="dx-field">
+          <div class="dx-field-label">Période du :</div>
+          <div class="dx-field-value">
+            <dx-date-box [value]="now()" type="date"></dx-date-box>
+          </div>
+        </div>
+      </dxi-item>
+      <dxi-item location="before">
+        <div class="dx-field">
+          <div class="dx-field-label">au</div>
+          <div class="dx-field-value">
+            <dx-date-box [value]="now()" type="date"></dx-date-box>
+          </div>
+        </div>
+      </dxi-item>
+      <dxi-item location="after" *ngIf="bAdmin">
+        <dx-button
+          text="Export Excel"
+          icon="assets/images/excel.png"
+          (onClick)="ExportExcel()"
+        ></dx-button>
+      </dxi-item>
+      <dxi-item location="after">
+        <div *dxTemplate>
+          <dx-button icon="refresh" (onClick)="refreshDataGrid($event)">
+          </dx-button>
+        </div>
+      </dxi-item>
+      <!--      <dxi-item name="columnChooserButton"></dxi-item>-->
+      <!--      <dxi-item location="before">-->
+      <!--        <dx-button-->
+      <!--          text="Test"-->
+      <!--          (onClick)="test()"-->
+      <!--        ></dx-button>-->
+      <!--      </dxi-item>-->
+    </dxo-toolbar>
 
-    <dxi-column type="buttons" [width]="110">
-      <dxi-button
-        hint="Consulter la prise en charge"
-        icon="assets/images/transp.png"
-        cssClass="dx-link"
-        [onClick]="PdfVisuDemandeSelected"
-      ></dxi-button>
-        <dxi-button
-          hint="Visualiser la Facture"
-          icon="assets/images/pdf.png"
-          class="canClick"
-          [onClick]="PdfVisuFactureSelected"
-        ></dxi-button>
-<!--      <dxi-button-->
-<!--        hint="Consulter la prise en charge"-->
-<!--        icon="car"-->
-<!--        [onClick]="PdfVisuDemandeSelected"-->
-<!--      ></dxi-button>-->
-<!--      <dxi-button-->
-<!--        hint="Visualiser la Facture"-->
-<!--        text="PEC"-->
-<!--        icon="pdffile"-->
-<!--        [onClick]="PdfVisuFactureSelected"-->
-<!--      ></dxi-button>-->
-    </dxi-column>
+    <dxi-column
+      cellTemplate="buttonTemplate"
+      caption=""
+      [width]="buttonColSize"
+      alignment="center"
+    ></dxi-column>
 
-    <dxi-column dataField="dateDemandeVisu" caption="Date"></dxi-column>
-    <dxi-column dataField="nomVictime" caption="Victime"></dxi-column>
-    <dxi-column dataField="structureRequerante" caption="Structure Requérante"></dxi-column>
-<!--    <dxi-column-->
-<!--      dataField="adresseDepart"-->
-<!--      caption="Départ"-->
-<!--      [width]="250"-->
-<!--      [allowFiltering]="false"-->
-<!--      [allowSorting]="false"-->
-<!--      cellTemplate="cellTemplate"-->
-<!--    ></dxi-column>-->
-    <dxi-column dataField="adresseDepart" caption="Départ" [width]="300"></dxi-column>
-    <dxi-column dataField="adresseArrivee" caption="Arrivée" [width]="300"></dxi-column>
+    <div *dxTemplate="let e of 'buttonTemplate'">
+      <div *ngIf="bPrescripteur">
+        <button title="Modifier la Demande" (click)="modifier(e.data.idPriseEnCharge)">
+          <img src="assets/images/modifier.png" alt="">
+        </button>
+        <button title="Supprimer la Demande" (click)="supprimer(e.data.idPriseEnCharge)">
+          <img src="assets/images/supprimer.png" alt="">
+        </button>
+        <button title="Consulter la prise en charge" (click)="PdfVisuDemande(e.data.idPriseEnCharge)">
+          <img src="assets/images/transp.png" alt="">
+        </button>
+      </div>
+      <div *ngIf="!bPrescripteur">
+        <button title="Consulter la prise en charge" (click)="PdfVisuDemande(e.data.idPriseEnCharge)">
+          <img src="assets/images/transp.png" alt="">
+        </button>
+        <button *ngIf="bChauffeur" title="Facturer la Course" (click)="detail(e.data.idPriseEnCharge)">
+          <img src="assets/images/facture.png" alt="">
+        </button>
+        <button title="Visualiser la Facture" (click)="PdfVisuFacture(e.data.idPriseEnCharge)">
+          <img src="assets/images/pdf.png" alt="">
+        </button>
+      </div>
+    </div>
+
+    <dxi-column dataField="dateDemande" caption="Date" dataType="date" sortOrder="desc"></dxi-column>
+    <dxi-column dataField="nomVictime" caption="Victime" [allowSorting]="false"></dxi-column>
+    <dxi-column dataField="structureRequerante" caption="Structure Requérante" [allowSorting]="false"></dxi-column>
+    <dxi-column dataField="adresseDepart" caption="Départ" [width]="300" [allowSorting]="false"></dxi-column>
+    <dxi-column dataField="adresseArrivee" caption="Arrivée" [width]="300" [allowSorting]="false"></dxi-column>
     <dxi-column dataField="noDemande" caption="Demande"></dxi-column>
 
     <div *dxTemplate="let data of 'cellTemplate'">
@@ -130,3 +167,29 @@
 
   </dx-data-grid>
 </div>
+
+<dx-load-panel
+  [(visible)]="showLoading"
+  shadingColor="rgba(0,0,0,0.4)"
+  [showIndicator]="true"
+  [showPane]="true"
+  [shading]="true"
+  [closeOnOutsideClick]="false"
+>
+</dx-load-panel>
+
+<dx-popup
+  [(visible)]="isPopupVisible"
+  [closeOnOutsideClick]="true"
+  height="90%"
+  width="90%"
+  contentTemplate="popup-content">
+  <div *dxTemplate="let data of 'popup-content'">
+    <ngx-extended-pdf-viewer
+      [src]="pdfFile"
+      [useBrowserLocale]="true"
+      [filenameForDownload]="pdfFileName"
+      [showOpenFileButton]="false"
+    ></ngx-extended-pdf-viewer>
+  </div>
+</dx-popup>

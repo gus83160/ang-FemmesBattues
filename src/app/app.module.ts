@@ -1,4 +1,4 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, APP_INITIALIZER} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -21,10 +21,13 @@ import {SharedModule} from './shared/shared.module';
 import {rootRouterConfig} from './app.routing';
 import {AppComponent} from './app.component';
 import {DefaultroutingComponent} from './defaultrouting/defaultrouting.component';
-import {BasicAuthInterceptor} from './views/femmesbattues/Authentification/basic-auth.interceptor';
-import {ErrorInterceptor} from './views/femmesbattues/Authentification/error.interceptor';
+import {BasicAuthInterceptor} from './interceptors/basic-auth.interceptor';
+import {ErrorInterceptor} from './interceptors/error.interceptor';
 import {SupprimerComponent} from './views/femmesbattues/dialogue/supprimer.component';
-
+import config from 'devextreme/core/config';
+import {locale, loadMessages} from 'devextreme/localization';
+import * as frMessages from 'devextreme/localization/messages/fr.json';
+import {AngularDateHttpInterceptor} from './interceptors/date-transform-interceptor';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -32,6 +35,16 @@ registerLocaleData(localeFr, 'fr');
 // export function HttpLoaderFactory(httpClient: HttpClient) {
 // 	return new TranslateHttpLoader(httpClient);
 // }
+
+
+const initializeLocalization = () => () => {
+  loadMessages(frMessages);
+  locale('fr');
+};
+
+config({
+  defaultCurrency: 'EUR'
+});
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -73,6 +86,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   // declarations: [AppComponent, DefaultroutingComponent, MycurrencyPipe],
   declarations: [AppComponent, DefaultroutingComponent, SupprimerComponent],
   providers: [
+    {provide: LOCALE_ID, useValue: 'fr-FR'},
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeLocalization,
+      multi: true
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: AngularDateHttpInterceptor, multi: true },
+
     // {provide: ErrorHandler, useClass: ErrorHandlerService},
     {provide: PERFECT_SCROLLBAR_CONFIG, useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG},
     {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},

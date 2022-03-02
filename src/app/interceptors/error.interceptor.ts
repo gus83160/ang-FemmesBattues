@@ -2,10 +2,11 @@ import {Injectable} from '@angular/core';
 import {HttpRequest, HttpHandler, HttpEvent, HttpInterceptor} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {ValidationErrorField, ValidationErrorResponse} from '../../../models/validation_error_response';
-import {ErrorMessage} from '../../../models/ErrorMessage';
-import {ErrorComponent} from './error/error.component';
+import {ValidationErrorField, ValidationErrorResponse} from '../models/validation_error_response';
+import {ErrorMessage} from '../models/ErrorMessage';
+import {ErrorComponent} from '../views/femmesbattues/Authentification/error/error.component';
 import {MatDialog} from '@angular/material/dialog';
+import { alert } from "devextreme/ui/dialog"
 
 
 @Injectable()
@@ -33,23 +34,25 @@ export class ErrorInterceptor implements HttpInterceptor {
             const result = this.buildResponse(err.error);
             return throwError(result);
           } else {
-            const result = new ErrorMessage(err.error.detail);
+            const result = new ErrorMessage(422, err.error.detail);
             return throwError(result);
           }
         } else if (err.status === 412) {
-          const result = new ErrorMessage(err.error.detail);
+          const result = new ErrorMessage(412, err.error.detail);
           return throwError(result);
         } else if (err.status === 401) {
-          const result = new ErrorMessage('Accés refusé.');
+          const result = new ErrorMessage(401,'Accés refusé.');
           return throwError(result);
         } else if (err.status === 403) {
-          const result = new ErrorMessage('Accés interdit.');
+          const result = new ErrorMessage(403,'Accés interdit.');
           return throwError(result);
-        // } else if (err.status === 404) {
+        } else if (err.status === 404) {
+          const result = new ErrorMessage(404,'Elément non trouvé.');
+          return throwError(result);
         } else {
           const error = err.message || err.statusText;
-          this.openDialog(error);
-          // this.snackBar.open(error, 'Ok');
+          alert(error, 'Erreur');
+          //this.openDialog(error);
           return throwError(error);
         }
 //       if (err.status === 401) {

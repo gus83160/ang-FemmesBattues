@@ -58,7 +58,7 @@ export class CourseComponent implements OnInit {
         if (this.variables.Information) {
           const rep = this.util.GenererPDF(null, null, courseData.nodemande, null, null);
           rep.then(() => {
-            this.util.DownloadFile(courseData.nodemande);
+            this.util.openFileInNewWindow(courseData.nodemande);
           });
         } else {
           if (!this.repCourseHub.vehicleCode || (this.repCourseHub.vehicleCode === this.variables.currentUser.ut_codechauffeur)) {

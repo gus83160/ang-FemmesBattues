@@ -9,6 +9,7 @@ import {Pdf} from './pdf';
 import {RepAutorisation} from './repautorisation';
 import {RepCourseHub} from './repcoursehub';
 import {RechCourse} from './rechcourse';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -50,8 +51,18 @@ export class UtilService {
     return re;
   }
 
-  async DownloadFile(fichier: string) {
+  async openFileInNewWindow(fichier: string) {
     window.open(environment.url + '/util/download/' + fichier, 'application/pdf');
+  }
+
+  downloadFile(fichier: string): any {
+    let url = environment.url + '/util/download/' + fichier;
+    return this.http.get(url, { responseType: 'blob' })
+      .pipe(
+        map((result: any) => {
+          return result;
+        })
+      );
   }
 
   async CSV(fichier: string) {

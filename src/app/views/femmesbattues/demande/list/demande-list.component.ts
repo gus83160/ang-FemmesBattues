@@ -1,22 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {MatDialog} from '@angular/material/dialog';
-
 import {GlobalVariables} from '../../global/global_variables';
 import {UtilService} from '../../global/util.service';
-
 import {Retour} from '../../../../models/retour';
 import {PriseEnCharge} from '../../../../models/PriseEnCharge';
 import {PriseEnChargeService} from '../../../../services/PriseEnCharge.service';
 import {DemandeService} from '../../../../services/demande.service';
 import {VictimeService} from '../../../../services/victime.service';
-
 import {DialogueService} from '../../dialogue/dialogue.service';
 import {SupprimerComponent} from '../../dialogue/supprimer.component';
 import {RoutesEnum} from '../../RoutesEnum';
+import DataSource from 'devextreme/data/data_source';
+import {DxDataGridComponent} from 'devextreme-angular';
 
 @Component({
   selector: 'app-demande-list',
@@ -24,17 +21,25 @@ import {RoutesEnum} from '../../RoutesEnum';
   styleUrls: ['./demande-list.component.scss']
 })
 export class DemandeListComponent implements OnInit {
-
   rows = [];
-  columns = [];
   bPrescripteur: boolean;
   bChauffeur: boolean;
   bAdmin: boolean;
   ret: Retour;
   retFacture: Retour;
-  ret2: Retour = new Retour();
-  nbRetour = 0;
+  // ret2: Retour = new Retour();
+  // nbRetour = 0;
   priseencharge: PriseEnCharge;
+  buttonColSize: number;
+  showLoading: boolean;
+  isPopupVisible: boolean;
+
+  pdfFile: Blob;
+  pdfFileName: string;
+
+  dataSource: DataSource;
+
+  @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
 
   constructor(public dialogueService: DialogueService,
               private route: Router,
@@ -43,7 +48,8 @@ export class DemandeListComponent implements OnInit {
               private priseenchargeservice: PriseEnChargeService,
               private demandeservice: DemandeService,
               private victimeservice: VictimeService,
-              private variables: GlobalVariables) {
+              private variables: GlobalVariables,
+              private http: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -53,62 +59,34 @@ export class DemandeListComponent implements OnInit {
     this.bChauffeur = (this.variables.currentUser.idtypeutilisateur === this.variables.TypeChauffeur);
     this.bAdmin = (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAdmin);
 
+    if (this.bPrescripteur) {
+      this.buttonColSize = 170;
+    } else {
+      if (this.bChauffeur) {
+        this.buttonColSize = 170;
+      } else {
+        this.buttonColSize = 130;
+      }
+    }
     this.variables.IdPriseEnCharge = 0;
-    this.columns = this.getDataConf();
     this.loadAllPriseEnCharge();
   }
 
-  getDataConf() {
-    return [
-      {
-        prop: 'fact',
-        name: 'montant'
-      },
-      {
-        prop: 'dateDemandeVisu',
-        name: 'Date'
-      },
-      {
-        prop: 'noDemande',
-        name: 'Demande'
-      },
-      {
-        prop: 'nomVictime',
-        name: 'Victime'
-      },
-      {
-        prop: 'adresseDepart',
-        name: 'Départ'
-      },
-      {
-        prop: 'adresseArrivee',
-        name: 'Arrivée'
-      },
-      {
-        prop: 'structureRequerante',
-        name: 'Structure Requerante'
-      },
-      {
-        prop: 'nomChauffeur',
-        name: 'Chauffeur'
-      },
-      {
-        prop: 'montant',
-        name: 'Momtant'
-      }
-
-    ];
-  }
-
   loadAllPriseEnCharge() {
-    const res = this.priseenchargeservice.getAllPriseEnCharge(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
-    res.subscribe(ret => {
-      if (ret) {
-        this.rows = ret;
-        this.ret2.montant = ret[this.nbRetour].montant;
-        this.nbRetour++;
-      }
+    const store = this.priseenchargeservice.getAllPriseEnChargeStore(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
+    this.dataSource = new DataSource({
+      store: store,
+      // sort: [{"selector":"dateDemande", "desc":true}]
     });
+
+    // const res = this.priseenchargeservice.getAllPriseEnCharge(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
+    // res.subscribe(ret => {
+    //   if (ret) {
+    //     this.rows = ret;
+    //     // this.ret2.montant = ret[this.nbRetour].montant;
+    //     // this.nbRetour++;
+    //   }
+    // });
   }
 
 
@@ -223,38 +201,64 @@ export class DemandeListComponent implements OnInit {
 
   }
 
-  PdfVisuFactureSelected = async (e): Promise<void> => {
-    await this.PdfVisuFacture(e.row.data.idDemande);
-  }
-
   async PdfVisuFacture(id: number): Promise<void> {
     this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
     if (this.priseencharge != null) {
       if (this.priseencharge.pe_nofacture === '' || this.priseencharge.pe_nofacture == null) {
         this.dialogueService.confirm({message: 'La course n\'est pas facturée.'});
       } else {
-        await this.utilservice.DownloadFile(this.priseencharge.pe_nofacture);
+        this.showPdf(this.priseencharge.pe_nofacture);
+        //await this.utilservice.openFileInNewWindow(this.priseencharge.pe_nofacture);
       }
-
     } else {
       console.log('Detail ERREUR ');
     }
   }
 
-  PdfVisuDemandeSelected = async (e): Promise<void> => {
-    await this.PdfVisuDemande(e.row.data.idDemande);
-  }
+  // async PdfVisuDemande(id: number): Promise<void> {
+  //   this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
+  //   if (this.priseencharge != null) {
+  //     const rep = this.utilservice.GenererPDF(null, null, this.priseencharge.pe_nodemande, null, null);
+  //     rep.then(async (result) => {
+  //       await this.utilservice.DownloadFile(this.priseencharge.pe_nodemande);
+  //     });
+  //   } else {
+  //     console.log('Detail ERREUR ');
+  //   }
+  // }
 
   async PdfVisuDemande(id: number): Promise<void> {
     this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
     if (this.priseencharge != null) {
       const rep = this.utilservice.GenererPDF(null, null, this.priseencharge.pe_nodemande, null, null);
       rep.then(async (result) => {
-        await this.utilservice.DownloadFile(this.priseencharge.pe_nodemande);
+        this.showPdf(this.priseencharge.pe_nodemande);
       });
     } else {
       console.log('Detail ERREUR ');
     }
+  }
+
+  private showPdf(fichier: string) {
+    this.showLoading = true;
+
+    this.pdfFileName = fichier
+    this.utilservice.downloadFile(fichier).subscribe(
+      (res) => {
+        this.isPopupVisible = true;
+        this.showLoading = false;
+        this.pdfFile = res;
+      },
+      (err) => {
+        this.hidePdf();
+        err.show();
+      }
+    );
+  }
+
+  private hidePdf() {
+    this.isPopupVisible = false;
+    this.showLoading = false;
   }
 
   ExportExcel() {
@@ -262,7 +266,17 @@ export class DemandeListComponent implements OnInit {
     rep.then(result => {
       this.utilservice.DownloadFileCSV('export');
     });
-
   }
 
+  now = () => {
+    return new Date();
+  }
+
+  refreshDataGrid(e) {
+    this.dataGrid.instance.refresh();
+  }
+
+  test() {
+    this.isPopupVisible = !this.isPopupVisible;
+  }
 }
