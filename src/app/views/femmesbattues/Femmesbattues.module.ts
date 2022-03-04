@@ -38,6 +38,7 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { CommonModule } from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
+import {DemandeListFilterComponent} from './demande/list/filter/demande-list-filter.component';
 
 @NgModule({
   imports: [
@@ -80,6 +81,7 @@ import {HttpClientModule} from '@angular/common/http';
     LogoutComponent,
     DemandeComponent,
     DemandeListComponent,
+    DemandeListFilterComponent,
     CourseComponent,
     CourseFicheComponent,
     PriseenchargeComponent,

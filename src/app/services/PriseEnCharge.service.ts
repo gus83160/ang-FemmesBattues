@@ -48,9 +48,9 @@ export class PriseEnChargeService {
      return await this.http.delete<any>(environment.url + '/priseencharge/'+id).toPromise();
   }
 
-  getAllPriseEnCharge(type,id): Observable<Retour[]> {
-     return this.http.get<Retour[]>(environment.url + '/priseencharge/liste_prise_en_charge/'+type+'/'+id );
-  }
+  // getAllPriseEnCharge(type,id): Observable<Retour[]> {
+  //    return this.http.get<Retour[]>(environment.url + '/priseencharge/liste_prise_en_charge/'+type+'/'+id );
+  // }
 
   getAllPriseEnChargeStore(type,id): CustomStore {
     const serviceUrl = environment.url + '/priseencharge/datasource/liste_prise_en_charge/'+type+'/'+id;

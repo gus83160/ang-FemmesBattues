@@ -1,4 +1,7 @@
 <div class="mat-box-shadow margin-333">
+  <app-demande-list-filter (applyFilter)="onApplyFilter($event)"></app-demande-list-filter>
+  <!--  <form action="your-action" (submit)="onFormSubmit($event)">-->
+
   <!--  <button *ngIf="bAdmin" title="Export excel" (click)="ExportExcel()">-->
   <!--    <img src="assets/images/excel.png" alt="">-->
   <!--  </button>-->
@@ -85,20 +88,12 @@
 
     <dxo-toolbar>
       <dxi-item location="before">
-        <div class="dx-field">
-          <div class="dx-field-label">Période du :</div>
-          <div class="dx-field-value">
-            <dx-date-box [value]="now()" type="date"></dx-date-box>
-          </div>
-        </div>
-      </dxi-item>
-      <dxi-item location="before">
-        <div class="dx-field">
-          <div class="dx-field-label">au</div>
-          <div class="dx-field-value">
-            <dx-date-box [value]="now()" type="date"></dx-date-box>
-          </div>
-        </div>
+        <dx-button
+          text="Filtres"
+          icon="filter"
+          (onClick)="openFilter()"
+        ></dx-button>
+        <span>&nbsp;{{ filterText }}</span>
       </dxi-item>
       <dxi-item location="after" *ngIf="bAdmin">
         <dx-button

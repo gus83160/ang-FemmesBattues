@@ -1,0 +1,64 @@
+<!--<dx-button text="Filtres" type="default" (onClick)="onShowFiltre()"></dx-button>-->
+<!--<dx-button text="Test" type="default" (onClick)="onTest()"></dx-button>-->
+
+<!--<dx-data-grid *ngIf="lines" [dataSource]="lines">-->
+<!--  <dxi-column dataField="dt" format="E dd/MM/yyyy HH:mm"></dxi-column>-->
+<!--  <dxi-column dataField="lundi" format="E dd/MM/yyyy HH:mm"></dxi-column>-->
+<!--  <dxi-column dataField="dimanche" format="E dd/MM/yyyy HH:mm"></dxi-column>-->
+<!--  <dxi-column dataField="debutMois" format="E dd/MM/yyyy HH:mm"></dxi-column>-->
+<!--  <dxi-column dataField="finMois" format="E dd/MM/yyyy HH:mm"></dxi-column>-->
+<!--  <dxi-column dataField="debutAnnee" format="E dd/MM/yyyy HH:mm"></dxi-column>-->
+<!--  <dxi-column dataField="finAnnee" format="E dd/MM/yyyy HH:mm"></dxi-column>-->
+<!--</dx-data-grid>-->
+
+<dx-popup [(visible)]="isFilterVisible" height="auto" title="Filtres" [closeOnOutsideClick]="true"
+          (onHidden)="onClose()">
+  <!--  <div class="content-block">-->
+  <div class="">
+    <div class="responsive-paddings">
+      <form action="your-action" (submit)="onFormSubmit($event)">
+        <dx-form [(formData)]="filterData">
+          <dxi-item itemType="group" [colCount]="8">
+            <dxi-item [template]="'selectionTemplate'" [colSpan]="2"></dxi-item>
+            <dxi-item dataField="du" editorType="dxDateBox" [colSpan]="3" [editorOptions]="{ disabled: filterData.numDemande, showClearButton: true }">
+              <dxi-validation-rule type="custom" message="La date de début doit être inférieure à la date de fin"
+                                   [reevaluate]="true" [validationCallback]="validateDate"></dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="au" editorType="dxDateBox" [colSpan]="3" [editorOptions]="{ disabled: filterData.numDemande, showClearButton: true }">
+              <dxi-validation-rule type="custom" message="La date de début doit être inférieure à la date de fin"
+                                   [reevaluate]="true" [validationCallback]="validateDate"></dxi-validation-rule>
+              <!--            <dxi-validation-rule type="required" message="Email is required"></dxi-validation-rule>-->
+            </dxi-item>
+          </dxi-item>
+          <dxi-item dataField="numDemande" editorType="dxTextBox" [editorOptions]="{ showClearButton: true }">
+            <dxo-label text="N° de demande"></dxo-label>
+            <!--          <dxi-validation-rule type="required" message="Email is required"></dxi-validation-rule>-->
+          </dxi-item>
+          <!--      <dxi-item itemType="button">-->
+          <!--        <dxo-button-options text="Annuler" type="default" [useSubmitBehavior]="true">-->
+          <!--        </dxo-button-options>-->
+          <!--      </dxi-item>-->
+          <dxi-item [template]="'buttonTemplate'"></dxi-item>
+
+          <div *dxTemplate="let item of 'selectionTemplate'">
+            <dx-drop-down-button
+              [disabled]="filterData.numDemande"
+              width="100%"
+              text="Périodes"
+              [dropDownOptions]="{ width: 230 }"
+              [items]="dateSelectionOptions"
+              (onItemClick)="onSelectionDateClick($event)"
+            ></dx-drop-down-button>
+          </div>
+
+          <div *dxTemplate="let item of 'buttonTemplate'">
+            <div style='text-align: right'>
+              <dx-button style="margin-right: 5px;" text="Annuler" (click)="onClose()"></dx-button>
+              <dx-button text="Appliquer" type="default" [useSubmitBehavior]="true"></dx-button>
+            </div>
+          </div>
+        </dx-form>
+      </form>
+    </div>
+  </div>
+</dx-popup>

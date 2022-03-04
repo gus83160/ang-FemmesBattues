@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {MatDialog} from '@angular/material/dialog';
@@ -14,13 +14,19 @@ import {SupprimerComponent} from '../../dialogue/supprimer.component';
 import {RoutesEnum} from '../../RoutesEnum';
 import DataSource from 'devextreme/data/data_source';
 import {DxDataGridComponent} from 'devextreme-angular';
+import notify from 'devextreme/ui/notify';
+import {DemandeListFilterComponent} from './filter/demande-list-filter.component';
+import {formatDate} from 'devextreme/localization';
 
 @Component({
   selector: 'app-demande-list',
   templateUrl: './demande-list.component.html',
   styleUrls: ['./demande-list.component.scss']
 })
-export class DemandeListComponent implements OnInit {
+export class DemandeListComponent implements OnInit, AfterViewInit {
+  @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
+  @ViewChild(DemandeListFilterComponent, { static: false }) filterComponent: DemandeListFilterComponent | undefined;
+
   rows = [];
   bPrescripteur: boolean;
   bChauffeur: boolean;
@@ -38,8 +44,7 @@ export class DemandeListComponent implements OnInit {
   pdfFileName: string;
 
   dataSource: DataSource;
-
-  @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
+  filterText: string;
 
   constructor(public dialogueService: DialogueService,
               private route: Router,
@@ -69,6 +74,13 @@ export class DemandeListComponent implements OnInit {
       }
     }
     this.variables.IdPriseEnCharge = 0;
+  }
+
+  ngAfterViewInit(): void {
+    const now = new Date();
+    this.filterComponent!.filterData.du = this.filterComponent.getLundi(now);
+    this.filterComponent!.filterData.au = this.filterComponent.getDimanche(now);
+
     this.loadAllPriseEnCharge();
   }
 
@@ -76,8 +88,10 @@ export class DemandeListComponent implements OnInit {
     const store = this.priseenchargeservice.getAllPriseEnChargeStore(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
     this.dataSource = new DataSource({
       store: store,
-      // sort: [{"selector":"dateDemande", "desc":true}]
     });
+
+    const filter = this.createFilter(this.filterComponent!.filterData)
+    this.dataSource.filter(filter);
 
     // const res = this.priseenchargeservice.getAllPriseEnCharge(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
     // res.subscribe(ret => {
@@ -193,12 +207,13 @@ export class DemandeListComponent implements OnInit {
         await this.demandeservice.deleteDemande(this.priseencharge.iddemande);
         await this.victimeservice.deleteVictime(this.priseencharge.idvictime);
         await this.priseenchargeservice.deletePriseEnCharge(this.priseencharge.id);
-        this.route.navigate([RoutesEnum.ROOT]);
+
+        this.dataSource.reload();
+        //this.route.navigate([RoutesEnum.ROOT]);
       }
     } else {
       console.log('Detail ERREUR ');
     }
-
   }
 
   async PdfVisuFacture(id: number): Promise<void> {
@@ -268,15 +283,46 @@ export class DemandeListComponent implements OnInit {
     });
   }
 
-  now = () => {
-    return new Date();
-  }
-
   refreshDataGrid(e) {
     this.dataGrid.instance.refresh();
   }
 
   test() {
     this.isPopupVisible = !this.isPopupVisible;
+  }
+
+  openFilter() {
+    this.filterComponent!.showFiltre();
+  }
+
+  onApplyFilter(e: any) {
+    this.dataSource.filter(this.createFilter(e));
+    this.dataSource.reload();
+  }
+
+  createFilter(e: any): any[] {
+    let filter = [];
+    this.filterText = '';
+
+    if (e.numDemande) {
+      filter = [ "noDemande", "contains", e.numDemande ];
+      this.filterText = 'N° de demande contient : ' + e.numDemande;
+    } else if (e.du || e.au) {
+      if (e.du && e.au) {
+        filter = [
+          [ "dateDemande", ">=", e.du ],
+          "and",
+          [ "dateDemande", "<=", e.au ],
+        ]
+        this.filterText = 'du ' + formatDate(e.du, 'dd/MM/yyyy') + ' au ' + formatDate(e.au, 'dd/MM/yyyy');
+      } else if (e.du) {
+        filter = [ "dateDemande", ">=", e.du ];
+        this.filterText = 'à partir du ' + formatDate(e.du, 'dd/MM/yyyy');
+      } else {
+        filter = [ "dateDemande", "<=", e.au ];
+        this.filterText = 'jusqu\'au ' + formatDate(e.au, 'dd/MM/yyyy');
+      }
+    }
+    return filter;
   }
 }
