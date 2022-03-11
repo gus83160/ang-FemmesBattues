@@ -1,0 +1,213 @@
+<app-demande-recherche
+  [searchData]="searchData"
+  [initiallyShowed]="popupInitiallyShowed"
+  [ok]="onRecherche"
+  [cancel]="onCancel"></app-demande-recherche>
+
+<dx-load-panel
+  [(visible)]="showLoading"
+  shadingColor="rgba(0,0,0,0.4)"
+  [showIndicator]="true"
+  [showPane]="true"
+  [shading]="true"
+  [closeOnOutsideClick]="false"
+  message="Recherche en cours..."
+>
+</dx-load-panel>
+
+<form *ngIf="priseEnCharge" action="dummy" (submit)="onFormSubmit($event)">
+  <div class="sticky-toolbar" *ngIf="isDevMode">
+    <dx-button style="margin-right: 5px;" text="Fill values" (click)="fillValues()"></dx-button>
+    <dx-button text="Valider" type="default" [useSubmitBehavior]="true"></dx-button>
+  </div>
+  <dx-form class="dx-card" [(formData)]="formData">
+    <dxi-item itemType="group" [colCount]="12" caption="Identification de la demande">
+      <dxi-item [colSpan]="5">
+        <dxo-label text="Nom de la personne"></dxo-label>
+        <div *dxTemplate>
+          <div>{{ priseEnCharge.nomVictime }}</div>
+        </div>
+      </dxi-item>
+
+      <dxi-item [colSpan]="7">
+        <dxo-label text="Adresses"></dxo-label>
+        <div *dxTemplate>
+          <div>{{ priseEnCharge.adresseDepart }}</div>
+          <div>{{ priseEnCharge.adresseArrivee }}</div>
+        </div>
+      </dxi-item>
+    </dxi-item>
+    <dxi-item itemType="group" [colCount]="12" caption="Eléments de la course">
+<!--      <dxi-item [colSpan]="12" datafield="co_typeCourse">-->
+<!--        <dxo-label caption="Type de course"></dxo-label>-->
+<!--        <dx-select-box-->
+<!--          [dataSource]="intraMurosDatasource"-->
+<!--          valueExpr="id"-->
+<!--          displayExpr="text"-->
+<!--          [(value)]="formData.co_typeCourse"-->
+<!--          (onValueChanged)="intramurosChanged($event)"-->
+<!--        ></dx-select-box>-->
+<!--      </dxi-item>-->
+      <dxi-item [colSpan]="12"
+                dataField="co_typeCourse"
+                editorType="dxSelectBox"
+                [editorOptions]="typeCourseOptions"
+                >
+        <dxo-label caption="Type de course"></dxo-label>
+        <dxi-validation-rule type="required" message="Veuillez sélectionner un type de course">
+        </dxi-validation-rule>
+      </dxi-item>
+
+      <!--      <dxi-item dataField="co_intramuros" editorType="dxCheckBox" [colSpan]="12">-->
+      <!--        <dxo-label text="Course intramuros"></dxo-label>-->
+      <!--      </dxi-item>-->
+      <dxi-item dataField="co_date" editorType="dxDateBox" [colSpan]="4"
+                [editorOptions]="{ type: 'date', showClearButton: true, displayFormat: 'dd/MM/yyyy', useMaskBehavior: true}"
+                isRequired="true">
+        <dxo-label text="Date de début"></dxo-label>
+      </dxi-item>
+      <dxi-item dataField="co_heuredebut" editorType="dxDateBox" [colSpan]="4"
+                [editorOptions]="{ type: 'time', showClearButton: true, displayFormat: 'HH:mm', useMaskBehavior: true}" isRequired="true">
+        <dxo-label text="Heure de début"></dxo-label>
+      </dxi-item>
+      <dxi-item dataField="co_heurefin" editorType="dxDateBox" [colSpan]="4"
+                [editorOptions]="{ type: 'time', showClearButton: true, displayFormat: 'HH:mm', useMaskBehavior: true}" isRequired="true">
+        <dxo-label text="Heure de fin"></dxo-label>
+      </dxi-item>
+      <dxi-item itemType="group" [colCount]="3" [colSpan]="12" caption="Kms">
+        <dxi-item itemType="group">
+          <dxi-item dataField="co_kmsA" editorType="dxNumberBox" [editorOptions]="{format: '#0'}" [cssClass]="'number'">
+            <dxo-label text="Kms A"></dxo-label>
+          </dxi-item>
+          <dxi-item dataField="co_kmsB" editorType="dxNumberBox" [editorOptions]="{format: '#0'}" [cssClass]="'number'">
+            <dxo-label text="Kms B"></dxo-label>
+          </dxi-item>
+        </dxi-item>
+        <dxi-item itemType="group">
+          <dxi-item dataField="co_kmsC" editorType="dxNumberBox" [editorOptions]="{format: '#0'}" [cssClass]="'number'">
+            <dxo-label text="Kms C"></dxo-label>
+          </dxi-item>
+          <dxi-item dataField="co_kmsD" editorType="dxNumberBox" [editorOptions]="{format: '#0'}" [cssClass]="'number'">
+            <dxo-label text="Kms D"></dxo-label>
+          </dxi-item>
+        </dxi-item>
+        <dxi-item itemType="group">
+          <dxi-item dataField="co_peage" editorType="dxNumberBox" [editorOptions]="{format: '#,##0.00 €'}"
+                    [cssClass]="'number'">
+            <dxo-label text="Péages"></dxo-label>
+          </dxi-item>
+        </dxi-item>
+      </dxi-item>
+
+      <dxi-item itemType="group" [colCount]="2" [colSpan]="12" caption="Attente">
+        <dxi-item #attjour dataField="co_attjour" editorType="dxDateBox"
+                  [editorOptions]="{ type: 'time', showClearButton: true, displayFormat: 'HH:mm', useMaskBehavior: true}">
+          <dxo-label text="Attente de jour"></dxo-label>
+          <dxi-validation-rule type="custom" [validationCallback]="validateAttente"
+                               message="L'attente doit être un multiple de 10 minutes"></dxi-validation-rule>
+        </dxi-item>
+        <dxi-item dataField="co_attnuit" editorType="dxDateBox"
+                  [editorOptions]="{ type: 'time', showClearButton: true, displayFormat: 'HH:mm', useMaskBehavior: true}">
+          <dxo-label text="Attente de nuit"></dxo-label>
+          <dxi-validation-rule type="custom" [validationCallback]="validateAttente"
+                               message="L'attente doit être un multiple de 10 minutes"></dxi-validation-rule>
+        </dxi-item>
+      </dxi-item>
+    </dxi-item>
+
+    <dxi-item>
+      <div style='text-align: right'>
+        <div *ngFor="let msg of globalErrorMessage" style="color: red;">{{ msg }}</div>
+      </div>
+      <div style='text-align: right'>
+        <dx-button style="margin-right: 5px;" text="Annuler" (click)="onClose()"></dx-button>
+        <dx-button text="Valider" type="default" [useSubmitBehavior]="true"></dx-button>
+      </div>
+    </dxi-item>
+  </dx-form>
+</form>
+
+<!--<mat-card class="p-0">-->
+<!--  <mat-card-title class="">-->
+<!--    <div class="card-title-text">Demande</div>-->
+<!--    <mat-divider></mat-divider>-->
+<!--  </mat-card-title>-->
+<!--  <mat-card-content>-->
+
+<!--    <div>-->
+<!--      {{ variables.NomVictime }} <br>-->
+<!--      {{ variables.AdresseDepart }} <br>-->
+<!--      {{ variables.AdresseArrivee }}-->
+<!--    </div>-->
+
+
+<!--    <form [formGroup]="CourseForm" (ngSubmit)="CreationCourse()">-->
+<!--      <div>-->
+<!--        <div fxLayout="row wrap">-->
+<!--          <div fxFlex="100" fxFlex.gt-xs="33" class="pr-1">-->
+<!--            <div class="pb-1">-->
+<!--              <mat-form-field class="full-width">-->
+<!--                <input-->
+<!--                  matInput-->
+<!--                  name="co_date"-->
+<!--                  formControlName="co_date"-->
+<!--                  placeholder="Date"-->
+<!--                  [matDatepicker]="appDatepicker">-->
+<!--                <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>-->
+<!--              </mat-form-field>-->
+<!--              <mat-datepicker #appDatepicker></mat-datepicker>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div fxFlex="100" fxFlex.gt-xs="33" class="pr-1">-->
+<!--            <div class="pb-1">-->
+<!--              <label for="co_heuredebut">Heure Début&nbsp;&nbsp;&nbsp;</label>-->
+<!--              <input type="time"-->
+<!--                     id="co_heuredebut"-->
+<!--                     name="co_heuredebut"-->
+<!--                     formControlName="co_heuredebut">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div fxFlex="100" fxFlex.gt-xs="33" class="pr-1">-->
+<!--            <div class="pb-1">-->
+<!--              <label for="co_heurefin">Heure Fin&nbsp;&nbsp;&nbsp;</label>-->
+<!--              <input type="time"-->
+<!--                     name="co_heurefin"-->
+<!--                     formControlName="co_heurefin">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div fxLayout="row wrap">-->
+<!--          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">-->
+<!--            <div class="pb-1">-->
+<!--              <mat-form-field class="full-width">-->
+<!--                <input-->
+<!--                  matInput-->
+<!--                  name="co_montant"-->
+<!--                  [formControl]="CourseForm.controls['co_montant']"-->
+<!--                  placeholder="Compteur"-->
+<!--                  value="">-->
+<!--              </mat-form-field>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">-->
+<!--            <div class="pb-1">-->
+<!--              <mat-form-field class="full-width">-->
+<!--                <input-->
+<!--                  matInput-->
+<!--                  name="co_peage"-->
+<!--                  [formControl]="CourseForm.controls['co_peage']"-->
+<!--                  placeholder="Péage"-->
+<!--                  value="">-->
+<!--              </mat-form-field>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--      </div>-->
+<!--      <button-->
+<!--        mat-raised-button-->
+<!--        color="primary" [disabled]="CourseForm.invalid">Enregistrer-->
+<!--      </button>-->
+<!--    </form>-->
+<!--  </mat-card-content>-->
+<!--</mat-card>-->

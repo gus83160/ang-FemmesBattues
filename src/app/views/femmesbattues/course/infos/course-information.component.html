@@ -1,0 +1,17 @@
+<app-demande-recherche
+  [searchData]="searchData"
+  [initiallyShowed]="popupInitiallyShowed"
+  [ok]="onRecherche"
+  [cancel]="onCancel"></app-demande-recherche>
+
+<dx-load-panel
+  [(visible)]="showLoading"
+  shadingColor="rgba(0,0,0,0.4)"
+  [showIndicator]="true"
+  [showPane]="true"
+  [shading]="true"
+  [closeOnOutsideClick]="false"
+  message="Recherche en cours..."
+></dx-load-panel>
+
+<app-view-pdf (onHidden)="onPdfHidden()"></app-view-pdf>

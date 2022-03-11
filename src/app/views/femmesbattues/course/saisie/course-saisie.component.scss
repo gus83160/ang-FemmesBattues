@@ -1,0 +1,12 @@
+::ng-deep .dx-card {
+  margin : 10px;
+  padding: 10px;
+}
+
+.id_peages input[type=text] {
+  text-align: right;
+}
+
+:host ::ng-deep div.number input {
+  text-align: right;
+}
