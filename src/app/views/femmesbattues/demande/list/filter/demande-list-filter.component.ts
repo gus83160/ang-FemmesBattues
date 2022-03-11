@@ -1,6 +1,7 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {formatDate} from '@angular/common';
 import {DxFormComponent} from 'devextreme-angular';
+import {DateService} from '../../../../../services/date.service';
 
 @Component({
   selector: 'app-demande-list-filter',
@@ -9,12 +10,20 @@ import {DxFormComponent} from 'devextreme-angular';
 })
 export class DemandeListFilterComponent implements OnInit {
   @ViewChild(DxFormComponent, {static: false}) form: DxFormComponent | undefined;
+
+  @Input() filterData: any = {}
   @Output() applyFilter = new EventEmitter();
 
-  filterData: any = {};
   filterDataCopy: any = {};
   private _isFilterVisible = false;
   private isSubmited = false;
+
+  constructor(private dateService: DateService) {
+    //this.onTest();
+  }
+
+  ngOnInit(): void {
+  }
 
   get isFilterVisible() {
     return this._isFilterVisible;
@@ -28,15 +37,8 @@ export class DemandeListFilterComponent implements OnInit {
   dateSelectionOptions = [
     {id: 0, text: 'Cette semaine'},
     {id: 1, text: 'Ce mois'},
-    {id: 1, text: 'Cette année'},
+    {id: 2, text: 'Cette année'},
   ]
-
-  constructor() {
-    //this.onTest();
-  }
-
-  ngOnInit(): void {
-  }
 
   showFiltre() {
     this.isSubmited = false;
@@ -55,16 +57,16 @@ export class DemandeListFilterComponent implements OnInit {
     const now = new Date();
     switch (e.itemData.id) {
       case 0:
-        this.filterData.du = this.getLundi(now);
-        this.filterData.au = this.getDimanche(now);
+        this.filterData.du = this.dateService.getLundi(now);
+        this.filterData.au = this.dateService.getDimanche(now);
         break;
       case 1:
-        this.filterData.du = this.getDebutMois(now);
-        this.filterData.au = this.getFinMois(now);
+        this.filterData.du = this.dateService.getDebutMois(now);
+        this.filterData.au = this.dateService.getFinMois(now);
         break;
       case 2:
-        this.filterData.du = this.getDebutAnnee(now);
-        this.filterData.au = this.getFinAnnee(now);
+        this.filterData.du = this.dateService.getDebutAnnee(now);
+        this.filterData.au = this.dateService.getFinAnnee(now);
         break;
     }
   }
@@ -82,12 +84,12 @@ export class DemandeListFilterComponent implements OnInit {
     for(let i = 0; i < 400; i++) {
       const o = {
         dt: new Date(dt),
-        lundi: this.getLundi(dt),
-        dimanche: this.getDimanche(dt),
-        debutMois: this.getDebutMois(dt),
-        finMois: this.getFinMois(dt),
-        debutAnnee: this.getDebutAnnee(dt),
-        finAnnee: this.getFinAnnee(dt),
+        lundi: this.dateService.getLundi(dt),
+        dimanche: this.dateService.getDimanche(dt),
+        debutMois: this.dateService.getDebutMois(dt),
+        finMois: this.dateService.getFinMois(dt),
+        debutAnnee: this.dateService.getDebutAnnee(dt),
+        finAnnee: this.dateService.getFinAnnee(dt),
       };
 
       console.assert(o.dt >= o.lundi , 'Erreur');
@@ -104,57 +106,6 @@ export class DemandeListFilterComponent implements OnInit {
 
   formatDateFull(dt: Date): string {
     return formatDate(dt, 'EEEE dd/MM/yyyy HH:mm', 'fr');
-  }
-
-  getLundi(dt: Date) : Date {
-    let res = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
-    let weekday = dt.getDay();
-    if (weekday === 0) {
-      weekday = 6;
-    } else {
-      weekday--;
-    }
-    res.setDate(dt.getDate() - weekday);
-    return res;
-  }
-
-  getDimanche(dt: Date): Date {
-    let res = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
-    res.setDate(res.getDate() + 7);
-    res = this.getLundi(res);
-    res.setDate(res.getDate() - 1);
-    res = this.getEndOfDay(res);
-    return res;
-  }
-
-  getDebutMois(dt: Date): Date {
-    let res = new Date(dt.getFullYear(), dt.getMonth(), 1);
-    return res;
-  }
-
-  getFinMois(dt: Date): Date {
-    let res = new Date(dt.getFullYear(), dt.getMonth() + 1, 1);
-    res.setDate(res.getDate() - 1);
-    res = this.getEndOfDay(res);
-    return res;
-  }
-
-  getDebutAnnee(dt: Date): Date {
-    let res = new Date(dt.getFullYear(), 0, 1);
-    return res;
-  }
-
-  getFinAnnee(dt: Date): Date {
-    let res = new Date(dt.getFullYear(), 11, 31);
-    res = this.getEndOfDay(res);
-    return res;
-  }
-
-  getEndOfDay(dt: Date): Date {
-    let res = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
-    res.setDate(dt.getDate() + 1);
-    res.setTime(res.getTime() - 1);
-    return res;
   }
 
   validateDate = (e: any) => {

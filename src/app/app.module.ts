@@ -28,6 +28,10 @@ import config from 'devextreme/core/config';
 import {locale, loadMessages} from 'devextreme/localization';
 import * as frMessages from 'devextreme/localization/messages/fr.json';
 import {AngularDateHttpInterceptor} from './interceptors/date-transform-interceptor';
+import {MAT_DATE_LOCALE} from '@angular/material/core';
+import {DxButtonModule, DxDataGridModule, DxDropDownButtonModule, DxFormModule, DxLoadPanelModule, DxPopupModule} from 'devextreme-angular';
+import {NgxExtendedPdfViewerModule} from 'ngx-extended-pdf-viewer';
+import {PageNotFoundComponent} from './shared/components/not-found/page-not-found.component';
 
 registerLocaleData(localeFr, 'fr');
 
@@ -35,7 +39,6 @@ registerLocaleData(localeFr, 'fr');
 // export function HttpLoaderFactory(httpClient: HttpClient) {
 // 	return new TranslateHttpLoader(httpClient);
 // }
-
 
 const initializeLocalization = () => () => {
   loadMessages(frMessages);
@@ -50,42 +53,28 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
 
-// function initializeKeycloak(keycloak: KeycloakService) {
-// 	return () =>
-// 		keycloak.init({
-// 			config: {
-// 				url: 'https://auth.france-taxi.com/auth',
-// 				realm: 'compta-driver',
-// 				clientId: 'webcompta-web',
-// 			},
-// 			initOptions: {
-// 				onLoad: 'check-sso',
-// 				//silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
-// 				checkLoginIframe: false,
-// 			},
-// 			bearerExcludedUrls: ['/assets', '/clients/public'],
-// 		});
-// }
-
 @NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    RouterModule.forRoot(rootRouterConfig, {useHash: false, onSameUrlNavigation: 'reload'}),
     SharedModule,
     MatDialogModule,
     HttpClientModule,
     PerfectScrollbarModule,
-    // InMemoryWebApiModule.forRoot(InMemoryDataService, {passThruUnknownUrl: true}),
-    RouterModule.forRoot(rootRouterConfig, {useHash: false, onSameUrlNavigation: 'reload'}),
     FlexLayoutModule,
-    // MatDatepickerModule,
-    // MatNativeDateModule,
-    // MatMomentDateModule,
-    // 	SharedPipesModule
+
+    DxDataGridModule,
+    DxPopupModule,
+    DxLoadPanelModule,
+    DxButtonModule,
+    DxFormModule,
+    DxDropDownButtonModule,
   ],
   // declarations: [AppComponent, DefaultroutingComponent, MycurrencyPipe],
-  declarations: [AppComponent, DefaultroutingComponent, SupprimerComponent],
+  declarations: [AppComponent, DefaultroutingComponent, SupprimerComponent, PageNotFoundComponent],
   providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
     {provide: LOCALE_ID, useValue: 'fr-FR'},
     {
       provide: APP_INITIALIZER,
@@ -99,7 +88,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     DatePipe,
-    // {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
     // {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     // {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     // {provide: LOCALE_ID, useValue: 'fr'},

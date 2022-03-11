@@ -13,32 +13,43 @@ import {SharedPipesModule} from './pipes/shared-pipes.module';
 import {SharedDirectivesModule} from './directives/shared-directives.module';
 // import {KeycloackAuthGuard} from './keycloack-auth-guard.service';
 import {OnlyNumberDirective} from './directives/only-number.directive';
-import {AuthGuard} from './services/auth/auth.guard';
+import {AuthGuardService} from './services/auth/auth-guard.service';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {ErrorComponent} from '../views/femmesbattues/error/error.component';
+import {LoginComponent} from '../views/femmesbattues/auth/login/login.component';
+import {DialogueService} from '../views/femmesbattues/dialogue/dialogue.service';
+import {ShowErrorsComponent} from '../show-errors.component';
 
 @NgModule({
   imports: [
     CommonModule,
     SharedComponentsModule,
     SharedPipesModule,
-    SharedDirectivesModule
+    SharedDirectivesModule,
+    MatDialogModule,
   ],
   providers: [
     ThemeService,
     NavigationService,
     RoutePartsService,
+    DialogueService,
 //    KeycloackAuthGuard,
     AppConfirmService,
     AppLoaderService,
-    AuthGuard
+    AuthGuardService
   ],
   declarations: [
-    OnlyNumberDirective
+    OnlyNumberDirective,
+    ErrorComponent,
+    ShowErrorsComponent,
   ],
   exports: [
     SharedComponentsModule,
     SharedPipesModule,
     SharedDirectivesModule,
-    OnlyNumberDirective
+    OnlyNumberDirective,
+    ErrorComponent,
+    ShowErrorsComponent,
   ]
 })
 export class SharedModule {

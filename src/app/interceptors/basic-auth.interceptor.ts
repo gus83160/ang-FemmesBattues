@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { AuthService } from '../views/femmesbattues/Authentification/auth.service';
+import { AuthService } from '../shared/services/auth.service';
 import { GlobalVariables } from '../views/femmesbattues/global/global_variables';
 
 @Injectable()

@@ -4,7 +4,7 @@ import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {ValidationErrorField, ValidationErrorResponse} from '../models/validation_error_response';
 import {ErrorMessage} from '../models/ErrorMessage';
-import {ErrorComponent} from '../views/femmesbattues/Authentification/error/error.component';
+import {ErrorComponent} from '../views/femmesbattues/error/error.component';
 import {MatDialog} from '@angular/material/dialog';
 import { alert } from "devextreme/ui/dialog"
 
@@ -71,8 +71,8 @@ export class ErrorInterceptor implements HttpInterceptor {
           fieldName = fieldName.substr(2);
         }
         const fieldError: ValidationErrorField = {
-          Name: fieldName,
-          Description: Reflect.get(e.errors, key),
+          fieldname: fieldName,
+          message: Reflect.get(e.errors, key),
         };
         model.ValidationErrors.push(fieldError);
       });

@@ -12,6 +12,7 @@ import { Subscription } from "rxjs";
 import { ThemeService } from '../../../services/theme.service';
 import { LayoutService } from '../../../services/layout.service';
 import { filter } from 'rxjs/operators';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -33,7 +34,8 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     // public translate: TranslateService,
     public themeService: ThemeService,
     private layout: LayoutService,
-    private cdr: ChangeDetectorRef
+    private authService: AuthService,
+  private cdr: ChangeDetectorRef
   ) {
     // Close sidenav after route change in mobile
     this.routerEventSub = router.events.pipe(filter(event => event instanceof NavigationEnd))
@@ -46,7 +48,8 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     // const browserLang: string = translate.getBrowserLang();
     // translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
   }
-  ngOnInit() {
+  async ngOnInit() {
+    await this.authService.tryLoadFromSession();
     // this.layoutConf = this.layout.layoutConf;
     this.layoutConfSub = this.layout.layoutConf$.subscribe((layoutConf) => {
         this.layoutConf = layoutConf;

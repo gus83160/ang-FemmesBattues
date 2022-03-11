@@ -84,17 +84,21 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
     this.title = '';
     if (url === '/') {
       this.title = 'Accueil';
-    } else if (url === '/' + RoutesEnum.DEMANDE_LISTE) {
+    } else if (url === '/' + RoutesEnum.DEMANDE + '/' + RoutesEnum.DEMANDE_LIST) {
       this.title = 'Courses';
-    } else if (url === '/' + RoutesEnum.COURSE) {
-      this.title = 'Demande d\'information';
-    } else if (url === '/' + RoutesEnum.LOGIN) {
+    } else if (url === '/' + RoutesEnum.COURSE + '/' + RoutesEnum.COURSE_INFORMATION) {
+      this.title = 'Information sur une demande';
+    } else if (url === '/' + RoutesEnum.COURSE + '/' + RoutesEnum.COURSE_SAISIE) {
+      this.title = 'Saisie des informations de la course';
+    } else if (url === '/' + RoutesEnum.AUTH + '/' + RoutesEnum.LOGIN) {
       this.title = 'Connexion';
-    } else if (url === '/' + RoutesEnum.DEMANDE) {
+    } else if (url === '/' + RoutesEnum.AUTH + '/' + RoutesEnum.LOGINMDP) {
+      this.title = 'Changement de mot de passe';
+    } else if (url === '/' + RoutesEnum.DEMANDE + '/' + RoutesEnum.DEMANDE_EDIT) {
       this.title = 'Création demande';
-    } else if (url === '/' + RoutesEnum.UTILISATEUR_LISTE) {
+    } else if (url === '/' + RoutesEnum.UTILISATEUR + '/' + RoutesEnum.UTILISATEUR_LIST) {
       this.title = 'Utilisateurs';
-    } else if (url === '/' + RoutesEnum.UTILISATEUR) {
+    } else if (url === '/' + RoutesEnum.UTILISATEUR + '/' + RoutesEnum.UTILISATEUR_EDIT) {
       this.title = 'Utilisateur';
     } else if (url === '/' + RoutesEnum.FACTURE) {
       this.title = 'Facture';
@@ -168,10 +172,12 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
   }
 
   connexion(): void {
-    this.router.navigate([RoutesEnum.LOGIN]);
+    // this.router.navigate([RoutesEnum.LOGIN]);
+    this.router.navigate([RoutesEnum.AUTH, RoutesEnum.LOGIN]);
   }
 
   deconnexion(): void {
-    this.router.navigate([RoutesEnum.LOGOUT]);
+    //this.router.navigate([RoutesEnum.LOGOUT]);
+    this.router.navigate([RoutesEnum.AUTH, RoutesEnum.LOGOUT]);
   }
 }

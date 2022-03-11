@@ -3,6 +3,7 @@ import {BehaviorSubject} from 'rxjs';
 // import {KeycloakService} from "keycloak-angular";
 
 import {GlobalVariables} from '../../views/femmesbattues/global/global_variables';
+import {RoutesEnum} from '../../views/femmesbattues/RoutesEnum';
 
 interface IMenuItem {
   type: string; // Possible values: link/dropDown/icon/separator/extLink
@@ -49,35 +50,35 @@ export class NavigationService {
       name: 'Information',
       type: 'link',
       icon: 'dashboard',
-      state: 'information',
+      state: RoutesEnum.COURSE + '/' + RoutesEnum.COURSE_INFORMATION,
       disabled: true
     },
     {
       name: 'Demande',
       type: 'link',
       icon: 'dashboard',
-      state: 'recupcourse',
+      state: RoutesEnum.COURSE + '/' + RoutesEnum.COURSE_SAISIE,
       disabled: true
     },
     {
       name: 'Courses',
       type: 'link',
       icon: 'dashboard',
-      state: 'demandeliste',
+      state: RoutesEnum.DEMANDE + '/' + RoutesEnum.DEMANDE_LIST,
       disabled: true
     },
     {
       name: 'Nouvelle Demande',
       type: 'link',
       icon: 'local_taxi',
-      state: 'demandenew',
+      state: RoutesEnum.DEMANDE + '/' + RoutesEnum.DEMANDE_NEW,
       disabled: true
     },
     {
       name: 'Utilisateurs',
       type: 'link',
       icon: 'person',
-      state: 'utilisateurliste',
+      state: RoutesEnum.UTILISATEUR + '/' + RoutesEnum.UTILISATEUR_LIST,
       disabled: true
     }
   ];
