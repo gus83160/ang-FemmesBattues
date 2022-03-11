@@ -20,8 +20,8 @@ export class ErrorService {
     // console.log(JSON.stringify(e));
     if (e instanceof ValidationErrorResponse) {
       e.ValidationErrors.forEach(fieldError => {
-        const errorDesc = fieldError.Description.join(', ');
-        const field = form.controls[fieldError.Name];
+        const errorDesc = fieldError.message.join(', ');
+        const field = form.controls[fieldError.fieldname];
         if (field) {
           field.setErrors({server: errorDesc});
         } else {

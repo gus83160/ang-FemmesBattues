@@ -1,6 +1,4 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
-import {HttpClient, HttpResponse} from '@angular/common/http';
 import {MatDialog} from '@angular/material/dialog';
 import {GlobalVariables} from '../../global/global_variables';
 import {UtilService} from '../../global/util.service';
@@ -14,9 +12,12 @@ import {SupprimerComponent} from '../../dialogue/supprimer.component';
 import {RoutesEnum} from '../../RoutesEnum';
 import DataSource from 'devextreme/data/data_source';
 import {DxDataGridComponent} from 'devextreme-angular';
-import notify from 'devextreme/ui/notify';
 import {DemandeListFilterComponent} from './filter/demande-list-filter.component';
 import {formatDate} from 'devextreme/localization';
+import {DateService} from '../../../../services/date.service';
+import {JsonService} from '../../../../services/json.service';
+import {ViewPdfComponent} from '../../view-pdf/view-pdf.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-demande-list',
@@ -25,9 +26,12 @@ import {formatDate} from 'devextreme/localization';
 })
 export class DemandeListComponent implements OnInit, AfterViewInit {
   @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
-  @ViewChild(DemandeListFilterComponent, { static: false }) filterComponent: DemandeListFilterComponent | undefined;
+  @ViewChild(DemandeListFilterComponent, { static: false }) filterComponent: DemandeListFilterComponent;
+  @ViewChild(ViewPdfComponent, { static: false }) viewPdf: ViewPdfComponent;
 
   rows = [];
+  filterData: any = {};
+
   bPrescripteur: boolean;
   bChauffeur: boolean;
   bAdmin: boolean;
@@ -37,24 +41,20 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   // nbRetour = 0;
   priseencharge: PriseEnCharge;
   buttonColSize: number;
-  showLoading: boolean;
-  isPopupVisible: boolean;
-
-  pdfFile: Blob;
-  pdfFileName: string;
 
   dataSource: DataSource;
   filterText: string;
 
   constructor(public dialogueService: DialogueService,
-              private route: Router,
+              private router: Router,
               private dialog: MatDialog,
-              private utilservice: UtilService,
+              private utilService: UtilService,
               private priseenchargeservice: PriseEnChargeService,
               private demandeservice: DemandeService,
               private victimeservice: VictimeService,
               private variables: GlobalVariables,
-              private http: HttpClient) {
+              private jsonService: JsonService,
+              private dateService: DateService) {
   }
 
   ngOnInit(): void {
@@ -68,20 +68,26 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
       this.buttonColSize = 170;
     } else {
       if (this.bChauffeur) {
-        this.buttonColSize = 170;
+        this.buttonColSize = 210;
       } else {
         this.buttonColSize = 130;
       }
     }
     this.variables.IdPriseEnCharge = 0;
+
+    const filterDataJson = sessionStorage.getItem('demande_filterData');
+    if (filterDataJson) {
+      this.filterData = this.jsonService.parse(filterDataJson);
+    } else {
+      const now = new Date();
+      this.filterData.du = this.dateService.getLundi(now);
+      this.filterData.au = this.dateService.getDimanche(now);
+    }
+
+    this.loadAllPriseEnCharge();
   }
 
   ngAfterViewInit(): void {
-    const now = new Date();
-    this.filterComponent!.filterData.du = this.filterComponent.getLundi(now);
-    this.filterComponent!.filterData.au = this.filterComponent.getDimanche(now);
-
-    this.loadAllPriseEnCharge();
   }
 
   loadAllPriseEnCharge() {
@@ -90,7 +96,7 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
       store: store,
     });
 
-    const filter = this.createFilter(this.filterComponent!.filterData)
+    const filter = this.createFilter(this.filterData)
     this.dataSource.filter(filter);
 
     // const res = this.priseenchargeservice.getAllPriseEnCharge(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
@@ -103,8 +109,11 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
     // });
   }
 
+  async modifierLaCourse(numDemande: string) {
+    await this.router.navigate([RoutesEnum.COURSE, RoutesEnum.COURSE_SAISIE], {queryParams: { numDemande: numDemande, returnUrl: this.router.url }});
+  }
 
-  async detail(id: number) {
+  async facturerLaCourse(id: number) {
     this.ret = await this.priseenchargeservice.PriseEnChargeAllDonnees(id);
     if (this.ret != null) {
       if (this.ret.montant > 0) {
@@ -159,7 +168,7 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
         this.variables.HeureCourseFinVisu = this.ret.heureCourseFinVisu;
         this.variables.Montant = this.ret.montant;
         this.variables.Peage = this.ret.peage;
-        await this.route.navigate([RoutesEnum.FACTURE]);
+        await this.router.navigate([RoutesEnum.FACTURE]);
       } else {
         this.dialogueService.confirm({message: 'Le montant de le course n\'a pas été transmis'});
       }
@@ -181,7 +190,8 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
         this.variables.IdVictime = this.ret.idVictime;
         this.variables.NoDemande = this.ret.noDemande;
         this.variables.DateDemande = this.ret.dateDemande;
-        this.route.navigate([RoutesEnum.DEMANDE]);
+
+        await this.router.navigate([RoutesEnum.DEMANDE, RoutesEnum.DEMANDE_EDIT]);
       }
     } else {
       console.log('Detail ERREUR ');
@@ -208,7 +218,8 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
         await this.victimeservice.deleteVictime(this.priseencharge.idvictime);
         await this.priseenchargeservice.deletePriseEnCharge(this.priseencharge.id);
 
-        this.dataSource.reload();
+        this.dataGrid.selectedRowKeys = [];
+        await this.dataSource.reload();
         //this.route.navigate([RoutesEnum.ROOT]);
       }
     } else {
@@ -222,7 +233,7 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
       if (this.priseencharge.pe_nofacture === '' || this.priseencharge.pe_nofacture == null) {
         this.dialogueService.confirm({message: 'La course n\'est pas facturée.'});
       } else {
-        this.showPdf(this.priseencharge.pe_nofacture);
+        this.viewPdf.showPdf(this.priseencharge.pe_nofacture);
         //await this.utilservice.openFileInNewWindow(this.priseencharge.pe_nofacture);
       }
     } else {
@@ -245,41 +256,19 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   async PdfVisuDemande(id: number): Promise<void> {
     this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
     if (this.priseencharge != null) {
-      const rep = this.utilservice.GenererPDF(null, null, this.priseencharge.pe_nodemande, null, null);
+      const rep = this.utilService.GenererPDF(null, null, this.priseencharge.pe_nodemande, null, null);
       rep.then(async (result) => {
-        this.showPdf(this.priseencharge.pe_nodemande);
+        this.viewPdf.showPdf(this.priseencharge.pe_nodemande);
       });
     } else {
       console.log('Detail ERREUR ');
     }
   }
 
-  private showPdf(fichier: string) {
-    this.showLoading = true;
-
-    this.pdfFileName = fichier
-    this.utilservice.downloadFile(fichier).subscribe(
-      (res) => {
-        this.isPopupVisible = true;
-        this.showLoading = false;
-        this.pdfFile = res;
-      },
-      (err) => {
-        this.hidePdf();
-        err.show();
-      }
-    );
-  }
-
-  private hidePdf() {
-    this.isPopupVisible = false;
-    this.showLoading = false;
-  }
-
   ExportExcel() {
-    const rep = this.utilservice.CSV('export');
+    const rep = this.utilService.CSV('export');
     rep.then(result => {
-      this.utilservice.DownloadFileCSV('export');
+      this.utilService.DownloadFileCSV('export');
     });
   }
 
@@ -288,7 +277,6 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   }
 
   test() {
-    this.isPopupVisible = !this.isPopupVisible;
   }
 
   openFilter() {
@@ -296,6 +284,7 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   }
 
   onApplyFilter(e: any) {
+    sessionStorage.setItem('demande_filterData', this.jsonService.stringify(e));
     this.dataSource.filter(this.createFilter(e));
     this.dataSource.reload();
   }

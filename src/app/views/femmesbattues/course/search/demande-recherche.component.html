@@ -1,0 +1,25 @@
+<dx-popup [(visible)]="isPopupVisible" height="auto" title="Recherche d'une demande" [closeOnOutsideClick]="true"
+          (onHidden)="onHidden()" [width]="500">
+  <div class="content-block">
+<!--    <div class="dx-card responsive-paddings">-->
+    <div class="">
+      <form action="your-action" (submit)="onFormSubmit($event)">
+        <dx-form [(formData)]="searchData">
+          <dxi-item dataField="numDemande" editorType="dxTextBox" [editorOptions]="{ showClearButton: true }"
+                    [isRequired]="true">
+            <dxo-label text="N° de demande"></dxo-label>
+          </dxi-item>
+          <dxi-item>
+            <div style='text-align: center'>
+              <div style="color: red; margin-bottom: 10px;">{{ message }}</div>
+            </div>
+            <div style='text-align: right'>
+              <dx-button style="margin-right: 5px;" text="Annuler" (click)="onClose()"></dx-button>
+              <dx-button text="Rechercher" type="default" [useSubmitBehavior]="true"></dx-button>
+            </div>
+          </dxi-item>
+        </dx-form>
+      </form>
+    </div>
+  </div>
+</dx-popup>

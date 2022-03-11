@@ -1,0 +1,59 @@
+<div class="page-wrap height-100 black">
+  <div class="session-form-hold">
+    <mat-card>
+      <mat-card-content>
+        <div class="text-center pt-8 pb-16">
+          <p class="text-muted m-0">Authentification : </p>
+        </div>
+
+        <form [formGroup]="loginForm" action="/" method="post" (ngSubmit)="loginin($event)">
+          <mat-form-field class="full-width">
+            <!-- label nécessaire pour que firefox propose d'enregistrer le mot de passe-->
+            <label>
+              <input
+                type="text"
+                matInput
+                name="uname"
+                autocomplete="username"
+                [formControl]="loginForm.controls['username']"
+                placeholder="Identifiant utilisateur"
+                value="">
+            </label>
+          </mat-form-field>
+          <small
+            *ngIf="loginForm.controls['username'].hasError('required') && loginForm.controls['username'].touched"
+            class="form-error-msg"> Identifiant utilisateur est obligatoire </small>
+
+          <mat-form-field class="full-width">
+            <label>
+              <input
+                type="password"
+                name="password"
+                autocomplete="password"
+                matInput
+                [formControl]="loginForm.controls['password']"
+                placeholder="Mot de Passe"
+                value="">
+            </label>
+          </mat-form-field>
+          <small
+            *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched"
+            class="form-error-msg"> Mot de Passe est obligatoire </small>
+
+          <small *ngIf="ErrorLogin" class="form-error-msg">Login / Mot de passe inconnu></small>
+          <button type="submit" mat-raised-button class="mat-primary full-width mb-1"
+                  [disabled]="loginForm.invalid || executing">Validation
+          </button>
+          <!---
+                    <div class="text-center">
+                      <a [routerLink]="'/sessions/forgot-password'" class="mat-primary text-center full-width">Forgot password</a>
+                      <span fxFlex></span>
+                      <a [routerLink]="'/sessions/signup'" class="mat-primary text-center full-width">Create a new account</a>
+                    </div>
+          -->
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+

@@ -1,5 +1,5 @@
 <div class="mat-box-shadow margin-333">
-  <app-demande-list-filter (applyFilter)="onApplyFilter($event)"></app-demande-list-filter>
+  <app-demande-list-filter [filterData]="filterData" (applyFilter)="onApplyFilter($event)"></app-demande-list-filter>
   <!--  <form action="your-action" (submit)="onFormSubmit($event)">-->
 
   <!--  <button *ngIf="bAdmin" title="Export excel" (click)="ExportExcel()">-->
@@ -72,7 +72,6 @@
     [focusedRowEnabled]="true"
     [showBorders]="true"
     [columnAutoWidth]="true"
-    keyExpr="idPriseEnCharge"
     wordWrapEnabled="true"
   >
     <dxo-paging [pageSize]="10"></dxo-paging>
@@ -140,7 +139,10 @@
         <button title="Consulter la prise en charge" (click)="PdfVisuDemande(e.data.idPriseEnCharge)">
           <img src="assets/images/transp.png" alt="">
         </button>
-        <button *ngIf="bChauffeur" title="Facturer la Course" (click)="detail(e.data.idPriseEnCharge)">
+        <button *ngIf="bChauffeur" title="Modifier Course" (click)="modifierLaCourse(e.data.noDemande)">
+          <img src="assets/images/edit-32.png" alt="">
+        </button>
+        <button *ngIf="bChauffeur" title="Facturer la Course" (click)="facturerLaCourse(e.data.idPriseEnCharge)">
           <img src="assets/images/facture.png" alt="">
         </button>
         <button title="Visualiser la Facture" (click)="PdfVisuFacture(e.data.idPriseEnCharge)">
@@ -163,28 +165,4 @@
   </dx-data-grid>
 </div>
 
-<dx-load-panel
-  [(visible)]="showLoading"
-  shadingColor="rgba(0,0,0,0.4)"
-  [showIndicator]="true"
-  [showPane]="true"
-  [shading]="true"
-  [closeOnOutsideClick]="false"
->
-</dx-load-panel>
-
-<dx-popup
-  [(visible)]="isPopupVisible"
-  [closeOnOutsideClick]="true"
-  height="90%"
-  width="90%"
-  contentTemplate="popup-content">
-  <div *dxTemplate="let data of 'popup-content'">
-    <ngx-extended-pdf-viewer
-      [src]="pdfFile"
-      [useBrowserLocale]="true"
-      [filenameForDownload]="pdfFileName"
-      [showOpenFileButton]="false"
-    ></ngx-extended-pdf-viewer>
-  </div>
-</dx-popup>
+<app-view-pdf></app-view-pdf>

@@ -1,0 +1,26 @@
+<dx-popup
+  [(visible)]="isPopupVisible"
+  [closeOnOutsideClick]="true"
+  (onHidden)="onPupupHidden()"
+  height="90%"
+  width="90%"
+  contentTemplate="popup-content">
+  <div *dxTemplate="let data of 'popup-content'">
+    <ngx-extended-pdf-viewer
+      [src]="pdfFile"
+      [useBrowserLocale]="true"
+      [filenameForDownload]="pdfFileName"
+      [showOpenFileButton]="false"
+    ></ngx-extended-pdf-viewer>
+  </div>
+</dx-popup>
+
+<dx-load-panel
+  [(visible)]="showLoading"
+  shadingColor="rgba(0,0,0,0.4)"
+  [showIndicator]="true"
+  [showPane]="true"
+  [shading]="true"
+  [closeOnOutsideClick]="false"
+>
+</dx-load-panel>

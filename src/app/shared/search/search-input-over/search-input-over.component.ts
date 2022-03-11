@@ -13,7 +13,7 @@ import { SearchService } from "../search.service";
 import { Router, ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: "egret-search-input-over",
+  selector: "egret-search-old-input-over",
   templateUrl: "./search-input-over.component.html",
   styleUrls: ["./search-input-over.component.scss"]
 })

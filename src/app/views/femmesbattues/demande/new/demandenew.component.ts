@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { GlobalVariables } from '../../global/global_variables';
+import {GlobalVariables} from '../../global/global_variables';
 import {RoutesEnum} from '../../RoutesEnum';
 
 @Component({
@@ -16,7 +16,6 @@ export class DemandeNewComponent implements OnInit {
 
   ngOnInit(): void {
        this.variables.IdPriseEnCharge = 0;
-       this.route.navigate([RoutesEnum.DEMANDE]);
+       this.route.navigate([RoutesEnum.DEMANDE, RoutesEnum.DEMANDE_EDIT]);
   }
-
 }

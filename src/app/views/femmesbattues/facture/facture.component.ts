@@ -33,7 +33,7 @@ export class FactureComponent implements OnInit, AfterViewInit  {
     const htmlTemplate = value.nativeElement.innerHTML;
     // console.log(htmlTemplate);
 
-    // la page est d'abord généré sans données à cause du *ngIf et du coup renvoi un html sans rien
+    // la page est d'abord généré sans données à cause du *ngIf et du coup renvoi un html vide
     // au deuxième passage le html est ok
     if (htmlTemplate.length > 100 && !this.pdfGenerated) {
       if (htmlTemplate && this.variables.NoFacture) {

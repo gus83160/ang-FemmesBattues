@@ -1,0 +1,5 @@
+Analyse bundle size
+  https://www.digitalocean.com/community/tutorials/angular-angular-webpack-bundle-analyzer
+  https://www.npmjs.com/package/webpack-bundle-analyzer
+  Devextreme
+    https://suneetbansal.medium.com/optimize-angular-build-size-webpack-bundle-analyzer-f0d9ac53ecdb

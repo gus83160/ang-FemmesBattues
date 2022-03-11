@@ -1,10 +1,19 @@
 // import { Moment } from 'moment';
 
 export class Course {
-  id: number;
-  co_date: Date;
-  co_heuredebut: Date;
-  co_heurefin: Date;
-  co_montant: number;
-  co_peage: number;
+  id: number = 0;
+
+  co_date: Date = null;
+  co_heuredebut: Date | string = null;
+  co_heurefin: Date | string = null;
+
+  co_typeCourse: number | null = null;
+  co_kmsA: number = 0;
+  co_kmsB: number = 0;
+  co_kmsC: number = 0;
+  co_kmsD: number = 0;
+  co_peage: number = 0;
+
+  co_attjour: Date | string = null;
+  co_attnuit: Date | string = null;
 }
