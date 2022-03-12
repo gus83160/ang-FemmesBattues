@@ -3,3 +3,10 @@ Analyse bundle size
   https://www.npmjs.com/package/webpack-bundle-analyzer
   Devextreme
     https://suneetbansal.medium.com/optimize-angular-build-size-webpack-bundle-analyzer-f0d9ac53ecdb
+
+
+preprod
+=======
+  http://vps-1b314880.vps.ovh.net:7071
+
+  voir le dossier Deployr pour le déploiment

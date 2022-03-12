@@ -140,7 +140,7 @@
           <img src="assets/images/transp.png" alt="">
         </button>
         <button *ngIf="bChauffeur" title="Modifier Course" (click)="modifierLaCourse(e.data.noDemande)">
-          <img src="assets/images/edit-32.png" alt="">
+          <img src="assets/images/modifier.png" alt="">
         </button>
         <button *ngIf="bChauffeur" title="Facturer la Course" (click)="facturerLaCourse(e.data.idPriseEnCharge)">
           <img src="assets/images/facture.png" alt="">
@@ -166,3 +166,14 @@
 </div>
 
 <app-view-pdf></app-view-pdf>
+
+<dx-load-panel
+  [(visible)]="showGeneratingPDF"
+  shadingColor="rgba(0,0,0,0.4)"
+  [showIndicator]="true"
+  [showPane]="true"
+  [shading]="true"
+  [closeOnOutsideClick]="false"
+  message="Préparation du PDF"
+>
+</dx-load-panel>

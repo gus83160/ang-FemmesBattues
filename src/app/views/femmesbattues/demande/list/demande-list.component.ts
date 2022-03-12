@@ -41,6 +41,7 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   // nbRetour = 0;
   priseencharge: PriseEnCharge;
   buttonColSize: number;
+  showGeneratingPDF: boolean;
 
   dataSource: DataSource;
   filterText: string;
@@ -256,7 +257,9 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   async PdfVisuDemande(id: number): Promise<void> {
     this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
     if (this.priseencharge != null) {
+      this.showGeneratingPDF = true;
       const rep = this.utilService.GenererPDF(null, null, this.priseencharge.pe_nodemande, null, null);
+      this.showGeneratingPDF = false;
       rep.then(async (result) => {
         this.viewPdf.showPdf(this.priseencharge.pe_nodemande);
       });
