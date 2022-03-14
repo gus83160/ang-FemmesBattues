@@ -48,19 +48,6 @@
 <!--          (onValueChanged)="intramurosChanged($event)"-->
 <!--        ></dx-select-box>-->
 <!--      </dxi-item>-->
-      <dxi-item [colSpan]="12"
-                dataField="co_typeCourse"
-                editorType="dxSelectBox"
-                [editorOptions]="typeCourseOptions"
-                >
-        <dxo-label caption="Type de course"></dxo-label>
-        <dxi-validation-rule type="required" message="Veuillez sélectionner un type de course">
-        </dxi-validation-rule>
-      </dxi-item>
-
-      <!--      <dxi-item dataField="co_intramuros" editorType="dxCheckBox" [colSpan]="12">-->
-      <!--        <dxo-label text="Course intramuros"></dxo-label>-->
-      <!--      </dxi-item>-->
       <dxi-item dataField="co_date" editorType="dxDateBox" [colSpan]="4"
                 [editorOptions]="{ type: 'date', showClearButton: true, displayFormat: 'dd/MM/yyyy', useMaskBehavior: true}"
                 isRequired="true">
@@ -74,6 +61,26 @@
                 [editorOptions]="{ type: 'time', showClearButton: true, displayFormat: 'HH:mm', useMaskBehavior: true}" isRequired="true">
         <dxo-label text="Heure de fin"></dxo-label>
       </dxi-item>
+
+      <dxi-item [colSpan]="12"
+                dataField="co_typeCourse"
+                editorType="dxSelectBox"
+                [editorOptions]="typeCourseOptions"
+                >
+        <dxo-label caption="Type de course"></dxo-label>
+        <dxi-validation-rule type="required" message="Veuillez sélectionner un type de course">
+        </dxi-validation-rule>
+      </dxi-item>
+      <dxi-item [colSpan]="12"
+                dataField="co_appForf"
+                editorType="dxCheckBox"
+                [editorOptions]="{
+                  text: 'Approche forfaitaire si ADS en dehors de la commune de prise en charge\r\n&nbsp;- si course Intra muros\r\n&nbsp;- ou si course normale et < 30 kms'
+                }"
+      >
+        <dxo-label [visible]="false"></dxo-label>
+      </dxi-item>
+
       <dxi-item itemType="group" [colCount]="3" [colSpan]="12" caption="Kms">
         <dxi-item itemType="group">
           <dxi-item dataField="co_kmsA" editorType="dxNumberBox" [editorOptions]="{format: '#0'}" [cssClass]="'number'">

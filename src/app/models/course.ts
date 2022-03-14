@@ -13,6 +13,7 @@ export class Course {
   co_kmsC: number = 0;
   co_kmsD: number = 0;
   co_peage: number = 0;
+  co_appForf: boolean = false;
 
   co_attjour: Date | string = null;
   co_attnuit: Date | string = null;

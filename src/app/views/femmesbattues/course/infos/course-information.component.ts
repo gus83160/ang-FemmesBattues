@@ -49,7 +49,7 @@ export class CourseInformationComponent implements OnInit {
         res.message = 'Erreur lors de la récupération de la course auprès du HUB.';
       } else {
         await this.utilService.GenererPDF(null, null, e.searchData.numDemande, null, null)
-        this.viewPdf.showPdf(e.searchData.numDemande);
+        this.viewPdf.showPdfFromFile(e.searchData.numDemande);
       }
     } catch (ex) {
       res.cancel = true;

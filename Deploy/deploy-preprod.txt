@@ -1,0 +1,5 @@
+open sftp://debian:YGcvhYsPXbjQ@146.59.233.5/
+option batch on
+option confirm off
+synchronize remote -mirror -preservetime -criteria=time "..\dist\ang-FemmesBattues" /home/debian/fvv-frontend
+exit

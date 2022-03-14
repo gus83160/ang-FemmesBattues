@@ -22,7 +22,7 @@ export class ViewPdfComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  showPdf(fichier: string) {
+  showPdfFromFile(fichier: string) {
     this.showLoading = true;
 
     this.pdfFileName = fichier
@@ -37,6 +37,14 @@ export class ViewPdfComponent implements OnInit {
         err.show();
       }
     );
+  }
+
+  showPdfFromByteArray(data: any) {
+    this.showLoading = true;
+
+    this.isPopupVisible = true;
+    this.showLoading = false;
+    this.pdfFile = data;
   }
 
   private hidePdf() {

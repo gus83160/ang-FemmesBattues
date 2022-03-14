@@ -35,9 +35,10 @@ export class PriseEnChargeService {
   async PriseEnChargeDonneesModif(id){
      return await this.http.get<Retour>(environment.url + '/priseencharge/prise_en_charge_donnees_modif/'+id).toPromise();
   }
-  async GetNoFacture(id){
-     return await this.http.get<Retour>(environment.url + '/priseencharge/no_facture/'+id).toPromise();
-  }
+
+  // async GetNoFacture(id){
+  //    return await this.http.get<Retour>(environment.url + '/priseencharge/no_facture/'+id).toPromise();
+  // }
 
   async updatePriseEnCharge(priseencharge: PriseEnCharge){
      const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };

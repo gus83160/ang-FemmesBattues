@@ -26,7 +26,7 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
   @ViewChild(DxFormComponent, {static: false}) form: DxFormComponent | undefined;
   @ViewChild('attjour', {static: false}) attjour: DxoFormSimpleItem | undefined;
 
-  searchData: any = {}
+  searchData: any = {};
   priseEnCharge: Retour = null;
   showLoading: boolean;
   popupInitiallyShowed = false;
@@ -52,10 +52,10 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
 
   typeCourseOptions = {
     dataSource: this.typeCourseDatasource,
-    valueExpr: "id",
-    displayExpr: "text",
+    valueExpr: 'id',
+    displayExpr: 'text',
     onValueChanged: (event) => this.intramurosChanged(event)
-  }
+  };
   private readonly numDemandeParam: string;
   private readonly returnUrl: string;
 
@@ -81,7 +81,7 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
 
     this.isDevMode = isDevMode();
     if (this.isDevMode) {
-      this.searchData.numDemande = 'DEM776240';
+      this.searchData.numDemande = 'DEM899236';
       // this.validateOnlyRemotelly = false;
       // this.variables.NomVictime = 'NOM DE LA VICTIME';
       // this.variables.AdresseDepart = 'Adresse de départ';
@@ -121,7 +121,7 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
     formPost.co_attnuit = convertToTime(formPost.co_attnuit);
 
     try {
-      console.log(this.priseEnCharge.idPriseEnCharge);
+      //console.log(this.priseEnCharge.idPriseEnCharge);
       if (this.formData.id === 0) {
         let result = await this.courseService.createCourse(formPost, this.priseEnCharge.idPriseEnCharge);
         if (result != null) {
@@ -150,13 +150,23 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
   }
 
   async onFormSubmit(e: SubmitEvent) {
+    console.log(this.formData.co_appForf);
+
     this.globalErrorMessage = [];
 
     const resVal = this.validateOnlyRemotelly ? {isValid: true} : this.form?.instance.validate();
     if (!this.validateOnlyRemotelly) {
-      if (this.formData.co_kmsA + this.formData.co_kmsB + this.formData.co_kmsC + this.formData.co_kmsD === 0) {
-        this.globalErrorMessage.push('Vous n\'avez saisie aucune distance');
-        resVal.isValid = false;
+      if (this.formData.co_typeCourse === 0) {
+        if (this.formData.co_kmsA + this.formData.co_kmsB + this.formData.co_kmsC + this.formData.co_kmsD === 0) {
+          this.globalErrorMessage.push('Vous n\'avez saisie aucune distance');
+          resVal.isValid = false;
+        }
+      }
+      if (this.formData.co_appForf && this.formData.co_typeCourse === 0) {
+        if (this.formData.co_kmsA + this.formData.co_kmsB + this.formData.co_kmsC + this.formData.co_kmsD >= 30) {
+          this.globalErrorMessage.push('Approche invalide pour course >= 30kms');
+          resVal.isValid = false;
+        }
       }
     }
 
@@ -171,7 +181,7 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
 
   onClose = async () => {
     await this.navigateToReturnUrl();
-  }
+  };
 
   async navigateToReturnUrl() {
     if (this.returnUrl !== '') {
@@ -192,13 +202,14 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
 
   intramurosChanged(e) {
     if (!this.validateOnlyRemotelly) {
-      const kmsDisabled = e.value !== 0;
-      this.form.instance.getEditor('co_kmsA').option('disabled', kmsDisabled);
-      this.form.instance.getEditor('co_kmsB').option('disabled', kmsDisabled);
-      this.form.instance.getEditor('co_kmsC').option('disabled', kmsDisabled);
-      this.form.instance.getEditor('co_kmsD').option('disabled', kmsDisabled);
-      this.form.instance.getEditor('co_peage').option('disabled', kmsDisabled);
-      if (kmsDisabled) {
+      const intramuros = e.value !== 0;
+      this.form.instance.getEditor('co_kmsA').option('disabled', intramuros);
+      this.form.instance.getEditor('co_kmsB').option('disabled', intramuros);
+      this.form.instance.getEditor('co_kmsC').option('disabled', intramuros);
+      this.form.instance.getEditor('co_kmsD').option('disabled', intramuros);
+      this.form.instance.getEditor('co_peage').option('disabled', intramuros);
+
+      if (intramuros) {
         this.formData.co_kmsA = 0;
         this.formData.co_kmsB = 0;
         this.formData.co_kmsC = 0;
@@ -229,7 +240,7 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
 
   onRecherche = async (e: any): Promise<CancelSearch> => {
     return await this.doRecherche(e.searchData.numDemande);
-  }
+  };
 
   async doRecherche(numDemande: string) {
     let priseEnCharge: Retour;
@@ -266,7 +277,7 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
       if (ex instanceof ErrorMessage && ex.status == 412) {
         res.message = ex.message;
       } else {
-        res.message = "Erreur inattendue";
+        res.message = 'Erreur inattendue';
       }
     } finally {
       this.showLoading = false;
@@ -283,5 +294,5 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
 
   onCancel = async () => {
     await this.navigateToReturnUrl();
-  }
+  };
 }
