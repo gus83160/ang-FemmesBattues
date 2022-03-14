@@ -8,6 +8,7 @@ import {ErrorMessage} from '../../../../models/ErrorMessage';
 import {PriseEnChargeService} from '../../../../services/PriseEnCharge.service';
 import {UtilService} from '../../global/util.service';
 import {ViewPdfComponent} from '../../view-pdf/view-pdf.component';
+import {DemandeService} from '../../../../services/demande.service';
 
 @Component({
   selector: 'app-information',
@@ -24,6 +25,7 @@ export class CourseInformationComponent implements OnInit {
 
   constructor(private route: Router,
               private priseEnChargeService: PriseEnChargeService,
+              private demandeService: DemandeService,
               private utilService: UtilService,
               private variables: GlobalVariables) {
     this.isDevMode = isDevMode();
@@ -41,15 +43,15 @@ export class CourseInformationComponent implements OnInit {
 
     let res = new CancelSearch();
     try {
-      console.log(e.searchData.numDemande);
+      // console.log(e.searchData.numDemande);
       // priseEnCharge = await this.priseEnChargeService.PriseEnChargeDemande(e.searchData.numDemande);
       let repCourseHub = await this.utilService.RechCourseHub(e.searchData.numDemande);
       if (repCourseHub === null) {
         res.cancel = true;
         res.message = 'Erreur lors de la récupération de la course auprès du HUB.';
       } else {
-        await this.utilService.GenererPDF(null, null, e.searchData.numDemande, null, null)
-        this.viewPdf.showPdfFromFile(e.searchData.numDemande);
+        const pdf = await this.demandeService.genererPDFDemande(e.searchData.numDemande);
+        this.viewPdf.showPdfFromBlob(pdf);
       }
     } catch (ex) {
       res.cancel = true;

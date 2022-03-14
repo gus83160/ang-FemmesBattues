@@ -5,8 +5,8 @@ import {Observable} from 'rxjs';
 
 
 import {environment} from '../../../../environments/environment';
-import {Pdf} from './pdf';
-import {RepAutorisation} from './repautorisation';
+// import {Pdf} from './pdf';
+// import {RepAutorisation} from './repautorisation';
 import {RepCourseHub} from './repcoursehub';
 import {RechCourse} from './rechcourse';
 import {map} from 'rxjs/operators';
@@ -19,25 +19,9 @@ export class UtilService {
   constructor(private http: HttpClient) {
   }
 
-  html: string;
-  pdf: Pdf;
+  // html: string;
+  // pdf: Pdf;
   rchcourse: RechCourse;
-
-  async GenererPDF(HTML: string, facture: string, demande: string, payeur: string, chauffeur: string): Promise<void> {
-    this.pdf = new Pdf();
-    this.pdf.body = HTML;
-    this.pdf.nomfacture = facture;
-    this.pdf.nomdemande = demande;
-    this.pdf.mailPayeur = payeur;
-    this.pdf.mailChauffeur = chauffeur;
-    const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
-    const re = await this.http.put<any>(environment.url + '/util/generer_pdf', this.pdf, httpOptions).toPromise()
-      .catch(error => {
-        console.log(error);
-        return null;
-      });
-    return re;
-  }
 
   async RechCourseHub(demande): Promise<RepCourseHub> {
     this.rchcourse = new RechCourse();

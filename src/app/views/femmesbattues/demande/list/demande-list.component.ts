@@ -116,7 +116,7 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
 
   async facturerLaCourse(numDemande: string) {
     let pdf = await this.demandeservice.genereFacture(numDemande);
-    this.viewPdf.showPdfFromByteArray(pdf);
+    this.viewPdf.showPdfFromBlob(pdf);
   }
 
   // async facturerLaCourse(id: number) {
@@ -262,10 +262,10 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
     this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
     if (this.priseencharge != null) {
       this.showGeneratingPDF = true;
-      const rep = this.utilService.GenererPDF(null, null, this.priseencharge.pe_nodemande, null, null);
+      const pdfGenerated = this.demandeservice.genererPDFDemande(this.priseencharge.pe_nodemande);
       this.showGeneratingPDF = false;
-      rep.then(async (result) => {
-        this.viewPdf.showPdfFromFile(this.priseencharge.pe_nodemande);
+      pdfGenerated.then(async (pdf) => {
+        this.viewPdf.showPdfFromBlob(pdf);
       });
     } else {
       console.log('Detail ERREUR ');

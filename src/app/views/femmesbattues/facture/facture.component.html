@@ -1,129 +1,129 @@
-<div>
-  <input type="button" value="Envoi Facture par Mail" (click)="DocumentPDF()"/>
-</div>
-<div id="DocumentPDF" #documentpdf>
-<div *ngIf="Chauffeur && Payeur">
-  {{ Chauffeur.ut_nom }} {{ Chauffeur.ut_prenom }}<br>
-  {{ Chauffeur.ut_adresse }} <br>
-  {{ Chauffeur.ut_codepostal }} {{ Chauffeur.ut_ville }}<br>
-  SIRET : {{ Chauffeur.ut_siren }}<br>
-  Coordonnées Bancaire : {{ Chauffeur.ut_rib }}<br>
-  ADS : {{ Chauffeur.ut_adsville }} {{ Chauffeur.ut_adsnumero }} <br>
-  <br>
-  <br>
-  <br>
-  Facture N° : {{ variables.NoFacture }}
-  <br>
-  <br>
-  <br>
-  <div style="margin-left: 350px"> Le {{ variables.DateFacture  }} </div>
-  <br>
-  <br>
-  <div style="margin-left: 350px"> {{ Payeur.ut_nom }} {{ Payeur.ut_prenom }}</div>
-  <div style="margin-left: 350px"> {{ Payeur.ut_adresse }} </div>
-  <div style="margin-left: 350px"> {{ Payeur.ut_codepostal }} {{ Payeur.ut_ville }}</div>
-  <br>
-  <br>
-  <br>
-  <table border="1" cellpadding="3" cellspacing="0" width="100%">
-    <tr>
-      <td width="350" align="center">
-        Désignation
-      </td>
-      <td width="50" align="center">
-        HT
-      </td>
-      <td width="50" align="center">
-        TVA
-      </td>
-      <td width="50" align="center">
-        TTC
-      </td>
-    </tr>
-    <tr >
-      <td width="350" align="left" valign="top">
-          &nbsp;<br>
-          {{ variables.NomVictime }}<br>
-          Le {{ variables.DateCourseVisu }} de  {{ variables.HeureCourseDebutVisu }} à {{ variables.HeureCourseFinVisu }} <br>
-          {{ variables.AdresseDepart }}<br>
-          {{ variables.AdresseArrivee }}<br>
-          <div *ngIf="variables.AllerRetour === true">Aller / Retour</div>
-          <div *ngIf="variables.AllerRetour === false">Aller</div><br>
-          N° Demande : {{ variables.NoDemande }} <br>
-          Motif : {{ variables.Motif }} <br>
-          Prescripteur : {{ variables.StructureRequerante }} <br>
-        <br>
-        <div *ngIf="AffPeage"> Peage</div> <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-      </td>
-      <td width="50" valign="top" align="right">
-        &nbsp;<br>
-        {{ MontantHTAff }}
-        <div *ngIf="AffPeage">
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          {{ PeageHTAff }}
-        </div>
-      </td>
-      <td width="50" valign="top" align="right">
-        &nbsp;<br>
-        {{ MontantTVAAff }}
-        <div *ngIf="AffPeage">
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          {{ PeageTVAAff }}
-        </div>
-      </td>
-      <td width="50" valign="top" align="right">
-        &nbsp;<br>
-        {{ MontantAff }}
-        <div *ngIf="AffPeage">
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          &nbsp;<br>
-          {{ PeageAff }}
-        </div>
-      </td>
-    </tr>
-  </table>
-  <div>
-    <span style="margin-left: 450px"> Total&nbsp;HT&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ TotalHTAff }}</span>
-    <div *ngIf="AffPeage">
-       <span style="margin-left: 450px"> TVA&nbsp;10%&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ PeageTVAAff }}</span>
-    </div>
-    <span style="margin-left: 450px"> TVA&nbsp;20%&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ MontantTVAAff }}</span>
-    <span style="margin-left: 450px"> Total&nbsp;TTC&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ TotalTTCAff }}</span>
-  </div>
-  <br><br>
+<!--<div>-->
+<!--  <input type="button" value="Envoi Facture par Mail" (click)="DocumentPDF()"/>-->
+<!--</div>-->
+<!--<div id="DocumentPDF" #documentpdf>-->
+<!--<div *ngIf="Chauffeur && Payeur">-->
+<!--  {{ Chauffeur.ut_nom }} {{ Chauffeur.ut_prenom }}<br>-->
+<!--  {{ Chauffeur.ut_adresse }} <br>-->
+<!--  {{ Chauffeur.ut_codepostal }} {{ Chauffeur.ut_ville }}<br>-->
+<!--  SIRET : {{ Chauffeur.ut_siren }}<br>-->
+<!--  Coordonnées Bancaire : {{ Chauffeur.ut_rib }}<br>-->
+<!--  ADS : {{ Chauffeur.ut_adsville }} {{ Chauffeur.ut_adsnumero }} <br>-->
+<!--  <br>-->
+<!--  <br>-->
+<!--  <br>-->
+<!--  Facture N° : {{ variables.NoFacture }}-->
+<!--  <br>-->
+<!--  <br>-->
+<!--  <br>-->
+<!--  <div style="margin-left: 350px"> Le {{ variables.DateFacture  }} </div>-->
+<!--  <br>-->
+<!--  <br>-->
+<!--  <div style="margin-left: 350px"> {{ Payeur.ut_nom }} {{ Payeur.ut_prenom }}</div>-->
+<!--  <div style="margin-left: 350px"> {{ Payeur.ut_adresse }} </div>-->
+<!--  <div style="margin-left: 350px"> {{ Payeur.ut_codepostal }} {{ Payeur.ut_ville }}</div>-->
+<!--  <br>-->
+<!--  <br>-->
+<!--  <br>-->
+<!--  <table border="1" cellpadding="3" cellspacing="0" width="100%">-->
+<!--    <tr>-->
+<!--      <td width="350" align="center">-->
+<!--        Désignation-->
+<!--      </td>-->
+<!--      <td width="50" align="center">-->
+<!--        HT-->
+<!--      </td>-->
+<!--      <td width="50" align="center">-->
+<!--        TVA-->
+<!--      </td>-->
+<!--      <td width="50" align="center">-->
+<!--        TTC-->
+<!--      </td>-->
+<!--    </tr>-->
+<!--    <tr >-->
+<!--      <td width="350" align="left" valign="top">-->
+<!--          &nbsp;<br>-->
+<!--          {{ variables.NomVictime }}<br>-->
+<!--          Le {{ variables.DateCourseVisu }} de  {{ variables.HeureCourseDebutVisu }} à {{ variables.HeureCourseFinVisu }} <br>-->
+<!--          {{ variables.AdresseDepart }}<br>-->
+<!--          {{ variables.AdresseArrivee }}<br>-->
+<!--          <div *ngIf="variables.AllerRetour === true">Aller / Retour</div>-->
+<!--          <div *ngIf="variables.AllerRetour === false">Aller</div><br>-->
+<!--          N° Demande : {{ variables.NoDemande }} <br>-->
+<!--          Motif : {{ variables.Motif }} <br>-->
+<!--          Prescripteur : {{ variables.StructureRequerante }} <br>-->
+<!--        <br>-->
+<!--        <div *ngIf="AffPeage"> Peage</div> <br>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--        <br>-->
+<!--      </td>-->
+<!--      <td width="50" valign="top" align="right">-->
+<!--        &nbsp;<br>-->
+<!--        {{ MontantHTAff }}-->
+<!--        <div *ngIf="AffPeage">-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          {{ PeageHTAff }}-->
+<!--        </div>-->
+<!--      </td>-->
+<!--      <td width="50" valign="top" align="right">-->
+<!--        &nbsp;<br>-->
+<!--        {{ MontantTVAAff }}-->
+<!--        <div *ngIf="AffPeage">-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          {{ PeageTVAAff }}-->
+<!--        </div>-->
+<!--      </td>-->
+<!--      <td width="50" valign="top" align="right">-->
+<!--        &nbsp;<br>-->
+<!--        {{ MontantAff }}-->
+<!--        <div *ngIf="AffPeage">-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          &nbsp;<br>-->
+<!--          {{ PeageAff }}-->
+<!--        </div>-->
+<!--      </td>-->
+<!--    </tr>-->
+<!--  </table>-->
+<!--  <div>-->
+<!--    <span style="margin-left: 450px"> Total&nbsp;HT&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ TotalHTAff }}</span>-->
+<!--    <div *ngIf="AffPeage">-->
+<!--       <span style="margin-left: 450px"> TVA&nbsp;10%&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ PeageTVAAff }}</span>-->
+<!--    </div>-->
+<!--    <span style="margin-left: 450px"> TVA&nbsp;20%&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ MontantTVAAff }}</span>-->
+<!--    <span style="margin-left: 450px"> Total&nbsp;TTC&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ TotalTTCAff }}</span>-->
+<!--  </div>-->
+<!--  <br><br>-->
 
-  <div>
-       <p class="parag">En application de la loi 92-1442 du 31/12/92 : cette facture est payable par virement, paiement comptant, soit le : {{ DateDuJour }} </p>
-       <p class="parag">Sans escompte pour paiement anticipé.Pénalités pour paiement tardif : XXXX fois le taux d'intérêts légal. En plus de ces pénalités, est aussi due une
-          indemnité forfaitaire pour frais de recouvrement dont le montant est fixé à ZZZZZ€.</p>
-  </div>
-</div>
-</div>
+<!--  <div>-->
+<!--       <p class="parag">En application de la loi 92-1442 du 31/12/92 : cette facture est payable par virement, paiement comptant, soit le : {{ DateDuJour }} </p>-->
+<!--       <p class="parag">Sans escompte pour paiement anticipé.Pénalités pour paiement tardif : XXXX fois le taux d'intérêts légal. En plus de ces pénalités, est aussi due une-->
+<!--          indemnité forfaitaire pour frais de recouvrement dont le montant est fixé à ZZZZZ€.</p>-->
+<!--  </div>-->
+<!--</div>-->
+<!--</div>-->
