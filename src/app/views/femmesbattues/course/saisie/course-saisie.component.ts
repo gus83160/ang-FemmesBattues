@@ -82,7 +82,7 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
     this.isDevMode = isDevMode();
     if (this.isDevMode) {
       this.searchData.numDemande = 'DEM899236';
-      // this.validateOnlyRemotelly = false;
+      this.validateOnlyRemotelly = true;
       // this.variables.NomVictime = 'NOM DE LA VICTIME';
       // this.variables.AdresseDepart = 'Adresse de départ';
       // this.variables.AdresseArrivee = 'Adresse d\'arrivée';
@@ -129,12 +129,8 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
         }
         ok = true;
       } else {
-        try {
-          await this.courseService.updateCourse(formPost);
-          ok = true;
-        } catch (ex) {
-          this.globalErrorMessage = ex.toString();
-        }
+        await this.courseService.updateCourse(formPost);
+        ok = true;
       }
     } catch (e) {
       if (e instanceof ErrorMessage) {
@@ -274,7 +270,7 @@ export class CourseSaisieComponent implements OnInit, AfterViewInit {
       }
     } catch (ex) {
       res.cancel = true;
-      if (ex instanceof ErrorMessage && ex.status == 412) {
+      if (ex instanceof ErrorMessage) {
         res.message = ex.message;
       } else {
         res.message = 'Erreur inattendue';

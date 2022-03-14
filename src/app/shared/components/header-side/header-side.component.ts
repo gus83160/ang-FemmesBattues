@@ -100,8 +100,8 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
       this.title = 'Utilisateurs';
     } else if (url === '/' + RoutesEnum.UTILISATEUR + '/' + RoutesEnum.UTILISATEUR_EDIT) {
       this.title = 'Utilisateur';
-    } else if (url === '/' + RoutesEnum.FACTURE) {
-      this.title = 'Facture';
+    // } else if (url === '/' + RoutesEnum.FACTURE) {
+    //   this.title = 'Facture';
     }
   }
 

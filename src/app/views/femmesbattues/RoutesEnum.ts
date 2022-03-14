@@ -28,6 +28,6 @@ export enum RoutesEnum {
   ADMIN = 'admin',
 //  MENU = 'menu',
   PRISE_EN_CHARGE = 'priseencharge',
-  FACTURE = 'facture',
+//  FACTURE = 'facture',
 }
 

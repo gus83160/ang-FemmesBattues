@@ -39,7 +39,7 @@ export class ViewPdfComponent implements OnInit {
     );
   }
 
-  showPdfFromByteArray(data: any) {
+  showPdfFromBlob(data: Blob) {
     this.showLoading = true;
 
     this.isPopupVisible = true;

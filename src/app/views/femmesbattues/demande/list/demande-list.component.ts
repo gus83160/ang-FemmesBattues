@@ -18,6 +18,7 @@ import {DateService} from '../../../../services/date.service';
 import {JsonService} from '../../../../services/json.service';
 import {ViewPdfComponent} from '../../view-pdf/view-pdf.component';
 import {Router} from '@angular/router';
+import { alert } from "devextreme/ui/dialog"
 
 @Component({
   selector: 'app-demande-list',
@@ -69,7 +70,7 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
       this.buttonColSize = 170;
     } else {
       if (this.bChauffeur) {
-        this.buttonColSize = 210;
+        this.buttonColSize = 230;
       } else {
         this.buttonColSize = 130;
       }
@@ -115,8 +116,13 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   }
 
   async facturerLaCourse(numDemande: string) {
-    let pdf = await this.demandeservice.genereFacture(numDemande);
-    this.viewPdf.showPdfFromByteArray(pdf);
+    let pdf: Blob;
+    try {
+      pdf = await this.demandeservice.genereFacture(numDemande);
+      this.viewPdf.showPdfFromBlob(pdf);
+    } catch (ex) {
+      await alert(ex.message, 'Erreur');
+    }
   }
 
   // async facturerLaCourse(id: number) {
@@ -262,10 +268,10 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
     this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
     if (this.priseencharge != null) {
       this.showGeneratingPDF = true;
-      const rep = this.utilService.GenererPDF(null, null, this.priseencharge.pe_nodemande, null, null);
+      const pdfGenerated = this.demandeservice.genererPDFDemande(this.priseencharge.pe_nodemande);
       this.showGeneratingPDF = false;
-      rep.then(async (result) => {
-        this.viewPdf.showPdfFromFile(this.priseencharge.pe_nodemande);
+      pdfGenerated.then(async (pdf) => {
+        this.viewPdf.showPdfFromBlob(pdf);
       });
     } else {
       console.log('Detail ERREUR ');
