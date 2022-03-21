@@ -85,4 +85,27 @@ export class DemandeService {
     const byteArray = new Uint8Array(byteNumbers);
     return new Blob([byteArray], {type: 'application/pdf'});
   }
+
+  //async GenererPDFDemande(HTML: string, facture: string, demande: string, payeur: string, chauffeur: string): Promise<void> {
+  async genererPDFDemande(numDemande: string): Promise<Blob> {
+    return await this.http.post(
+      environment.url + '/demande/generer_pdf/' + numDemande,
+      null,
+      {responseType: 'blob'}
+    ).toPromise();
+
+    // this.pdf = new Pdf();
+    // this.pdf.body = HTML;
+    // this.pdf.nomfacture = facture;
+    // this.pdf.nomdemande = numDemande;
+    // this.pdf.mailPayeur = payeur;
+    // this.pdf.mailChauffeur = chauffeur;
+    // const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
+    // const re = await this.http.put<any>(environment.url + '/util/generer_pdf', this.pdf, httpOptions).toPromise()
+    //   .catch(error => {
+    //     console.log(error);
+    //     return null;
+    //   });
+    // return re;
+  }
 }
