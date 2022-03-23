@@ -1,5 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {AbstractControl, FormControl} from '@angular/forms';
+import {Component, Input} from '@angular/core';
+import {AbstractControl } from '@angular/forms';
 import {ErrorService} from './services/error.service';
 
 // https://mdmoin07.medium.com/writing-validation-message-dynamically-angular-c032c1c2e0d4
@@ -10,8 +10,7 @@ import {ErrorService} from './services/error.service';
   templateUrl: './show-errors.component.html',
   styleUrls: ['./show-errors.component.css']
 })
-export class ShowErrorsComponent implements OnInit {
-
+export class ShowErrorsComponent {
   @Input() ctrl: AbstractControl;
   @Input() errorService: ErrorService;
 
@@ -30,22 +29,23 @@ export class ShowErrorsComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit(): void {
-  }
-
   shouldShowErrors(): boolean {
-    if (this.ctrl) {
-      return this.ctrl.errors && this.ctrl.touched;
+    if (this.ctrl != null && this.ctrl.errors != null) {
+      return this.ctrl.touched;
     } else {
-      return this.errorService.getGlobalErrorMessage.length !== 0;
+      if (this.errorService != null) {
+        return this.errorService.getGlobalErrorMessage.length !== 0;
+      } else {
+        return false;
+      }
     }
   }
 
   listOfErrors(): string[] {
-    if (this.ctrl) {
+    if (this.ctrl != null && this.ctrl.errors != null) {
       return Object.keys(this.ctrl.errors).map(
         err => {
-          if (this.ERROR_MESSAGE[err]) {
+          if (this.ERROR_MESSAGE[err] != null) {
             return this.ERROR_MESSAGE[err](this.ctrl.getError(err));
           } else {
             return err;
@@ -53,7 +53,11 @@ export class ShowErrorsComponent implements OnInit {
         }
       );
     } else {
-      return this.errorService.getGlobalErrorMessage;
+      if (this.errorService != null) {
+        return this.errorService.getGlobalErrorMessage;
+      } else {
+        return [];
+      }
     }
   }
 }

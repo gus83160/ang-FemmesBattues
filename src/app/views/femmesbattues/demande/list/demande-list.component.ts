@@ -1,53 +1,53 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {GlobalVariables} from '../../global/global_variables';
 import {UtilService} from '../../global/util.service';
-import {Retour} from '../../../../models/retour';
-import {PriseEnCharge} from '../../../../models/PriseEnCharge';
-import {PriseEnChargeService} from '../../../../services/PriseEnCharge.service';
+import {IRetour} from '../../../../models/IRetour';
+import {PriseEnChargeService} from '../../../../services/prise-en-charge.service';
 import {DemandeService} from '../../../../services/demande.service';
 import {VictimeService} from '../../../../services/victime.service';
-import {DialogueService} from '../../dialogue/dialogue.service';
+// import {DialogueService} from '../../dialogue/dialogue.service';
 import {SupprimerComponent} from '../../dialogue/supprimer.component';
 import {RoutesEnum} from '../../RoutesEnum';
 import DataSource from 'devextreme/data/data_source';
 import {DxDataGridComponent} from 'devextreme-angular';
-import {DemandeListFilterComponent} from './filter/demande-list-filter.component';
+import {DemandeListFilterComponent, FilterDemandeData} from './filter/demande-list-filter.component';
 import {formatDate} from 'devextreme/localization';
 import {DateService} from '../../../../services/date.service';
 import {JsonService} from '../../../../services/json.service';
 import {ViewPdfComponent} from '../../view-pdf/view-pdf.component';
 import {Router} from '@angular/router';
 import { alert } from "devextreme/ui/dialog"
+import { confirm } from "devextreme/ui/dialog"
 
 @Component({
   selector: 'app-demande-list',
   templateUrl: './demande-list.component.html',
   styleUrls: ['./demande-list.component.scss']
 })
-export class DemandeListComponent implements OnInit, AfterViewInit {
-  @ViewChild(DxDataGridComponent, { static: false }) dataGrid: DxDataGridComponent;
-  @ViewChild(DemandeListFilterComponent, { static: false }) filterComponent: DemandeListFilterComponent;
-  @ViewChild(ViewPdfComponent, { static: false }) viewPdf: ViewPdfComponent;
+export class DemandeListComponent implements OnInit {
+  @ViewChild(DxDataGridComponent, { static: false }) dataGrid!: DxDataGridComponent;
+  @ViewChild(DemandeListFilterComponent, { static: false }) filterComponent!: DemandeListFilterComponent;
+  @ViewChild(ViewPdfComponent, { static: false }) viewPdf!: ViewPdfComponent;
 
   rows = [];
-  filterData: any = {};
+  filterData: FilterDemandeData = new FilterDemandeData();
 
-  bPrescripteur: boolean;
-  bChauffeur: boolean;
-  bAdmin: boolean;
-  ret: Retour;
-  retFacture: Retour;
+  bPrescripteur: boolean = false;
+  bChauffeur: boolean = false;
+  bAdmin: boolean = false;
+  // ret: Retour;
+  // retFacture: Retour;
   // ret2: Retour = new Retour();
   // nbRetour = 0;
-  priseencharge: PriseEnCharge;
-  buttonColSize: number;
-  showGeneratingPDF: boolean;
+  //priseencharge: PriseEnCharge;
+  buttonColSize: number = 0;
+  showGeneratingPDF: boolean = false;
 
-  dataSource: DataSource;
-  filterText: string;
+  dataSource!: DataSource;
+  filterText: string = '';
 
-  constructor(public dialogueService: DialogueService,
+  constructor(/*public dialogueService: DialogueService, */
               private router: Router,
               private dialog: MatDialog,
               private utilService: UtilService,
@@ -62,23 +62,25 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     // console.log('DemandeListComponent');
     // console.log(this.variables.currentUser);
-    this.bPrescripteur = (this.variables.currentUser.idtypeutilisateur === this.variables.TypePrescripteur);
-    this.bChauffeur = (this.variables.currentUser.idtypeutilisateur === this.variables.TypeChauffeur);
-    this.bAdmin = (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAdmin);
+    if (this.variables.currentUser !== null) {
+      this.bPrescripteur = (this.variables.currentUser.idtypeutilisateur === this.variables.TypePrescripteur);
+      this.bChauffeur = (this.variables.currentUser.idtypeutilisateur === this.variables.TypeChauffeur);
+      this.bAdmin = (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAdmin);
+    }
 
     if (this.bPrescripteur) {
-      this.buttonColSize = 170;
+      this.buttonColSize = 180;
     } else {
       if (this.bChauffeur) {
         this.buttonColSize = 230;
       } else {
-        this.buttonColSize = 130;
+        this.buttonColSize = 140;
       }
     }
     this.variables.IdPriseEnCharge = 0;
 
-    const filterDataJson = sessionStorage.getItem('demande_filterData');
-    if (filterDataJson) {
+    const filterDataJson = sessionStorage.getItem('demande_filterData') ?? '';
+    if (filterDataJson !== '') {
       this.filterData = this.jsonService.parse(filterDataJson);
     } else {
       const now = new Date();
@@ -89,26 +91,25 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
     this.loadAllPriseEnCharge();
   }
 
-  ngAfterViewInit(): void {
-  }
-
   loadAllPriseEnCharge() {
-    const store = this.priseenchargeservice.getAllPriseEnChargeStore(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
-    this.dataSource = new DataSource({
-      store: store,
-    });
+    if (this.variables.currentUser !== null) {
+      const store = this.priseenchargeservice.getAllPriseEnChargeStore(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
+      this.dataSource = new DataSource({
+        store: store,
+      });
 
-    const filter = this.createFilter(this.filterData)
-    this.dataSource.filter(filter);
+      const filter = this.createFilter(this.filterData)
+      this.dataSource.filter(filter);
 
-    // const res = this.priseenchargeservice.getAllPriseEnCharge(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
-    // res.subscribe(ret => {
-    //   if (ret) {
-    //     this.rows = ret;
-    //     // this.ret2.montant = ret[this.nbRetour].montant;
-    //     // this.nbRetour++;
-    //   }
-    // });
+      // const res = this.priseenchargeservice.getAllPriseEnCharge(this.variables.currentUser.idtypeutilisateur, this.variables.currentUser.id);
+      // res.subscribe(ret => {
+      //   if (ret) {
+      //     this.rows = ret;
+      //     // this.ret2.montant = ret[this.nbRetour].montant;
+      //     // this.nbRetour++;
+      //   }
+      // });
+    }
   }
 
   async modifierLaCourse(numDemande: string) {
@@ -116,13 +117,15 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   }
 
   async facturerLaCourse(numDemande: string) {
-    let pdf: Blob;
-    try {
-      pdf = await this.demandeservice.genereFacture(numDemande);
-      this.viewPdf.showPdfFromBlob(pdf);
-    } catch (ex) {
-      await alert(ex.message, 'Erreur');
-    }
+    await this.demandeservice.genereFacture(numDemande)
+      .execute(pdf => this.viewPdf.showPdfFromBlob(pdf));
+    // let pdf: Blob;
+    // try {
+    //   pdf = await this.demandeservice.genereFacture(numDemande);
+    //   this.viewPdf.showPdfFromBlob(pdf);
+    // } catch (ex) {
+    //   await alert(ex.message, 'Erreur');
+    // }
   }
 
   // async facturerLaCourse(id: number) {
@@ -148,7 +151,7 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   //       this.variables.DepDemande = this.ret.depDemande;
   //       this.variables.NomChauffeur = this.ret.nomChauffeur;
   //       this.variables.PrenomChauffeur = this.ret.prenomChauffeur;
-  //       this.variables.StructureRequerante = this.ret.structureRequerante;
+  //       this.variables.StructurerEquerante = this.ret.structureRequerante;
   //       this.variables.NomDemandeur = this.ret.nomDemandeur;
   //       this.variables.TelephoneDemandeur = this.ret.telephoneDemandeur;
   //       this.variables.MailDemandeur = this.ret.mailDemandeur;
@@ -190,44 +193,84 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   // }
 
   async modifier(id: number) {
-    this.ret = await this.priseenchargeservice.PriseEnChargeDonneesModif(id);
-    if (this.ret != null) {
-      if (this.ret.idCourse > 0) {
-        this.dialogueService.confirm({message: 'La course a été effectuée, vous ne pouvez pas la  modifier'});
-      } else {
-        this.variables.IdPriseEnCharge = this.ret.idPriseEnCharge;
-        this.variables.IdPrescripteur = this.ret.idPrescripteur;
-        this.variables.IdDemande = this.ret.idDemande;
-        this.variables.IdVictime = this.ret.idVictime;
-        this.variables.NoDemande = this.ret.noDemande;
-        this.variables.DateDemande = this.ret.dateDemande;
+    await this.priseenchargeservice.getPriseEnChargeDonneesModif(id)
+      .execute(async ret => {
+        if (ret.noFacture != null && ret.noFacture != '') {
+          //this.dialogueService.confirm({message: 'La course a été effectuée, vous ne pouvez pas la  modifier'});
+          await alert('La course a été facturée, vous ne pouvez pas la modifier', 'Modification')
+        } else {
+          this.variables.IdPriseEnCharge = ret.idPriseEnCharge;
+          this.variables.IdPrescripteur = ret.idPrescripteur;
+          this.variables.IdDemande = ret.idDemande;
+          this.variables.IdVictime = ret.idVictime;
+          this.variables.NoDemande = ret.noDemande;
+          this.variables.DateDemande = ret.dateDemande;
 
-        await this.router.navigate([RoutesEnum.DEMANDE, RoutesEnum.DEMANDE_EDIT]);
-      }
-    } else {
-      console.log('Detail ERREUR ');
-    }
+          await this.router.navigate([RoutesEnum.DEMANDE, RoutesEnum.DEMANDE_EDIT]);
+        }
+      });
 
+    // const ret = await this.priseenchargeservice.getPriseEnChargeDonneesModif(id);
+    // if (ret !== null) {
+    //   if (ret.noFacture != null && ret.noFacture != '') {
+    //     //this.dialogueService.confirm({message: 'La course a été effectuée, vous ne pouvez pas la  modifier'});
+    //     await alert('La course a été facturée, vous ne pouvez pas la modifier', 'Modification')
+    //   } else {
+    //     this.variables.IdPriseEnCharge = ret.idPriseEnCharge;
+    //     this.variables.IdPrescripteur = ret.idPrescripteur;
+    //     this.variables.IdDemande = ret.idDemande;
+    //     this.variables.IdVictime = ret.idVictime;
+    //     this.variables.NoDemande = ret.noDemande;
+    //     this.variables.DateDemande = ret.dateDemande;
+    //
+    //     await this.router.navigate([RoutesEnum.DEMANDE, RoutesEnum.DEMANDE_EDIT]);
+    //   }
+    // } else {
+    //   console.log('Detail ERREUR ');
+    // }
   }
 
   async supprimer(id: number) {
-    const dialogRef = this.dialog.open(SupprimerComponent);
-    dialogRef.afterClosed().subscribe(result => {
-      if (result == 'oui') {
-        this.deleteDemande(id);
-      }
-    });
+    await this.deleteDemande(id);
+    // const dialogRef = this.dialog.open(SupprimerComponent);
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result == 'oui') {
+    //     this.deleteDemande(id);
+    //   }
+    // });
   }
 
-  async deleteDemande(id: number) {
-    this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
-    if (this.priseencharge != null) {
-      if (this.priseencharge.idcourse > 0) {
+  async deleteDemande(idPriseEnCharge: number) {
+    await this.priseenchargeservice.deletePriseEnCharge(idPriseEnCharge)
+      .execute(() => {
+        this.dataGrid.instance.getDataSource().store().push([{type: "remove", key: idPriseEnCharge}])
+      });
+
+    /* await this.priseenchargeservice.PriseEnChargeById(id)
+      .execute(async priseEnCharge => {
+        if (priseEnCharge.idcourse > 0) {
+          await alert('La course a été effectuée, vous ne pouvez pas la supprimer.', 'Suppression impossible');
+          //this.dialogueService.confirm({message: 'La course a été effectuée, vous ne pouvez pas la supprimer'});
+        } else {
+          if (await confirm('Confirmez-vous la suppression ?', 'Suppresion')) {
+            await this.demandeservice.deleteDemande(priseEnCharge.iddemande);
+            await this.victimeservice.deleteVictime(priseEnCharge.idvictime);
+            await this.priseenchargeservice.deletePriseEnCharge(priseEnCharge.id);
+
+            this.dataGrid.instance.getDataSource().store().push([{type: "remove", key: priseEnCharge.id}]);
+          }
+        }
+      }); */
+
+
+    /* const priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
+    if (priseencharge !== null) {
+      if (priseencharge.idcourse > 0) {
         this.dialogueService.confirm({message: 'La course a été effectuée, vous ne pouvez pas la supprimer'});
       } else {
-        await this.demandeservice.deleteDemande(this.priseencharge.iddemande);
-        await this.victimeservice.deleteVictime(this.priseencharge.idvictime);
-        await this.priseenchargeservice.deletePriseEnCharge(this.priseencharge.id);
+        await this.demandeservice.deleteDemande(priseencharge.iddemande);
+        await this.victimeservice.deleteVictime(priseencharge.idvictime);
+        await this.priseenchargeservice.deletePriseEnCharge(priseencharge.id);
 
         this.dataGrid.selectedRowKeys = [];
         await this.dataSource.reload();
@@ -235,21 +278,32 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
       }
     } else {
       console.log('Detail ERREUR ');
-    }
+    } */
   }
 
   async PdfVisuFacture(id: number): Promise<void> {
-    this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
-    if (this.priseencharge != null) {
-      if (this.priseencharge.pe_nofacture === '' || this.priseencharge.pe_nofacture == null) {
+    await this.priseenchargeservice.PriseEnChargeById(id)
+      .execute(async priseEnCharge => {
+        if (priseEnCharge.pe_nofacture === '' || priseEnCharge.pe_nofacture == null) {
+          await alert('La course n\'est pas facturée.', 'Inforamtion')
+          // this.dialogueService.confirm({message: 'La course n\'est pas facturée.'});
+        } else {
+          this.viewPdf.showPdfFromFile(priseEnCharge.pe_nofacture);
+          //await this.utilservice.openFileInNewWindow(this.priseencharge.pe_nofacture);
+        }
+      });
+
+/*    const priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
+    if (priseencharge !== null) {
+      if (priseencharge.pe_nofacture === '' || priseencharge.pe_nofacture == null) {
         this.dialogueService.confirm({message: 'La course n\'est pas facturée.'});
       } else {
-        this.viewPdf.showPdfFromFile(this.priseencharge.pe_nofacture);
+        this.viewPdf.showPdfFromFile(priseencharge.pe_nofacture);
         //await this.utilservice.openFileInNewWindow(this.priseencharge.pe_nofacture);
       }
     } else {
       console.log('Detail ERREUR ');
-    }
+    } */
   }
 
   // async PdfVisuDemande(id: number): Promise<void> {
@@ -265,28 +319,28 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
   // }
 
   async PdfVisuDemande(id: number): Promise<void> {
-    this.priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
-    if (this.priseencharge != null) {
-      this.showGeneratingPDF = true;
-      const pdfGenerated = this.demandeservice.genererPDFDemande(this.priseencharge.pe_nodemande);
-      this.showGeneratingPDF = false;
-      pdfGenerated.then(async (pdf) => {
-        this.viewPdf.showPdfFromBlob(pdf);
+    this.showGeneratingPDF = true;
+
+    await this.priseenchargeservice.PriseEnChargeById(id)
+      .execute(async priseEnCharge => {
+        await this.demandeservice.genererPDFDemande(priseEnCharge.pe_nodemande)
+          .execute(res => {
+            this.viewPdf.showPdfFromBlob(res);
+          });
       });
-    } else {
-      console.log('Detail ERREUR ');
-    }
+
+    this.showGeneratingPDF = false;
   }
 
   ExportExcel() {
     const rep = this.utilService.CSV('export');
-    rep.then(result => {
-      this.utilService.DownloadFileCSV('export');
+    rep.then(async () => {
+      await this.utilService.DownloadFileCSV('export');
     });
   }
 
-  refreshDataGrid(e) {
-    this.dataGrid.instance.refresh();
+  async refreshDataGrid() {
+    await this.dataGrid.instance.refresh();
   }
 
   test() {
@@ -302,29 +356,33 @@ export class DemandeListComponent implements OnInit, AfterViewInit {
     this.dataSource.reload();
   }
 
-  createFilter(e: any): any[] {
-    let filter = [];
+  createFilter(e: FilterDemandeData): any[] | null {
+    let filter: any[] = [];
     this.filterText = '';
 
-    if (e.numDemande) {
+    if (e.numDemande !== '') {
       filter = [ "noDemande", "contains", e.numDemande ];
       this.filterText = 'N° de demande contient : ' + e.numDemande;
-    } else if (e.du || e.au) {
-      if (e.du && e.au) {
+    } else {
+      if (e.du !== null && e.au !== null) {
         filter = [
           [ "dateDemande", ">=", e.du ],
           "and",
           [ "dateDemande", "<=", e.au ],
         ]
         this.filterText = 'du ' + formatDate(e.du, 'dd/MM/yyyy') + ' au ' + formatDate(e.au, 'dd/MM/yyyy');
-      } else if (e.du) {
+      } else if (e.du !== null) {
         filter = [ "dateDemande", ">=", e.du ];
         this.filterText = 'à partir du ' + formatDate(e.du, 'dd/MM/yyyy');
-      } else {
+      } else  if (e.au !== null) {
         filter = [ "dateDemande", "<=", e.au ];
         this.filterText = 'jusqu\'au ' + formatDate(e.au, 'dd/MM/yyyy');
       }
     }
-    return filter;
+    if (filter.length === 0) {
+      return null;
+    } else {
+      return filter;
+    }
   }
 }

@@ -10,13 +10,14 @@ import {
   ElementRef,
   ChangeDetectorRef
 } from '@angular/core';
-import { MatchMediaService } from 'app/shared/services/match-media.service';
-import { MediaObserver } from '@angular/flex-layout';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { EgretSidebarHelperService } from './egret-sidebar-helper.service';
+import {MediaObserver} from '@angular/flex-layout';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {EgretSidebarHelperService} from './egret-sidebar-helper.service';
+import {MatchMediaService} from '../../services/match-media.service';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'egret-sidebar',
   templateUrl: './egret-sidebar.component.html',
   styleUrls: ['./egret-sidebar.component.scss']
@@ -24,23 +25,23 @@ import { EgretSidebarHelperService } from './egret-sidebar-helper.service';
 export class EgretSidebarComponent implements OnInit, OnDestroy {
   // Name
   @Input()
-  name: string;
+  name: string | undefined;
 
   // right
   @Input()
   @HostBinding('class.position-right')
-  right: boolean;
+  right: boolean | undefined;
 
   // Open
   @HostBinding('class.open')
-  opened: boolean;
+  opened: boolean | undefined;
 
   @HostBinding('class.sidebar-locked-open')
-  sidebarLockedOpen: boolean;
+  sidebarLockedOpen: boolean | undefined;
 
   // mode
   @HostBinding('class.is-over')
-  isOver: boolean;
+  isOver: boolean | undefined;
 
   private backdrop: HTMLElement | null = null;
 
@@ -85,7 +86,7 @@ export class EgretSidebarComponent implements OnInit, OnDestroy {
 
   open() {
     this.opened = true;
-    if (!this.sidebarLockedOpen && !this.backdrop) {
+    if (this.sidebarLockedOpen === false && this.backdrop !== null) {
       this.showBackdrop();
     }
   }
@@ -96,7 +97,7 @@ export class EgretSidebarComponent implements OnInit, OnDestroy {
   }
 
   toggle() {
-    if (this.opened) {
+    if (this.opened === true) {
       this.close();
     } else {
       this.open();
@@ -105,26 +106,26 @@ export class EgretSidebarComponent implements OnInit, OnDestroy {
 
   showBackdrop() {
     this.backdrop = this._renderer.createElement('div');
-    this.backdrop.classList.add('egret-sidebar-overlay');
+    if (this.backdrop !== null) {
+      this.backdrop.classList.add('egret-sidebar-overlay');
 
-    this._renderer.appendChild(
-      this._elementRef.nativeElement.parentElement,
-      this.backdrop
-    );
+      this._renderer.appendChild(
+        this._elementRef.nativeElement.parentElement,
+        this.backdrop
+      );
 
-    // Close sidebar onclick
-    this.backdrop.addEventListener('click', () => {
-      this.close();
-    });
+      // Close sidebar onclick
+      this.backdrop.addEventListener('click', () => {
+        this.close();
+      });
 
-    this.cdr.markForCheck();
+      this.cdr.markForCheck();
+    }
   }
 
   hideBackdrop() {
-    if (this.backdrop) {
-      this.backdrop.parentNode.removeChild(this.backdrop);
-      this.backdrop = null;
-    }
+    this.backdrop?.parentNode?.removeChild(this.backdrop);
+    this.backdrop = null;
 
     this.cdr.markForCheck();
   }
@@ -137,13 +138,15 @@ export class EgretSidebarComponent implements OnInit, OnDestroy {
 }
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[egretSidebarToggler]'
 })
 export class EgretSidebarTogglerDirective {
   @Input('egretSidebarToggler')
   public id: any;
 
-  constructor(private egretSidebarHelperService: EgretSidebarHelperService) {}
+  constructor(private egretSidebarHelperService: EgretSidebarHelperService) {
+  }
 
   @HostListener('click')
   onClick() {

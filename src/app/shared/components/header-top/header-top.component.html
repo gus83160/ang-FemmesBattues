@@ -10,31 +10,31 @@
         <li *ngFor="let item of menuItems; let i = index;">
           <div *ngIf="item.type !== 'separator'" routerLinkActive="open">
             <a matRipple routerLink="/{{item.state}}" *ngIf="item.type === 'link'">
-              <mat-icon>{{item.icon}}</mat-icon> 
-              {{item.name | translate}}
+              <mat-icon>{{item.icon}}</mat-icon>
+              {{item.name}}
             </a>
             <div *ngIf="item.type === 'dropDown'">
-              <label matRipple for="drop-{{i}}" class="toggle"><mat-icon>{{item.icon}}</mat-icon> {{item.name | translate}}</label>
-              <a matRipple><mat-icon>{{item.icon}}</mat-icon> {{item.name | translate}}</a>
+              <label matRipple for="drop-{{i}}" class="toggle"><mat-icon>{{item.icon}}</mat-icon> {{item.name}}</label>
+              <a matRipple><mat-icon>{{item.icon}}</mat-icon> {{item.name}}</a>
               <input type="checkbox" id="drop-{{i}}" />
               <ul>
                 <li *ngFor="let itemLvL2 of item.sub; let j = index;" routerLinkActive="open">
-                  <a matRipple routerLink="{{item.state ? '/'+item.state : ''}}/{{itemLvL2.state}}" 
+                  <a matRipple routerLink="{{item.state ? '/'+item.state : ''}}/{{itemLvL2.state}}"
                   *ngIf="itemLvL2.type !== 'dropDown'">
-                    <mat-icon *ngIf="itemLvL2.icon">{{itemLvL2.icon}}</mat-icon>  
-                    {{itemLvL2.name | translate}}
+                    <mat-icon *ngIf="itemLvL2.icon">{{itemLvL2.icon}}</mat-icon>
+                    {{itemLvL2.name}}
                   </a>
-                  
+
                   <div *ngIf="itemLvL2.type === 'dropDown'">
-                    <label matRipple for="drop-{{i}}{{j}}" class="toggle">{{itemLvL2.name | translate}}</label>
-                    <a matRipple><mat-icon *ngIf="itemLvL2.icon">{{itemLvL2.icon}}</mat-icon>  {{itemLvL2.name | translate}}</a>
+                    <label matRipple for="drop-{{i}}{{j}}" class="toggle">{{itemLvL2.name}}</label>
+                    <a matRipple><mat-icon *ngIf="itemLvL2.icon">{{itemLvL2.icon}}</mat-icon>  {{itemLvL2.name}}</a>
                     <input type="checkbox" id="drop-{{i}}{{j}}" />
                     <!-- Level 3 -->
                     <ul>
                       <li *ngFor="let itemLvL3 of itemLvL2.sub" routerLinkActive="open">
                         <a matRipple routerLink="{{item.state ? '/'+item.state : ''}}{{itemLvL2.state ? '/'+itemLvL2.state : ''}}/{{itemLvL3.state}}">
                           <mat-icon *ngIf="itemLvL3.icon">{{itemLvL3.icon}}</mat-icon>
-                          {{itemLvL3.name | translate}}
+                          {{itemLvL3.name}}
                         </a>
                       </li>
                     </ul>
@@ -47,25 +47,25 @@
       </ul>
       <span fxFlex></span>
       <!-- End Navigation -->
-      
+
       <!-- Language Switcher -->
-      <mat-select 
-      *ngIf="!layoutConf.isMobile"
-      placeholder=""
-      id="langToggle"
-      [style.width]="'auto'"
-      name="currentLang"
-      [(ngModel)]="currentLang" 
-      (selectionChange)="setLang()"
-      class="topbar-button-right">
-        <mat-option 
-        *ngFor="let lang of availableLangs" 
-        [value]="lang.code" ngDefaultControl>{{ lang.name }}</mat-option>
-      </mat-select>
+<!--      <mat-select-->
+<!--      *ngIf="!layoutConf.isMobile"-->
+<!--      placeholder=""-->
+<!--      id="langToggle"-->
+<!--      [style.width]="'auto'"-->
+<!--      name="currentLang"-->
+<!--      [(ngModel)]="currentLang"-->
+<!--      (selectionChange)="setLang()"-->
+<!--      class="topbar-button-right">-->
+<!--        <mat-option-->
+<!--        *ngFor="let lang of availableLangs"-->
+<!--        [value]="lang.code" ngDefaultControl>{{ lang.name }}</mat-option>-->
+<!--      </mat-select>-->
       <!-- Theme Switcher -->
-      <button 
+      <button
       mat-icon-button
-      id="schemeToggle" 
+      id="schemeToggle"
       [style.overflow]="'visible'"
       matTooltip="Color Schemes"
       [matMenuTriggerFor]="themeMenu"
@@ -74,10 +74,10 @@
       </button>
       <mat-menu #themeMenu="matMenu">
         <mat-grid-list
-        class="theme-list" 
-        cols="2" 
+        class="theme-list"
+        cols="2"
         rowHeight="48px">
-          <mat-grid-tile 
+          <mat-grid-tile
           *ngFor="let theme of egretThemes"
           (click)="changeTheme(theme)">
             <div mat-menu-item [title]="theme.name">
@@ -88,11 +88,11 @@
         </mat-grid-list>
       </mat-menu>
       <!-- Notification toggle button -->
-      <button 
+      <button
       mat-icon-button
-      matTooltip="Notifications" 
+      matTooltip="Notifications"
       (click)="toggleNotific()"
-      [style.overflow]="'visible'" 
+      [style.overflow]="'visible'"
       class="topbar-button-right">
         <mat-icon>notifications</mat-icon>
         <span class="notification-number mat-bg-warn">3</span>
@@ -120,10 +120,10 @@
         </button>
       </mat-menu>
       <!-- Mobile screen menu toggle -->
-      <button 
-      mat-icon-button 
-      class="mr-1" 
-      (click)="toggleSidenav()" 
+      <button
+      mat-icon-button
+      class="mr-1"
+      (click)="toggleSidenav()"
       *ngIf="layoutConf.isMobile">
         <mat-icon>menu</mat-icon>
       </button>

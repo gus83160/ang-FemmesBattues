@@ -8,10 +8,10 @@ import {
 } from "@angular/core";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
-import { MatchMediaService } from "app/shared/services/match-media.service";
 import { EgretSidenavHelperService } from "./egret-sidenav-helper.service";
 import { MatSidenav } from "@angular/material/sidenav";
 import { MediaObserver } from "@angular/flex-layout";
+import {MatchMediaService} from '../../services/match-media.service';
 
 @Directive({
   selector: "[egretSidenavHelper]"
@@ -21,10 +21,10 @@ export class EgretSidenavHelperDirective implements OnInit, OnDestroy {
   isOpen: boolean;
 
   @Input("egretSidenavHelper")
-  id: string;
+  id!: string;
 
   @Input("isOpen")
-  isOpenBreakpoint: string;
+  isOpenBreakpoint!: string;
 
   private unsubscribeAll: Subject<any>;
 

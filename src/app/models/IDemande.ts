@@ -1,4 +1,4 @@
-export class Demande {
+export interface IDemande {
   id: number;
   de_datealler: Date;
   de_enfantpresent: boolean;

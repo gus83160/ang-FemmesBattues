@@ -103,7 +103,7 @@
       </dxi-item>
       <dxi-item location="after">
         <div *dxTemplate>
-          <dx-button icon="refresh" (onClick)="refreshDataGrid($event)">
+          <dx-button icon="refresh" (onClick)="refreshDataGrid()">
           </dx-button>
         </div>
       </dxi-item>
@@ -139,7 +139,7 @@
         <button title="Consulter la prise en charge" (click)="PdfVisuDemande(e.data.idPriseEnCharge)">
           <img src="assets/images/transp.png" alt="">
         </button>
-        <button *ngIf="bChauffeur" title="Modifier Course" (click)="modifierLaCourse(e.data.noDemande)">
+        <button *ngIf="bChauffeur" title="Modifier la course" (click)="modifierLaCourse(e.data.noDemande)">
           <img src="assets/images/modifier.png" alt="">
         </button>
         <button *ngIf="bChauffeur" title="Facturer la Course" (click)="facturerLaCourse(e.data.noDemande)">

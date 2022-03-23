@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Validators, FormGroup, FormControl} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {UtilisateurService} from '../../../../models/utilisateur.service';
+import {UtilisateurService} from '../../../../services/utilisateur.service';
 import {NavigationService} from '../../../../shared/services/navigation.service';
 import {GlobalVariables} from '../../global/global_variables';
 import {RoutesEnum} from '../../RoutesEnum';
@@ -13,10 +13,9 @@ import {RoutesEnum} from '../../RoutesEnum';
 })
 
 export class LoginComponent implements OnInit {
-
-  loginForm: FormGroup;
-  ErrorLogin: boolean;
-  executing: boolean;
+  loginForm!: FormGroup;
+  errorLogin: boolean = false;
+  executing: boolean = false;
   private returnUrl: any;
 
   constructor(private router: Router,
@@ -28,18 +27,16 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.returnUrl = this.route.snapshot.queryParams.returnUrl || RoutesEnum.ROOT;
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl ?? RoutesEnum.ROOT;
 
     this.loginForm = new FormGroup({
       username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),
     });
-    this.ErrorLogin = false;
   }
 
-  async loginin(e): Promise<void> {
+  async loginIn(e: { preventDefault: () => void; }): Promise<void> {
     try {
-
       this.executing = true;
 
       const loginData = this.loginForm.value;
@@ -54,7 +51,7 @@ export class LoginComponent implements OnInit {
           await this.router.navigate([this.returnUrl]);
         }
       } else {
-        this.ErrorLogin = true;
+        this.errorLogin = true;
       }
     } finally {
       this.executing = false;

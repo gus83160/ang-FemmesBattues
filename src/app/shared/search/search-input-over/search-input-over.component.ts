@@ -18,12 +18,12 @@ import { Router, ActivatedRoute } from "@angular/router";
   styleUrls: ["./search-input-over.component.scss"]
 })
 export class SearchInputOverComponent implements OnInit, OnDestroy {
-  isOpen: boolean;
-  @Input('resultPage') resultPage: string;
+  isOpen!: boolean;
+  @Input('resultPage') resultPage!: string;
   @Input('placeholder') placeholder: string = "Search here";
   @Output("search") search = new EventEmitter();
   searchCtrl = new FormControl();
-  searchCtrlSub: Subscription;
+  searchCtrlSub!: Subscription;
   constructor(
       private searchService: SearchService,
       private router: Router,

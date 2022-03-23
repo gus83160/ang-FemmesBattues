@@ -11,15 +11,15 @@ export class EgretSidebarHelperService {
     this.sidebarList = [];
   }
 
-  setSidebar(name, sidebar): void {
+  setSidebar(name: any, sidebar: any): void {
     this.sidebarList[name] = sidebar;
   }
 
-  getSidebar(name): any {
+  getSidebar(name: any): any {
     return this.sidebarList[name];
   }
 
-  removeSidebar(name) {
+  removeSidebar(name: any) {
     if (!this.sidebarList[name]) {
       console.warn(`The sidebar with name '${name}' doesn't exist.`);
     }

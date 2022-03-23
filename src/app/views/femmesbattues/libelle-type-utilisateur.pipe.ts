@@ -8,7 +8,7 @@ export class LibelleTypeUtilisateurPipe implements PipeTransform {
   constructor(private variables: GlobalVariables) {
   }
 
-  transform(id) {
+  transform(id: number) {
     switch (id) {
       case this.variables.TypePrescripteur:
         return this.variables.LibellePrescripteur;

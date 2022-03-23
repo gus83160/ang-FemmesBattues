@@ -1,4 +1,4 @@
-export class StructureRequerante {
+export interface IStructureRequerante {
   id: number;
   sr_libelle: string;
   sr_type:number;

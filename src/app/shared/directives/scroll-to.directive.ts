@@ -1,15 +1,15 @@
 import { Directive, ElementRef, Attribute, OnInit, HostListener } from '@angular/core';
 
+// eslint-disable-next-line @angular-eslint/directive-selector
 @Directive({ selector: '[scrollTo]' })
-export class ScrollToDirective implements OnInit {
+export class ScrollToDirective {
   constructor( @Attribute('scrollTo') public elmID: string, private el: ElementRef) { }
-
-  ngOnInit() {}
 
   currentYPosition() {
     // Firefox, Chrome, Opera, Safari
     if (self.pageYOffset) return self.pageYOffset;
     // Internet Explorer 6 - standards mode
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (document.documentElement && document.documentElement.scrollTop)
       return document.documentElement.scrollTop;
     // Internet Explorer 6, 7 and 8
@@ -17,11 +17,12 @@ export class ScrollToDirective implements OnInit {
     return 0;
   };
 
-  elmYPosition(eID) {
+  elmYPosition(eID: any) {
     var elm = document.getElementById(eID);
+    // @ts-ignore
     var y = elm.offsetTop;
     var node: any = elm;
-    while (node.offsetParent && node.offsetParent != document.body) {
+    while ((Boolean(node.offsetParent)) && node.offsetParent != document.body) {
       node = node.offsetParent;
       y += node.offsetTop;
     }

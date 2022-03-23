@@ -1,6 +1,8 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import CustomStore from 'devextreme/data/custom_store';
+import DevExpress from 'devextreme';
+import LoadOptions = DevExpress.data.LoadOptions;
 
 @Injectable({
   providedIn: 'root'
@@ -90,10 +92,10 @@ export class TFMCustomStore<TData> extends CustomStore {
   constructor(private http: HttpClient, private idField: string, private backUrl: string) {
     super({
       key: idField,
-      load: (loadOptions) => {
+      load: async (loadOptions) => {
         let params: HttpParams = new HttpParams();
 
-        [
+        const fields = [
           'filter',
           'group',
           'groupSummary',
@@ -109,30 +111,32 @@ export class TFMCustomStore<TData> extends CustomStore {
           'take',
           'totalSummary',
           'userData'
-        ].forEach(function (i) {
-          if (i in loadOptions && isNotEmpty(loadOptions[i])) {
-            params = params.set(i, JSON.stringify(loadOptions[i]));
+        ];
+
+        fields.forEach(function(i) {
+          const option = loadOptions[i as keyof LoadOptions<any>];
+          if (i in loadOptions && isNotEmpty(option)) {
+            params = params.set(i, JSON.stringify(option));
           }
         });
 
-        return this.http.get<any>(this.backUrl, {params: params})
-          .toPromise()
-          .then(response => {
-            return {
-              data: response.data,
-              totalCount: response.totalCount,
-              summary: response.summary,
-              groupCount: response.groupCount
-            };
-          })
-          .catch(() => {
-            throw 'Data loading error'
-          });
+        try {
+          const response = await this.http.get<any>(this.backUrl, {params: params})
+            .toPromise();
+          return {
+            data: response.data,
+            totalCount: response.totalCount,
+            summary: response.summary,
+            groupCount: response.groupCount
+          };
+        } catch {
+          throw 'Data loading error';
+        }
       },
       byKey: (key) => this.byKey(key)
     });
 
-    const isNotEmpty = (value) => value !== undefined && value !== null && value !== '';
+    const isNotEmpty = (value: string) => value !== undefined && value !== null && value !== '';
 
     this.OnAddEvent = new EventEmitter<number>();
   }

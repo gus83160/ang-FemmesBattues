@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, HostListener, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {Component, OnInit, HostListener, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {
   Router,
   NavigationEnd,
@@ -8,7 +8,6 @@ import {
   ResolveEnd
 } from '@angular/router';
 import { Subscription } from "rxjs";
-// import { TranslateService } from '@ngx-translate/core';
 import { ThemeService } from '../../../services/theme.service';
 import { LayoutService } from '../../../services/layout.service';
 import { filter } from 'rxjs/operators';
@@ -19,7 +18,7 @@ import {AuthService} from '../../../services/auth.service';
   templateUrl: './admin-layout.template.html',
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AdminLayoutComponent implements OnInit, AfterViewInit {
+export class AdminLayoutComponent implements OnInit, OnDestroy {
   public isModuleLoading: Boolean = false;
   private moduleLoaderSub: Subscription;
   private layoutConfSub: Subscription;
@@ -74,15 +73,11 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     this.layout.adjustLayout(event);
   }
 
-  ngAfterViewInit() {
-
-  }
-
   scrollToTop() {
-    if(document) {
+    if(document != null) {
       setTimeout(() => {
         let element;
-        if(this.layoutConf.topbarFixed) {
+        if(this.layoutConf.topbarFixed === true) {
           element = <HTMLElement>document.querySelector('#rightside-content-hold');
         } else {
           element = <HTMLElement>document.querySelector('#main-content-wrap');
@@ -92,13 +87,13 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     }
   }
   ngOnDestroy() {
-    if(this.moduleLoaderSub) {
+    if(this.moduleLoaderSub != null) {
       this.moduleLoaderSub.unsubscribe();
     }
-    if(this.layoutConfSub) {
+    if(this.layoutConfSub != null) {
       this.layoutConfSub.unsubscribe();
     }
-    if(this.routerEventSub) {
+    if(this.routerEventSub != null) {
       this.routerEventSub.unsubscribe();
     }
   }
@@ -119,7 +114,7 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
     // console.log(this.layoutConf);
     if (
         this.layoutConf.sidebarStyle === 'full' &&
-        this.layoutConf.sidebarCompactToggle
+        this.layoutConf.sidebarCompactToggle === true
     ) {
         this.layout.publishLayoutChange({sidebarStyle: 'compact'}, {transitionClass: true});
     }
@@ -134,7 +129,7 @@ export class AdminLayoutComponent implements OnInit, AfterViewInit {
       'sidebar-compact-big': layoutConf.sidebarStyle === 'compact-big' && layoutConf.navigationPos === 'side',
       'sidebar-opened': layoutConf.sidebarStyle !== 'closed' && layoutConf.navigationPos === 'side',
       'sidebar-closed': layoutConf.sidebarStyle === 'closed',
-      'fixed-topbar': layoutConf.topbarFixed && layoutConf.navigationPos === 'side'
+      'fixed-topbar': layoutConf.topbarFixed === true && layoutConf.navigationPos === 'side'
     }
   }
 

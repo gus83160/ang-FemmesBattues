@@ -1,21 +1,21 @@
-import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {NavigationService} from '../../../shared/services/navigation.service';
 import {ThemeService} from '../../services/theme.service';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import {ILayoutConf, LayoutService} from 'app/shared/services/layout.service';
 import {GlobalVariables} from '../../../views/femmesbattues/global/global_variables';
+import {ILayoutConf, LayoutService} from '../../services/layout.service';
 
 @Component({
   selector: 'app-sidebar-side',
   templateUrl: './sidebar-side.component.html'
 })
-export class SidebarSideComponent implements OnInit, OnDestroy, AfterViewInit {
-  public menuItems: any[];
-  public hasIconTypeMenuItem: boolean;
-  public iconTypeMenuTitle: string;
-  private menuItemsSub: Subscription;
-  private variableSub: Subscription;
-  public layoutConf: ILayoutConf;
+export class SidebarSideComponent implements OnInit, OnDestroy {
+  public menuItems!: any[];
+  public hasIconTypeMenuItem!: boolean;
+  public iconTypeMenuTitle!: string;
+  private menuItemsSub!: Subscription;
+  private variableSub!: Subscription;
+  public layoutConf!: ILayoutConf;
 
   constructor(
     private navService: NavigationService,
@@ -44,21 +44,18 @@ export class SidebarSideComponent implements OnInit, OnDestroy, AfterViewInit {
     this.layoutConf = this.layout.layoutConf;
   }
 
-  ngAfterViewInit() {
-  }
-
   ngOnDestroy() {
-    if (this.menuItemsSub) {
+    if (this.menuItemsSub != null) {
       this.menuItemsSub.unsubscribe();
     }
-    if (this.variableSub) {
+    if (this.variableSub != null) {
       this.variableSub.unsubscribe();
     }
   }
 
   toggleCollapse() {
     if (
-      this.layoutConf.sidebarCompactToggle
+      this.layoutConf.sidebarCompactToggle === true
     ) {
       this.layout.publishLayoutChange({
         sidebarCompactToggle: false

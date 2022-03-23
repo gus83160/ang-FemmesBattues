@@ -4,10 +4,10 @@ import {
   Input,
   Renderer2, OnDestroy,
 } from '@angular/core';
-import {ThemeService} from '../../services/theme.service';
+import {ITheme, ThemeService} from '../../services/theme.service';
 import {LayoutService} from '../../services/layout.service';
 // import {FiscalPeriod} from '../../models/fiscalPeriod.model';
-import {BehaviorSubject, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {GlobalVariables} from '../../../views/femmesbattues/global/global_variables';
 import {RoutesEnum} from '../../../views/femmesbattues/RoutesEnum';
 import {NavigationEnd, Router} from '@angular/router';
@@ -18,7 +18,7 @@ import {filter} from 'rxjs/operators';
   templateUrl: './header-side.template.html'
 })
 export class HeaderSideComponent implements OnInit, OnDestroy {
-  @Input() notificPanel;
+  @Input() notificPanel : any;
   // public availableLangs = [{
   //   name: 'FR',
   //   code: 'fr',
@@ -26,19 +26,19 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
   // }];
   // currentLang = this.availableLangs[0];
 
-  public egretThemes;
+  public egretThemes!: ITheme[];
   public layoutConf: any;
 
   // public fiscalPeriods: BehaviorSubject<FiscalPeriod[]> = new BehaviorSubject<FiscalPeriod[]>([]);
   // public fiscalPeriod: BehaviorSubject<FiscalPeriod> = new BehaviorSubject<FiscalPeriod>(null);
 
-  private isLogged$: Subscription;
-  public isLogged: boolean;
-  public identite: string;
-  public type: string;
+  private readonly isLogged$: Subscription;
+  public isLogged!: boolean;
+  public identite!: string;
+  public type!: string;
 
   title = '';
-  private routeSubs$: Subscription;
+  private readonly routeSubs$: Subscription;
 
   constructor(
     private themeService: ThemeService,
@@ -50,28 +50,30 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
     this.setTitle(router.url);
     this.routeSubs$ = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      this.setTitle(event.url);
+    ).subscribe((event) => {
+      this.setTitle((event as NavigationEnd).url);
     });
 
     this.isLogged$ = variables.isUserLoggedIn$.subscribe((value) => {
       this.isLogged = value;
       if (this.isLogged) {
-        this.identite =
-          (variables.currentUser.ut_prenom ? variables.currentUser.ut_prenom + ' ' : '')
-            + (variables.currentUser.ut_nom ? variables.currentUser.ut_nom : '');
+        if (this.variables.currentUser != null) {
+          this.identite =
+            (this.variables.currentUser.ut_prenom ? this.variables.currentUser.ut_prenom + ' ' : '')
+            + (this.variables.currentUser.ut_nom ? this.variables.currentUser.ut_nom : '');
 
-        if (this.variables.currentUser.idtypeutilisateur === this.variables.TypePrescripteur) {
-          this.type = 'Prescripteur';
-        }
-        if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeChauffeur) {
-          this.type = 'Chauffeur';
-        }
-        if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAssociation) {
-          this.type = 'Association';
-        }
-        if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAdmin) {
-          this.type = 'Admin';
+          if (this.variables.currentUser.idtypeutilisateur === this.variables.TypePrescripteur) {
+            this.type = 'Prescripteur';
+          }
+          if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeChauffeur) {
+            this.type = 'Chauffeur';
+          }
+          if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAssociation) {
+            this.type = 'Association';
+          }
+          if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAdmin) {
+            this.type = 'Admin';
+          }
         }
       } else {
         this.identite = '';
@@ -95,6 +97,8 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
     } else if (url === '/' + RoutesEnum.AUTH + '/' + RoutesEnum.LOGINMDP) {
       this.title = 'Changement de mot de passe';
     } else if (url === '/' + RoutesEnum.DEMANDE + '/' + RoutesEnum.DEMANDE_EDIT) {
+      this.title = 'Modification demande';
+    } else if (url === '/' + RoutesEnum.DEMANDE + '/' + RoutesEnum.DEMANDE_NEW) {
       this.title = 'Création demande';
     } else if (url === '/' + RoutesEnum.UTILISATEUR + '/' + RoutesEnum.UTILISATEUR_LIST) {
       this.title = 'Utilisateurs';
@@ -163,12 +167,8 @@ export class HeaderSideComponent implements OnInit, OnDestroy {
   // }
 
   ngOnDestroy(): void {
-    if (this.isLogged$) {
-      this.isLogged$.unsubscribe();
-    }
-    if (this.routeSubs$) {
-      this.routeSubs$.unsubscribe();
-    }
+    this.isLogged$.unsubscribe();
+    this.routeSubs$.unsubscribe();
   }
 
   connexion(): void {

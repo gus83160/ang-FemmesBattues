@@ -11,12 +11,12 @@ export interface ILayoutConf {
   dir?: string; // ltr, rtl
   isMobile?: boolean; // updated automatically
   useBreadcrumb?: boolean; // Breadcrumb enabled/disabled
-  breadcrumb?: string; // simple, title
-  topbarFixed?: boolean; // Fixed header
-  footerFixed?: boolean; // Fixed Footer
-  topbarColor?: string; // Header background color http://demos.ui-lib.com/egret-doc/#egret-colors
-  footerColor?: string // Header background color http://demos.ui-lib.com/egret-doc/#egret-colors
-  matTheme?: string; // material theme. egret-blue, egret-navy, egret-dark-purple, egret-dark-pink
+  breadcrumb: string; // simple, title
+  topbarFixed: boolean; // Fixed header
+  footerFixed: boolean; // Fixed Footer
+  topbarColor: string; // Header background color http://demos.ui-lib.com/egret-doc/#egret-colors
+  footerColor: string // Header background color http://demos.ui-lib.com/egret-doc/#egret-colors
+  matTheme: string; // material theme. egret-blue, egret-navy, egret-dark-purple, egret-dark-pink
   perfectScrollbar?: boolean;
 }
 export interface ILayoutChangeOptions {
@@ -32,11 +32,11 @@ interface IAdjustScreenOptions {
   providedIn: "root"
 })
 export class LayoutService {
-  public layoutConf: ILayoutConf;
-  layoutConfSubject: BehaviorSubject<ILayoutConf>;
-  layoutConf$: Observable<ILayoutConf>;
-  public isMobile: boolean;
-  public currentRoute: string;
+  public layoutConf!: ILayoutConf;
+  layoutConfSubject!: BehaviorSubject<ILayoutConf>;
+  layoutConf$!: Observable<ILayoutConf>;
+  public isMobile!: boolean;
+  public currentRoute!: string;
   public fullWidthRoutes = ["shop"];
 
   constructor(private themeService: ThemeService) {
@@ -71,7 +71,7 @@ export class LayoutService {
     // //**********************
   }
 
-  publishLayoutChange(lc: ILayoutConf, opt: ILayoutChangeOptions = {}) {
+  publishLayoutChange(lc: Partial<ILayoutConf>, opt: ILayoutChangeOptions = {}) {
     if (this.layoutConf.matTheme !== lc.matTheme && lc.matTheme) {
       this.themeService.changeTheme(this.layoutConf.matTheme, lc.matTheme);
     }
@@ -80,7 +80,7 @@ export class LayoutService {
     this.layoutConfSubject.next(this.layoutConf);
   }
 
-  applyMatTheme(theme) {
+  applyMatTheme(theme: any) {
     this.themeService.applyMatTheme(this.layoutConf.matTheme);
   }
 
@@ -96,7 +96,7 @@ export class LayoutService {
   adjustLayout(options: IAdjustScreenOptions = {}) {
     let sidebarStyle: string;
     this.isMobile = this.isSm();
-    this.currentRoute = options.route || this.currentRoute;
+    this.currentRoute = options.route == null ? this.currentRoute : options.route;
     sidebarStyle = this.isMobile ? "closed" : "full";
 
     if (this.currentRoute) {

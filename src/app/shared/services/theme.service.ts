@@ -33,7 +33,7 @@ export class ThemeService {
     "baseColor": "#10174c",
     "isActive": false
   }];
-  public activatedTheme: ITheme;
+  public activatedTheme: ITheme | undefined;
   private renderer: Renderer2;
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -57,7 +57,7 @@ export class ThemeService {
 
   }
 
-  changeTheme(prevTheme, themeName: string) {
+  changeTheme(prevTheme: string, themeName: string) {
     this.renderer.removeClass(this.document.body, prevTheme);
     this.renderer.addClass(this.document.body, themeName);
     this.flipActiveFlag(themeName);

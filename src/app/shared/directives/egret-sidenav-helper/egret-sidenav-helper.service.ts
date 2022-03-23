@@ -11,11 +11,11 @@ export class EgretSidenavHelperService {
     this.sidenavList = [];
   }
 
-  setSidenav(id, sidenav): void {
+  setSidenav(id: any, sidenav: any): void {
     this.sidenavList[id] = sidenav;
   }
 
-  getSidenav(id): any {
+  getSidenav(id: any): any {
     return this.sidenavList[id];
   }
 }

@@ -1,4 +1,4 @@
-export class Victime {
+export interface IVictime {
   id: number;
   vi_nom: string;
   vi_nomusage: string;

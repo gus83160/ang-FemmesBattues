@@ -26,8 +26,7 @@ export class DateService {
   }
 
   getDebutMois(dt: Date): Date {
-    let res = new Date(dt.getFullYear(), dt.getMonth(), 1);
-    return res;
+    return new Date(dt.getFullYear(), dt.getMonth(), 1);
   }
 
   getFinMois(dt: Date): Date {
@@ -38,8 +37,7 @@ export class DateService {
   }
 
   getDebutAnnee(dt: Date): Date {
-    let res = new Date(dt.getFullYear(), 0, 1);
-    return res;
+    return new Date(dt.getFullYear(), 0, 1);
   }
 
   getFinAnnee(dt: Date): Date {

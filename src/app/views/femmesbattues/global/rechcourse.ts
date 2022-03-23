@@ -1,5 +1,5 @@
-export class RechCourse {
- url:string;
- dossier:string;
- token:string;
-}
+// export class RechCourse {
+//  url:string;
+//  dossier:string;
+//  token:string;
+// }

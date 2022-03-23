@@ -1,6 +1,6 @@
 import { alert } from "devextreme/ui/dialog"
 
-export class ErrorMessage {
+export class HttpError {
   public status: number;
   public message: string;
 
@@ -9,7 +9,7 @@ export class ErrorMessage {
     this.message = msg;
   }
 
-  show() {
-    alert(this.message, 'Erreur');
+  async show(): Promise<void> {
+    await alert(this.message, 'Erreur');
   }
 }

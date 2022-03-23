@@ -1,43 +1,41 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse, HttpRequest} from '@angular/common/http';
-import {HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 
 
 import {environment} from '../../../../environments/environment';
 // import {Pdf} from './pdf';
 // import {RepAutorisation} from './repautorisation';
-import {RepCourseHub} from './repcoursehub';
-import {RechCourse} from './rechcourse';
+import {IRepCourseHub} from './IRepCourseHub';
+//import {RechCourse} from './rechcourse';
 import {map} from 'rxjs/operators';
+import {HttpService} from '../../../http-service/http.service';
+import {HttpErrorHandler} from '../../../http-service/http-error-handler';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private httpService: HttpService) {
   }
 
   // html: string;
   // pdf: Pdf;
-  rchcourse: RechCourse;
+  //rchcourse: RechCourse;
 
-  async RechCourseHub(demande): Promise<RepCourseHub> {
-    this.rchcourse = new RechCourse();
-    this.rchcourse.dossier = demande;
+  RechCourseHub(numDemande: string): HttpErrorHandler<IRepCourseHub> {
+    //this.rchcourse = new RechCourse();
+    //this.rchcourse.dossier = demande;
     // console.log("avant put");
-    const re = await this.http.put<RepCourseHub>(environment.url + '/util/rech_course_hub', this.rchcourse).toPromise()
-      .catch(error => {
-        console.log(error);
-        return null;
-      });
-    return re;
+    return this.httpService.request(async httpClient => {
+      return httpClient.get<IRepCourseHub>(environment.url + '/util/rech_course_hub/' + numDemande).toPromise()
+    })
+      .withMessage(404, "Demande inexistante.");
   }
 
-  async openFileInNewWindow(fichier: string) {
+/*  async openFileInNewWindow(fichier: string) {
     window.open(environment.url + '/util/download/' + fichier, 'application/pdf');
-  }
+  } */
 
   downloadFile(fichier: string): any {
     let url = environment.url + '/util/download/' + fichier;

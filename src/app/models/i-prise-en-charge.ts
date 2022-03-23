@@ -1,6 +1,6 @@
 // import { Moment } from 'moment';
 
-export class PriseEnCharge {
+export interface IPriseEnCharge {
   id: number;
   pe_nodemande: string;
   pe_date: Date;

@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Validators, FormGroup, FormControl, AbstractControl, ValidatorFn, FormBuilder} from '@angular/forms';
+import {Component} from '@angular/core';
+import {Validators, FormGroup, FormControl, AbstractControl, ValidatorFn, FormBuilder, ValidationErrors} from '@angular/forms';
 import {Router} from '@angular/router';
 import {GlobalVariables} from '../../global/global_variables';
-import {UtilisateurService} from '../../../../models/utilisateur.service';
+import {UtilisateurService} from '../../../../services/utilisateur.service';
 import {NavigationService} from '../../../../shared/services/navigation.service';
 import {RoutesEnum} from '../../RoutesEnum';
 
@@ -11,7 +11,7 @@ import {RoutesEnum} from '../../RoutesEnum';
   templateUrl: './login-mdp.component.html',
   styleUrls: ['./login-mdp.component.scss']
 })
-export class LoginMDPComponent implements OnInit {
+export class LoginMDPComponent {
 
   VerifMDP: boolean;
   loginMDPForm: FormGroup;
@@ -23,10 +23,10 @@ export class LoginMDPComponent implements OnInit {
               private variables: GlobalVariables) {
 
     this.loginMDPForm = formBuilder.group({
-      oldmdp: new FormControl('', Validators.required),
-      mdp: new FormControl('', Validators.required),
-      mdpConfirm: new FormControl('', Validators.required),
-    },
+        oldmdp: new FormControl('', Validators.required),
+        mdp: new FormControl('', Validators.required),
+        mdpConfirm: new FormControl('', Validators.required),
+      },
       {
         validators: [this.passwordEquals()],
         updateOn: 'blur',
@@ -44,33 +44,30 @@ export class LoginMDPComponent implements OnInit {
   }
 
   public passwordEquals(): ValidatorFn {
-    return (formGroup: FormGroup) => {
+    return (formGroup: AbstractControl): ValidationErrors | null => {
       const mdp = formGroup.get('mdp');
       const mdpConfirm = formGroup.get('mdpConfirm');
 
-      if (!mdp || !mdpConfirm) {
+      if (mdp == null || mdpConfirm == null) {
         return null;
       }
 
       const mdpValue = mdp.value;
-      if (!mdpValue) {
+      if (mdpValue === undefined) {
         return null;
       }
 
       const mdpConfirmValue = mdpConfirm.value;
-      if (!mdpConfirmValue) {
+      if (mdpConfirmValue === undefined) {
         return null;
       }
 
       if (mdpValue !== mdpConfirmValue) {
-        return { notEquals: true }; // This is our error!
+        return {notEquals: true}; // This is our error!
       }
 
       return null;
     };
-  }
-
-  ngOnInit(): void {
   }
 
   // passwordConfirming() {
@@ -100,16 +97,18 @@ export class LoginMDPComponent implements OnInit {
 
   async ValidationMDP() {
     const loginMDPData = this.loginMDPForm.value;
-    const utilisateur = await this.utilisateurservice.VerificationIdMDP(this.variables.currentUser.id, loginMDPData.oldmdp);
-    if (utilisateur != null) {
-      utilisateur.ut_mdp = loginMDPData.mdp;
+    if (this.variables.currentUser != null) {
+      const utilisateur = await this.utilisateurservice.VerificationIdMDP(this.variables.currentUser.id, loginMDPData.oldmdp);
+      if (utilisateur != null) {
+        utilisateur.ut_mdp = loginMDPData.mdp;
 
-      const verifiedUser = await this.utilisateurservice.UpdateUtilisateur(utilisateur);
-      this.variables.currentUser = verifiedUser;
-      // this.navigationservice.publishNavigationChange('Demande');
-      await this.route.navigate([RoutesEnum.ROOT]);
-    } else {
-      this.VerifMDP = true;
+        const verifiedUser = await this.utilisateurservice.UpdateUtilisateur(utilisateur);
+        this.variables.currentUser = verifiedUser;
+        // this.navigationservice.publishNavigationChange('Demande');
+        await this.route.navigate([RoutesEnum.ROOT]);
+      } else {
+        this.VerifMDP = true;
+      }
     }
   }
 }

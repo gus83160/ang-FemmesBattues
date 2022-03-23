@@ -8,8 +8,8 @@ import {RoutesEnum} from '../../../views/femmesbattues/RoutesEnum';
 })
 export class SidenavComponent {
   @Input('items') public menuItems: any[] = [];
-  @Input('hasIconMenu') public hasIconTypeMenuItem: boolean;
-  @Input('iconMenuTitle') public iconTypeMenuTitle: string;
+  @Input('hasIconMenu') public hasIconTypeMenuItem!: boolean;
+  @Input('iconMenuTitle') public iconTypeMenuTitle!: string;
 
   constructor() {
   }

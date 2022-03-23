@@ -1,5 +1,4 @@
-export class Utilisateur {
-
+export interface IUtilisateur {
   id: number;
   ut_nom: string;
   ut_prenom: string;
@@ -20,7 +19,4 @@ export class Utilisateur {
   ut_codechauffeur: string;
   ut_typestructurerequerante: number;
   idtypeutilisateur: number;
-
-  constructor () {
-  }
 }

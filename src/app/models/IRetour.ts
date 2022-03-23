@@ -1,6 +1,4 @@
-// import {Moment} from 'moment';
-
-export class Retour {
+export interface IRetour {
   idPriseEnCharge: number;
   noDemande: string;
   dateDemande: Date;
@@ -44,7 +42,7 @@ export class Retour {
   adresseDepart: string;
   adresseArrivee: string;
   allerRetour: boolean;
-  dateRetour: Date;
+  dateRetour?: Date;
   heureRetour: string;
   dateCourse: Date;
   heureCourseDebut: Date;

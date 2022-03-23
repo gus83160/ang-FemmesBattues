@@ -1,4 +1,4 @@
-export class RepCourseHub {
+export interface IRepCourseHub {
   vehicleCode: string;
   dateBooking: Date;
   price: string;

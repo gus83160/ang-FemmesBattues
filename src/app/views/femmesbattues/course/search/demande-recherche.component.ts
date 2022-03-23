@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {DxFormComponent} from 'devextreme-angular';
 
 @Component({
@@ -7,12 +7,13 @@ import {DxFormComponent} from 'devextreme-angular';
   styleUrls: ['./demande-recherche.component.scss']
 })
 export class DemandeRechercheComponent implements OnInit {
-  @ViewChild(DxFormComponent, {static: false}) form: DxFormComponent | undefined;
+  @ViewChild(DxFormComponent, {static: false}) form!: DxFormComponent;
 
   @Input() searchData: any = {};
   @Input() initiallyShowed: boolean = false;
-  @Input() cancel = () => {};
-  @Input() ok: (data: any) => CancelSearch | Promise<CancelSearch>;
+  @Input() cancel = () => {
+  };
+  @Input() ok?: (data: any) => CancelSearch | Promise<CancelSearch>;
 
   private _isPopupVisible = false;
   private isSubmited = false;
@@ -40,7 +41,7 @@ export class DemandeRechercheComponent implements OnInit {
     this.isSubmited = false;
 
     // reset form state and validation
-    this.form?.instance.resetValues();
+    this.form.instance.resetValues();
     this._isPopupVisible = true;
   }
 
@@ -56,28 +57,30 @@ export class DemandeRechercheComponent implements OnInit {
 
   onFormSubmit = (e: SubmitEvent) => {
     this.message = '';
-    const resVal = this.form?.instance.validate();
-    if (resVal?.isValid) {
+    const resVal = this.form.instance.validate();
+    if (resVal.isValid === true) {
       let eventData = {
         searchData: this.searchData,
         cancel: false,
         message: ''
       };
 
-      const res = this.ok(eventData);
-      if (res instanceof Promise) {
-        res.then(value => {
-          this.handleSubmitRes(value);
-        })
-      } else {
-        this.handleSubmitRes(res);
+      if (this.ok) {
+        const res = this.ok(eventData);
+        if (res instanceof Promise) {
+          res.then(value => {
+            this.handleSubmitRes(value);
+          });
+        } else {
+          this.handleSubmitRes(res);
+        }
       }
     }
 
     e.preventDefault();
-  }
+  };
 
-  handleSubmitRes(res) {
+  handleSubmitRes(res: CancelSearch) {
     if (res.cancel) {
       this.message = res.message;
     } else {

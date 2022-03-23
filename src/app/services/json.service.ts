@@ -18,7 +18,7 @@ export class JsonService {
     return JSON.parse(s, this.parseIsoDateStrToDate());
   }
 
-  parseIsoDateStrToDate = () => (key, value) => {
+  parseIsoDateStrToDate = () => (key: any, value: string | number | Date) => {
     if (typeof value === "string" && this.isoDateFormat.test(value)){
       return new Date(value);
     }

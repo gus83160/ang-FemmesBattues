@@ -12,7 +12,7 @@ import { LayoutService } from '../../services/layout.service';
 export class HeaderTopComponent implements OnInit, OnDestroy {
   layoutConf: any;
   menuItems:any;
-  menuItemSub: Subscription;
+  menuItemSub!: Subscription;
   egretThemes: any[] = [];
   // currentLang = 'fr';
   // availableLangs = [{
@@ -25,7 +25,7 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
   //   name: 'French',
   //   code: 'fr',
   // }]
-  @Input() notificPanel;
+  @Input() notificPanel!: any;
   constructor(
     private layout: LayoutService,
     private navService: NavigationService,
@@ -43,7 +43,8 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
       let limit = 4
       let mainItems:any[] = res.slice(0, limit)
       if(res.length <= limit) {
-        return this.menuItems = mainItems
+        return;
+        //return this.menuItems = mainItems
       }
       let subItems:any[] = res.slice(limit, res.length - 1)
       mainItems.push({
@@ -62,7 +63,7 @@ export class HeaderTopComponent implements OnInit, OnDestroy {
   // setLang() {
   //   this.translate.use(this.currentLang)
   // }
-  changeTheme(theme) {
+  changeTheme(theme: any) {
     this.layout.publishLayoutChange({matTheme: theme.name})
   }
   toggleNotific() {

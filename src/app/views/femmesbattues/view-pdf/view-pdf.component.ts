@@ -1,6 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-
-import { environment } from '../../../../environments/environment';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {UtilService} from '../global/util.service';
 
 @Component({
@@ -8,31 +6,29 @@ import {UtilService} from '../global/util.service';
   templateUrl: './view-pdf.component.html',
   styleUrls: ['./view-pdf.component.scss']
 })
-export class ViewPdfComponent implements OnInit {
-  @Output() onHidden = new EventEmitter();
+export class ViewPdfComponent {
+  @Output() Hidden = new EventEmitter();
 
-  isPopupVisible = false;
+  isPdfVisible = false;
   showLoading = false;
   pdfFile: Blob;
-  pdfFileName: string;
+  pdfFileName: string = '';
 
   constructor(private utilService: UtilService) {
-  }
-
-  ngOnInit(): void {
+    this.pdfFile = new Blob();
   }
 
   showPdfFromFile(fichier: string) {
     this.showLoading = true;
 
-    this.pdfFileName = fichier
+    this.pdfFileName = fichier;
     this.utilService.downloadFile(fichier).subscribe(
-      (res) => {
-        this.isPopupVisible = true;
+      (res: Blob) => {
+        this.isPdfVisible = true;
         this.showLoading = false;
         this.pdfFile = res;
       },
-      (err) => {
+      (err: { show: () => void; }) => {
         this.hidePdf();
         err.show();
       }
@@ -42,17 +38,17 @@ export class ViewPdfComponent implements OnInit {
   showPdfFromBlob(data: Blob) {
     this.showLoading = true;
 
-    this.isPopupVisible = true;
+    this.isPdfVisible = true;
     this.showLoading = false;
     this.pdfFile = data;
   }
 
   private hidePdf() {
-    this.isPopupVisible = false;
+    this.isPdfVisible = false;
     this.showLoading = false;
   }
 
-  onPupupHidden() {
-    this.onHidden.emit(null);
+  onPopupHidden() {
+    this.Hidden.emit(null);
   }
 }

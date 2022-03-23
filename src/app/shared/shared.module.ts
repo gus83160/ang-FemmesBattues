@@ -16,7 +16,6 @@ import {OnlyNumberDirective} from './directives/only-number.directive';
 import {AuthGuardService} from './services/auth/auth-guard.service';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {ErrorComponent} from '../views/femmesbattues/error/error.component';
-import {LoginComponent} from '../views/femmesbattues/auth/login/login.component';
 import {DialogueService} from '../views/femmesbattues/dialogue/dialogue.service';
 import {ShowErrorsComponent} from '../show-errors.component';
 

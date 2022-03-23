@@ -1,16 +1,16 @@
 import {DxFormComponent} from 'devextreme-angular';
 
-export class ValidationErrorResponse {
+export class ValidationError {
   ValidationErrors: ValidationErrorField[];
-  status: number;
-  message: string;
+  status!: number;
+  message!: string;
 
   constructor() {
     this.ValidationErrors = [];
   }
 
   applyToForm(form: DxFormComponent): string[] {
-    let globalErrorMessage = [];
+    let globalErrorMessage: string[] = [];
     for (const err of this.ValidationErrors) {
       const editor = form.instance.getEditor(err.fieldname);
       if (editor === undefined) {
@@ -32,10 +32,6 @@ export class ValidationErrorResponse {
 }
 
 export class ValidationErrorField {
-  fieldname: string;
-  message: string[];
-
-  // get FullDescription(): string {
-  //   return this.Description.join(', ');
-  // }
+  fieldname!: string;
+  message!: string[];
 }

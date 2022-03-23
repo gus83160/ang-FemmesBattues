@@ -20,8 +20,8 @@ export class LogoutComponent implements OnInit, AfterViewInit {
   }
 
   async ngAfterViewInit(): Promise<void> {
-    sessionStorage.setItem('login', null);
-    sessionStorage.setItem('password', null);
+    sessionStorage.removeItem('login');
+    sessionStorage.removeItem('password');
 
     await this.route.navigate([RoutesEnum.ROOT]);
     this.variables.currentUser = null;

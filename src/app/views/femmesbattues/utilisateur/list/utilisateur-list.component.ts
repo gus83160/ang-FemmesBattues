@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { Router } from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { GlobalVariables } from '../../global/global_variables';
+import {GlobalVariables} from '../../global/global_variables';
 //import { Retour } from '../../../models/retour';
-import { UtilisateurService } from '../../../../models/utilisateur.service';
+import {UtilisateurService} from '../../../../services/utilisateur.service';
 import {RoutesEnum} from '../../RoutesEnum';
+import {IUtilisateur} from '../../../../models/IUtilisateur';
 
 @Component({
   selector: 'app-utilisateur-list',
@@ -15,18 +14,20 @@ import {RoutesEnum} from '../../RoutesEnum';
 })
 export class UtilisateurListComponent implements OnInit {
 
-    rows = [];
-    columns = [];
+  rows: IUtilisateur[] = [];
+  columns: ColumnConf[] = [];
 
-    constructor(private route: Router,
-                private utilisateurservice: UtilisateurService,
-                private variables: GlobalVariables) { }
+  constructor(private route: Router,
+              private utilisateurservice: UtilisateurService,
+              private variables: GlobalVariables) {
+  }
 
-    ngOnInit(): void {
-     this.columns = this.getDataConf();
-     this.loadAllUtilisateur();
-    }
-  getDataConf() {
+  ngOnInit(): void {
+    this.columns = this.getDataConf();
+    this.loadAllUtilisateur();
+  }
+
+  getDataConf(): ColumnConf[] {
     return [
       {
         prop: 'ut_nom',
@@ -40,17 +41,23 @@ export class UtilisateurListComponent implements OnInit {
         prop: 'idtypeutilisateur',
         name: 'Type'
       }
-    ];
+    ] as ColumnConf[];
   }
+
   loadAllUtilisateur() {
-    var res = this.utilisateurservice.getAllUtilisateur();
-    res.subscribe(ret => { this.rows = ret; });
+    const res = this.utilisateurservice.getAllUtilisateur();
+    res.subscribe(ret => {
+      this.rows = ret;
+    });
   }
-  async detail(id) {
+
+  async detail(id: number) {
     this.variables.IdUser = id;
-    this.route.navigate([RoutesEnum.UTILISATEUR, RoutesEnum.UTILISATEUR_EDIT]);
+    await this.route.navigate([RoutesEnum.UTILISATEUR, RoutesEnum.UTILISATEUR_EDIT]);
   }
+}
 
-
-
+interface ColumnConf {
+  prop: string,
+  name: string,
 }

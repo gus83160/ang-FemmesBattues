@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {formatDate} from '@angular/common';
 import {DxFormComponent} from 'devextreme-angular';
 import {DateService} from '../../../../../services/date.service';
@@ -8,21 +8,18 @@ import {DateService} from '../../../../../services/date.service';
   templateUrl: './demande-list-filter.component.html',
   styleUrls: ['./demande-list-filter.component.scss']
 })
-export class DemandeListFilterComponent implements OnInit {
+export class DemandeListFilterComponent {
   @ViewChild(DxFormComponent, {static: false}) form: DxFormComponent | undefined;
 
-  @Input() filterData: any = {}
+  @Input() filterData: Partial<FilterDemandeData> = {}
   @Output() applyFilter = new EventEmitter();
 
-  filterDataCopy: any = {};
+  filterDataCopy: Partial<FilterDemandeData> = {};
   private _isFilterVisible = false;
   private isSubmited = false;
 
   constructor(private dateService: DateService) {
     //this.onTest();
-  }
-
-  ngOnInit(): void {
   }
 
   get isFilterVisible() {
@@ -101,14 +98,14 @@ export class DemandeListFilterComponent implements OnInit {
       dt = new Date(dt);
       dt.setDate(dt.getDate() + 1);
       console.log('-----');
-    };
+    }
   }
 
   formatDateFull(dt: Date): string {
     return formatDate(dt, 'EEEE dd/MM/yyyy HH:mm', 'fr');
   }
 
-  validateDate = (e: any) => {
+  validateDate = () => {
     if (this.filterData.du && this.filterData.au) {
       return this.filterData.du <= this.filterData.au;
     } else {
@@ -125,7 +122,7 @@ export class DemandeListFilterComponent implements OnInit {
 
   onFormSubmit = (e: SubmitEvent) => {
     const resVal = this.form?.instance.validate();
-    if (resVal?.isValid) {
+    if (resVal !== undefined && (resVal.isValid ?? false)) {
       this.isSubmited = true;
       this.isFilterVisible = false;
       this.applyFilter.emit(this.filterData);
@@ -134,3 +131,10 @@ export class DemandeListFilterComponent implements OnInit {
     e.preventDefault();
   }
 }
+
+export class FilterDemandeData {
+  du: Date | null = null;
+  au: Date | null = null;
+  numDemande: string = '';
+}
+

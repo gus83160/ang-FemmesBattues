@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -6,12 +6,8 @@ import { MatDialogRef } from '@angular/material/dialog';
   templateUrl: './app-loader.component.html',
   styleUrls: ['./app-loader.component.css']
 })
-export class AppLoaderComponent implements OnInit {
-  title;
-  message;
+export class AppLoaderComponent {
+  title: any;
+  message: any;
   constructor(public dialogRef: MatDialogRef<AppLoaderComponent>) {}
-
-  ngOnInit() {
-  }
-
 }

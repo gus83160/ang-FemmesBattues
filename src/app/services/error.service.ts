@@ -1,11 +1,10 @@
-import {Injectable} from '@angular/core';
-import {ValidationErrorResponse} from '../models/validation_error_response';
 import {FormGroup} from '@angular/forms';
-import {ErrorMessage} from '../models/ErrorMessage';
+import {ValidationError} from '../http-service/models/ValidationError';
+import {HttpError} from '../http-service/models/HttpError';
 
-@Injectable({
+/* @Injectable({
   providedIn: 'root'
-})
+}) */
 export class ErrorService {
   get getGlobalErrorMessage(): string[] {
     return this.globalErrorMessage;
@@ -16,13 +15,13 @@ export class ErrorService {
     this.globalErrorMessage = [];
   }
 
-  loadError(e: any, form): void {
+  loadError(e: any, form: FormGroup): void {
     // console.log(JSON.stringify(e));
-    if (e instanceof ValidationErrorResponse) {
+    if (e instanceof ValidationError) {
       e.ValidationErrors.forEach(fieldError => {
         const errorDesc = fieldError.message.join(', ');
         const field = form.controls[fieldError.fieldname];
-        if (field) {
+        if (field !== null) {
           field.setErrors({server: errorDesc});
         } else {
           this.addError(errorDesc);
@@ -33,7 +32,7 @@ export class ErrorService {
           // }
         }
       });
-    } else if (e instanceof ErrorMessage) {
+    } else if (e instanceof HttpError) {
       this.addError(e.message);
       // this.globalErrorMessage = e.message;
     } else if (typeof e === 'string') {
@@ -41,7 +40,7 @@ export class ErrorService {
       // this.globalErrorMessage = e;
     } else if (e.error instanceof ErrorEvent) {
       // erreur locale au navigateur
-      const result = new ErrorMessage(0,'Erreur : ' + e.error.message);
+      this.addError('Erreur : ' + e.error.message);
     } else {
       this.addError('Erreur innatendue.');
       // this.globalErrorMessage = 'Erreur innatendue.';

@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {GlobalVariables} from '../views/femmesbattues/global/global_variables';
 import {RoutesEnum} from '../views/femmesbattues/RoutesEnum';
 
 @Component({
@@ -13,7 +12,7 @@ export class DefaultroutingComponent {
   ) {
     // console.log("defaultrouting");
 
-    this.router.navigate([RoutesEnum.ROOT]);
+    this.router.navigate([RoutesEnum.ROOT]).then(() => {});
   }
 
 // 	constructor(private keycloakService: KeycloakService, protected router: Router) {

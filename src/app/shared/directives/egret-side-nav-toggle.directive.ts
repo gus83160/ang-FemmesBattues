@@ -5,15 +5,16 @@ import { MatSidenav } from '@angular/material/sidenav';
 
 
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[EgretSideNavToggle]'
 })
 export class EgretSideNavToggleDirective implements OnInit, OnDestroy {
-  isMobile;
-  screenSizeWatcher: Subscription;
+  isMobile!: boolean;
+  screenSizeWatcher!: Subscription;
   constructor(
     private mediaObserver: MediaObserver,
     @Host() @Self() @Optional() public sideNav: MatSidenav
-  ) { 
+  ) {
   }
 
   ngOnInit() {
@@ -21,16 +22,16 @@ export class EgretSideNavToggleDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if(this.screenSizeWatcher) {
+    if(this.screenSizeWatcher != null) {
       this.screenSizeWatcher.unsubscribe()
     }
   }
 
   updateSidenav() {
-    var self = this;
+    const self = this;
     setTimeout(() => {
-      self.sideNav.opened = !self.isMobile;
-      self.sideNav.mode = self.isMobile ? 'over' : 'side';
+      self.sideNav.opened = self.isMobile === false;
+      self.sideNav.mode = self.isMobile === true ? 'over' : 'side';
     })
   }
   initSideNav() {

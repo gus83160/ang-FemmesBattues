@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {GlobalVariables} from '../../views/femmesbattues/global/global_variables';
-import {UtilisateurService} from '../../models/utilisateur.service';
+import {UtilisateurService} from '../../services/utilisateur.service';
 
 @Injectable({
     providedIn: 'root'
@@ -24,7 +24,7 @@ export class AuthService {
     if (this.variables.currentUser === null) {
       const login = sessionStorage.getItem('login');
       const password = sessionStorage.getItem('password');
-      if (login && password) {
+      if (login != null && password != null) {
         await this.utilisateurService.VerificationLoginMDP(login, password);
       }
     }
@@ -38,7 +38,7 @@ export class AuthService {
     if (login !== '' && password !== '') {
       return window.btoa(login + ':' + password);
     } else {
-      return null;
+      return '';
     }
 //        return window.btoa(this.variables.Login + ':' + this.variables.MotDePasse);
   }

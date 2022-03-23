@@ -157,9 +157,21 @@
               "devServerTarget": "ang-FemmesBattues:serve:production"
             }
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "ang-FemmesBattues"
+  "defaultProject": "ang-FemmesBattues",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

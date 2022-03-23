@@ -14,21 +14,27 @@
       <div class="card-title-text"><br><br>Demande<br><br></div>
     </mat-card-title>-->
   <mat-card-content>
-    <form *ngIf="DemandeForm" [formGroup]="DemandeForm" (ngSubmit)="CreationDemande()">
+    <form *ngIf="demandeForm" [formGroup]="demandeForm" (ngSubmit)="CreationDemande()">
       <mat-toolbar class="sticky-toolbar" *ngIf="isDevMode">
-        <button
-          type="button"
-          mat-raised-button
-          color="primary"
-          [disabled]="executing"
-          (click)="fillValues()"
-        >Fill values
-        </button>
-        <button
-          mat-raised-button
-          color="primary"
-          [disabled]="(!isDevMode && DemandeForm.invalid) || executing">Valider
-        </button>
+        <dx-button style="margin-right: 5px;" text="Fill values" (click)="fillValues()"></dx-button>
+        <dx-button text="Valider" type="default" [disabled]="executing" [useSubmitBehavior]="true"></dx-button>
+
+        <!--        <mat-flat-button-->
+<!--          type="button"-->
+<!--          mat-raised-button-->
+<!--          color="primary"-->
+<!--          -->
+<!--          [disabled]="executing"-->
+<!--          (click)="fillValues()"-->
+<!--        >Fill values-->
+<!--        </mat-flat-button>-->
+<!--        <mat-flat-button-->
+<!--          mat-raised-button-->
+<!--          color="primary"-->
+<!--          [disabled]="executing">-->
+<!--&lt;!&ndash;          [disabled]="(!isDevMode && demandeForm.invalid) || executing"> &ndash;&gt;-->
+<!--        Valider-->
+<!--        </mat-flat-button>-->
       </mat-toolbar>
 
       <div>
@@ -47,9 +53,9 @@
                     placeholder="Date de la demande"
                     [matDatepicker]="appDatepicker">
                   <mat-datepicker-toggle matSuffix [for]="appDatepicker"></mat-datepicker-toggle>
+                  <mat-datepicker #appDatepicker></mat-datepicker>
                 </mat-form-field>
-                <mat-datepicker #appDatepicker></mat-datepicker>
-                <app-show-errors [ctrl]="DemandeForm.controls['pe_datedemande']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['pe_datedemande']"></app-show-errors>
               </div>
             </div>
             <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
@@ -66,7 +72,7 @@
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-                <app-show-errors [ctrl]="DemandeForm.controls['idstructurerequerante']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['idstructurerequerante']"></app-show-errors>
               </div>
             </div>
           </div>
@@ -82,7 +88,7 @@
                     placeholder="Nom et prénom de la personne en charge du dossier"
                     value="">
                 </mat-form-field>
-                <app-show-errors [ctrl]="DemandeForm.controls['pe_nomdemandeur']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['pe_nomdemandeur']"></app-show-errors>
                 <!--                <small-->
                 <!--                  *ngIf="DemandeForm.controls['pe_nomdemandeur'].hasError('required') && DemandeForm.controls['pe_nomdemandeur'].touched"-->
                 <!--                  class="form-error-msg"> Nom obligatoire </small>-->
@@ -104,7 +110,7 @@
                     placeholder="Téléphone (Ligne directe si possible)"
                     value="">
                 </mat-form-field>
-                <app-show-errors [ctrl]="DemandeForm.controls['pe_telephone']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['pe_telephone']"></app-show-errors>
                 <!--                <small-->
                 <!--                  *ngIf="DemandeForm.controls['pe_telephone'].hasError('maxlength') && DemandeForm.controls['pe_telephone'].touched"-->
                 <!--                  class="form-error-msg"> Au-->
@@ -122,7 +128,7 @@
                 placeholder="Mail"
                 value="">
             </mat-form-field>
-            <app-show-errors [ctrl]="DemandeForm.controls['pe_mail']"></app-show-errors>
+            <app-show-errors [ctrl]="demandeForm.controls['pe_mail']"></app-show-errors>
             <!--            <small-->
             <!--              *ngIf="DemandeForm.controls['pe_mail'].hasError('maxlength') && DemandeForm.controls['pe_mail'].touched"-->
             <!--              class="form-error-msg"> Au plus {{DemandeForm.controls['pe_mail'].errors.maxlength.requiredLength}}-->
@@ -149,7 +155,7 @@
                     placeholder="Nom de Naissance"
                     value="">
                 </mat-form-field>
-                <app-show-errors [ctrl]="DemandeForm.controls['vi_nom']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['vi_nom']"></app-show-errors>
                 <!--            <small-->
                 <!--              *ngIf="DemandeForm.controls['vi_nom'].hasError('required') && DemandeForm.controls['vi_nom'].touched"-->
                 <!--              class="form-error-msg"> Nom obligatoire </small>-->
@@ -168,7 +174,7 @@
                     placeholder="Prénom"
                     value="">
                 </mat-form-field>
-                <app-show-errors [ctrl]="DemandeForm.controls['vi_prenom']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['vi_prenom']"></app-show-errors>
                 <!--                <small-->
                 <!--                  *ngIf="DemandeForm.controls['vi_prenom'].hasError('maxlength') && DemandeForm.controls['vi_prenom'].touched"-->
                 <!--                  class="form-error-msg"> Au plus {{DemandeForm.controls['vi_prenom'].errors.maxlength.requiredLength}}-->
@@ -186,7 +192,7 @@
                 placeholder="Nom d'usage"
                 value="">
             </mat-form-field>
-            <app-show-errors [ctrl]="DemandeForm.controls['vi_nomusage']"></app-show-errors>
+            <app-show-errors [ctrl]="demandeForm.controls['vi_nomusage']"></app-show-errors>
             <!--            <small-->
             <!--              *ngIf="DemandeForm.controls['vi_nomusage'].hasError('maxlength') && DemandeForm.controls['vi_nomusage'].touched"-->
             <!--              class="form-error-msg"> Au plus {{DemandeForm.controls['vi_nomusage'].errors.maxlength.requiredLength}}-->
@@ -201,7 +207,7 @@
                 placeholder="Adresse"
                 value="">
             </mat-form-field>
-            <app-show-errors [ctrl]="DemandeForm.controls['vi_adresse']"></app-show-errors>
+            <app-show-errors [ctrl]="demandeForm.controls['vi_adresse']"></app-show-errors>
             <!--            <small-->
             <!--              *ngIf="DemandeForm.controls['vi_adresse'].hasError('maxlength') && DemandeForm.controls['vi_adresse'].touched"-->
             <!--              class="form-error-msg"> Au plus {{DemandeForm.controls['vi_adresse'].errors.maxlength.requiredLength}}-->
@@ -219,7 +225,7 @@
                     placeholder="Télephone"
                     value="">
                 </mat-form-field>
-                <app-show-errors [ctrl]="DemandeForm.controls['vi_telephone']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['vi_telephone']"></app-show-errors>
                 <!--                <small-->
                 <!--                  *ngIf="DemandeForm.controls['vi_telephone'].hasError('maxlength') && DemandeForm.controls['vi_telephone'].touched"-->
                 <!--                  class="form-error-msg"> Au-->
@@ -238,7 +244,7 @@
                     placeholder="Mail"
                     value="">
                 </mat-form-field>
-                <app-show-errors [ctrl]="DemandeForm.controls['vi_email']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['vi_email']"></app-show-errors>
                 <!--                <small-->
                 <!--                  *ngIf="DemandeForm.controls['vi_email'].hasError('maxlength') && DemandeForm.controls['vi_email'].touched"-->
                 <!--                  class="form-error-msg"> Au plus {{DemandeForm.controls['vi_email'].errors.maxlength.requiredLength}}-->
@@ -258,7 +264,7 @@
                     placeholder="Age"
                     value="">
                 </mat-form-field>
-                <app-show-errors [ctrl]="DemandeForm.controls['vi_age']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['vi_age']"></app-show-errors>
                 <!--                <small-->
                 <!--                  *ngIf="DemandeForm.controls['vi_age'].hasError('server')"-->
                 <!--                  class="form-error-msg"> {{DemandeForm.controls['vi_age'].errors.server}}</small>-->
@@ -275,7 +281,7 @@
                     placeholder="Enfant à charge"
                     value="">
                 </mat-form-field>
-                <app-show-errors [ctrl]="DemandeForm.controls['vi_enfantcharge']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['vi_enfantcharge']"></app-show-errors>
                 <!--                <small-->
                 <!--                  *ngIf="DemandeForm.controls['vi_enfantcharge'].hasError('server')"-->
                 <!--                  class="form-error-msg"> {{DemandeForm.controls['vi_enfantcharge'].errors.server}}</small>-->
@@ -291,7 +297,7 @@
                 placeholder="Informations complémentaires"
                 value="">
             </mat-form-field>
-            <app-show-errors [ctrl]="DemandeForm.controls['vi_infocomplementaire']"></app-show-errors>
+            <app-show-errors [ctrl]="demandeForm.controls['vi_infocomplementaire']"></app-show-errors>
             <!--            <small-->
             <!--              *ngIf="DemandeForm.controls['vi_infocomplementaire'].hasError('maxlength') && DemandeForm.controls['vi_infocomplementaire'].touched"-->
             <!--              class="form-error-msg"> Au-->
@@ -320,7 +326,7 @@
                   <mat-datepicker-toggle matSuffix [for]="appDateAllerpicker"></mat-datepicker-toggle>
                 </mat-form-field>
                 <mat-datepicker #appDateAllerpicker></mat-datepicker>
-                <app-show-errors [ctrl]="DemandeForm.controls['de_datealler']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['de_datealler']"></app-show-errors>
               </div>
             </div>
             <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
@@ -330,7 +336,7 @@
                          name="de_heurealler"
                          id="de_heurealler"
                          formControlName="de_heurealler">
-                  <app-show-errors [ctrl]="DemandeForm.controls['de_heurealler']"></app-show-errors>
+                  <app-show-errors [ctrl]="demandeForm.controls['de_heurealler']"></app-show-errors>
                 </label>
               </div>
             </div>
@@ -347,7 +353,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <app-show-errors [ctrl]="DemandeForm.controls['idmotif']"></app-show-errors>
+            <app-show-errors [ctrl]="demandeForm.controls['idmotif']"></app-show-errors>
           </div>
 
           <div fxLayout="row wrap">
@@ -361,7 +367,7 @@
                   <mat-radio-button value="N">Non</mat-radio-button>
                 </mat-radio-group>
               </div>
-              <app-show-errors [ctrl]="DemandeForm.controls['de_enfantpresent']"></app-show-errors>
+              <app-show-errors [ctrl]="demandeForm.controls['de_enfantpresent']"></app-show-errors>
             </div>
             <div fxFlex="100" fxFlex.gt-xs="33" class="pr-1">
               <div class="pb-1">
@@ -374,7 +380,7 @@
                     placeholder="Si oui nombre?"
                     value="">
                 </mat-form-field>
-                <app-show-errors [ctrl]="DemandeForm.controls['de_nbenfant']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['de_nbenfant']"></app-show-errors>
               </div>
             </div>
             <div fxFlex="100" fxFlex.gt-xs="33" class="pr-1">
@@ -387,7 +393,7 @@
                     placeholder="Age des enfants"
                     value="">
                 </mat-form-field>
-                <app-show-errors [ctrl]="DemandeForm.controls['de_ageenfant']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['de_ageenfant']"></app-show-errors>
               </div>
             </div>
           </div>
@@ -400,7 +406,7 @@
                 placeholder="Particularité pour le transport (siège bébé, fauteuil roulant, poussette, bagages)"
                 value="">
             </mat-form-field>
-            <app-show-errors [ctrl]="DemandeForm.controls['de_particularite']"></app-show-errors>
+            <app-show-errors [ctrl]="demandeForm.controls['de_particularite']"></app-show-errors>
           </div>
           <div class="pb-1">
             <mat-form-field class="full-width">
@@ -411,7 +417,7 @@
                 placeholder="Adresse de la prise en charge de la victime"
                 value="">
             </mat-form-field>
-            <app-show-errors [ctrl]="DemandeForm.controls['de_adressedepart']"></app-show-errors>
+            <app-show-errors [ctrl]="demandeForm.controls['de_adressedepart']"></app-show-errors>
           </div>
           <div class="pb-1">
             <mat-form-field class="full-width">
@@ -422,7 +428,7 @@
                 placeholder="Adresse de dépôt de la victime (Attention : non modifiable par la vicitme lors de la prise en charge)"
                 value="">
             </mat-form-field>
-            <app-show-errors [ctrl]="DemandeForm.controls['de_adressearrivee']"></app-show-errors>
+            <app-show-errors [ctrl]="demandeForm.controls['de_adressearrivee']"></app-show-errors>
           </div>
 
           <div fxLayout="row wrap">
@@ -435,7 +441,7 @@
                   <mat-radio-button value="O" class="mr-1">Oui</mat-radio-button>
                   <mat-radio-button value="N">Non</mat-radio-button>
                 </mat-radio-group>
-                <app-show-errors [ctrl]="DemandeForm.controls['de_allerretour']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['de_allerretour']"></app-show-errors>
               </div>
 
             </div>
@@ -451,7 +457,7 @@
                   <mat-datepicker-toggle matSuffix [for]="appDateRetourpicker"></mat-datepicker-toggle>
                 </mat-form-field>
                 <mat-datepicker #appDateRetourpicker></mat-datepicker>
-                <app-show-errors [ctrl]="DemandeForm.controls['de_dateretour']"></app-show-errors>
+                <app-show-errors [ctrl]="demandeForm.controls['de_dateretour']"></app-show-errors>
               </div>
             </div>
             <div fxFlex="100" fxFlex.gt-xs="33" class="pr-1">
@@ -461,7 +467,7 @@
                          name="de_heureretour"
                          id="de_heureretour"
                          formControlName="de_heureretour">
-                  <app-show-errors [ctrl]="DemandeForm.controls['de_heureretour']"></app-show-errors>
+                  <app-show-errors [ctrl]="demandeForm.controls['de_heureretour']"></app-show-errors>
                 </label>
               </div>
             </div>
@@ -505,11 +511,13 @@
       <!--      <small-->
       <!--        *ngIf="this.errorService.globalErrorMessage"-->
       <!--        class="form-error-msg"> {{this.errorService.globalErrorMessage}}</small>-->
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="(!isDevMode && DemandeForm.invalid) || executing">Valider
-      </button>
+<!--      <button-->
+<!--        mat-raised-button-->
+<!--        color="primary"-->
+<!--        [disabled]="(!isDevMode && demandeForm.invalid) || executing">Valider-->
+<!--      </button>-->
+
+      <dx-button text="Valider" type="default" [disabled]="executing" [useSubmitBehavior]="true"></dx-button>
     </form>
   </mat-card-content>
 </div>

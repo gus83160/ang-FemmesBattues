@@ -18,7 +18,7 @@
                 type="password"
                 name="oldmdp"
                 matInput
-                [formControl]="loginMDPForm.controls.oldmdp"
+                formControlName="oldmdp"
                 placeholder="Ancien mot de Passe"
                 value="">
             </mat-form-field>
@@ -33,7 +33,7 @@
                 type="password"
                 name="mdp"
                 matInput
-                [formControl]="loginMDPForm.controls.mdp"
+                formControlName="mdp"
                 placeholder="Mot de Passe"
                 value="">
             </mat-form-field>

@@ -10,8 +10,8 @@ import {GlobalVariables} from '../../../views/femmesbattues/global/global_variab
 })
 export class SidebarTopComponent implements OnInit, OnDestroy, AfterViewInit {
   // private sidebarPS: PerfectScrollbar;
-  public menuItems: any[];
-  private menuItemsSub: Subscription;
+  public menuItems!: any[];
+  private menuItemsSub!: Subscription;
 
   constructor(
     private navService: NavigationService,

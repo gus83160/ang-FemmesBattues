@@ -6,7 +6,7 @@
           <p class="text-muted m-0">Authentification : </p>
         </div>
 
-        <form [formGroup]="loginForm" action="/" method="post" (ngSubmit)="loginin($event)">
+        <form [formGroup]="loginForm" action="/" method="post" (ngSubmit)="loginIn($event)">
           <mat-form-field class="full-width">
             <!-- label nécessaire pour que firefox propose d'enregistrer le mot de passe-->
             <label>
@@ -15,7 +15,7 @@
                 matInput
                 name="uname"
                 autocomplete="username"
-                [formControl]="loginForm.controls['username']"
+                formControlName="username"
                 placeholder="Identifiant utilisateur"
                 value="">
             </label>
@@ -31,7 +31,7 @@
                 name="password"
                 autocomplete="password"
                 matInput
-                [formControl]="loginForm.controls['password']"
+                formControlName="password"
                 placeholder="Mot de Passe"
                 value="">
             </label>
@@ -40,7 +40,7 @@
             *ngIf="loginForm.controls['password'].hasError('required') && loginForm.controls['password'].touched"
             class="form-error-msg"> Mot de Passe est obligatoire </small>
 
-          <small *ngIf="ErrorLogin" class="form-error-msg">Login / Mot de passe inconnu></small>
+          <small *ngIf="errorLogin" class="form-error-msg">Login / Mot de passe inconnu></small>
           <button type="submit" mat-raised-button class="mat-primary full-width mb-1"
                   [disabled]="loginForm.invalid || executing">Validation
           </button>

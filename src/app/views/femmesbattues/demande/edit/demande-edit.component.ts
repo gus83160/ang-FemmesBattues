@@ -1,24 +1,28 @@
 import {Component, isDevMode, OnInit} from '@angular/core';
-import {FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, ValidationErrors} from '@angular/forms';
-import {Router} from '@angular/router';
+import {FormGroup, FormControl, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
 import {formatDate} from '@angular/common';
 import {GlobalVariables} from '../../global/global_variables';
-import {Victime} from '../../../../models/victime';
+import {IVictime} from '../../../../models/IVictime';
 import {VictimeService} from '../../../../services/victime.service';
-import {Demande} from '../../../../models/demande';
+import {IDemande} from '../../../../models/IDemande';
 import {DemandeService} from '../../../../services/demande.service';
-import {PriseEnCharge} from '../../../../models/PriseEnCharge';
-import {PriseEnChargeService} from '../../../../services/PriseEnCharge.service';
+import {IPriseEnCharge} from '../../../../models/i-prise-en-charge';
+import {PriseEnChargeService} from '../../../../services/prise-en-charge.service';
 import {DialogueService} from '../../dialogue/dialogue.service';
-import {Retour} from '../../../../models/retour';
-import {MotifService} from '../../../../models/motif.service';
-import {Motif} from '../../../../models/motif';
-import {StructureRequeranteService} from '../../../../models/structurerequerante.service';
-import {StructureRequerante} from '../../../../models/structurerequerante';
+import {IRetour} from '../../../../models/IRetour';
+import {MotifService} from '../../../../services/motif.service';
+import {IMotif} from '../../../../models/IMotif';
+import {StructureRequeranteService} from '../../../../services/structurerequerante.service';
+import {IStructureRequerante} from '../../../../models/i-structure-requerante';
 import {ErrorService} from '../../../../services/error.service';
 import {RoutesEnum} from '../../RoutesEnum';
-
-// import { StructureRequerante } from '../../../models/structurerequerante';
+import {IUtilisateur} from '../../../../models/IUtilisateur';
+import notify from 'devextreme/ui/notify';
+import {alert} from 'devextreme/ui/dialog';
+import {DateAdapter, MAT_DATE_LOCALE} from '@angular/material/core';
+import {CustomDateAdapter} from '../../../../helpers/custom-date-adapter';
+import {Platform} from '@angular/cdk/platform';
 
 @Component({
   selector: 'app-demande-edit',
@@ -27,20 +31,21 @@ import {RoutesEnum} from '../../RoutesEnum';
 })
 export class DemandeEditComponent implements OnInit {
   isDevMode: boolean;
-  DemandeForm: FormGroup;
-  victime: Victime;
-  victimeret: Victime;
-  allMotifs: Motif[];
-  allStructureRequerantes: StructureRequerante[];
+  demandeForm!: FormGroup;
+  victime!: IVictime;
+  victimeret!: IVictime;
+  allMotifs: IMotif[] = [];
+  allStructureRequerantes!: IStructureRequerante[];
 
-  dt: string;
-  demande: Demande;
-  priseencharge: PriseEnCharge;
-  retour: Retour;
-  enfantPresent: string;
-  allerRetour: string;
-  errorService: ErrorService;
-  public executing: boolean;
+  // dt: string;
+  demande!: IDemande;
+  priseencharge!: IPriseEnCharge;
+  retour!: IRetour;
+  enfantPresent!: string;
+  allerRetour!: string;
+  errorService!: ErrorService;
+  public executing: boolean = false;
+  private currentUser: IUtilisateur;
 
   fillValueButtonOptions = {
     icon: 'refresh',
@@ -51,19 +56,38 @@ export class DemandeEditComponent implements OnInit {
 
   constructor(public dialogueService: DialogueService,
               private router: Router,
+              private activatedRoute: ActivatedRoute,
               private victimeService: VictimeService,
               private demandeService: DemandeService,
               private priseenchargeService: PriseEnChargeService,
               private motifService: MotifService,
               private structureRequeranteService: StructureRequeranteService,
               private variables: GlobalVariables) {
+
+    // console.log(this.router.url);
+    // const data = this.activatedRoute.snapshot.data;
+    // console.log(data);
+    // console.log((this.activatedRoute.data as any).value);
+
+    if (this.activatedRoute.snapshot.data.creation === true) {
+      this.variables.IdPriseEnCharge = 0;
+    } else if (this.variables.IdPriseEnCharge == 0 || this.variables.IdPriseEnCharge == null) {
+      notify('Pas de demande active.', 'warning', 5000);
+      this.router.navigate([RoutesEnum.ROOT]).then(() => {});
+    }
+
     this.isDevMode = isDevMode();
+    if (variables.currentUser == null) {
+      router.navigate([RoutesEnum.ROOT]).then(() => {});
+    } else {
+      this.currentUser = variables.currentUser as IUtilisateur;
+    }
   }
 
   async ngOnInit(): Promise<void> {
-    this.errorService = new ErrorService(this.DemandeForm);
+    this.errorService = new ErrorService(this.demandeForm);
     await this.InitDemande();
-    if (this.retour.enfantPresent) {
+    if (this.retour?.enfantPresent) {
       this.enfantPresent = 'O';
     } else {
       this.enfantPresent = 'N';
@@ -75,7 +99,7 @@ export class DemandeEditComponent implements OnInit {
       this.allerRetour = 'N';
     }
 
-    this.DemandeForm = new FormGroup({
+    this.demandeForm = new FormGroup({
         pe_datedemande: new FormControl(this.retour.dateDemande, [
           Validators.required
         ]),
@@ -148,9 +172,9 @@ export class DemandeEditComponent implements OnInit {
 
     {
       // Mise en place des validations supplémentaires si EnfantPresent = "O"
-      const ctrlEnfantPresent = this.DemandeForm.get('de_enfantpresent') as FormControl;
-      const ctrlNbEnfant = this.DemandeForm.get('de_nbenfant') as FormControl;
-      const ctrlAgeEnfant = this.DemandeForm.get('de_ageenfant') as FormControl;
+      const ctrlEnfantPresent = this.demandeForm.get('de_enfantpresent') as FormControl;
+      const ctrlNbEnfant = this.demandeForm.get('de_nbenfant') as FormControl;
+      const ctrlAgeEnfant = this.demandeForm.get('de_ageenfant') as FormControl;
       ctrlEnfantPresent.valueChanges.subscribe(value => {
         if (value === 'O') {
           ctrlNbEnfant.setValidators([Validators.required]);
@@ -167,9 +191,9 @@ export class DemandeEditComponent implements OnInit {
 
     {
       // Mise en place des validations supplémentaires si allerRetour = "O"
-      const ctrlAllerRetour = this.DemandeForm.get('de_allerretour') as FormControl;
-      const ctrlDateRetour = this.DemandeForm.get('de_dateretour') as FormControl;
-      const ctrlHeureRetour = this.DemandeForm.get('de_heureretour') as FormControl;
+      const ctrlAllerRetour = this.demandeForm.get('de_allerretour') as FormControl;
+      const ctrlDateRetour = this.demandeForm.get('de_dateretour') as FormControl;
+      const ctrlHeureRetour = this.demandeForm.get('de_heureretour') as FormControl;
       ctrlAllerRetour.valueChanges.subscribe(value => {
         if (value === 'O') {
           ctrlDateRetour.setValidators([Validators.required]);
@@ -184,9 +208,9 @@ export class DemandeEditComponent implements OnInit {
       });
     }
 
-    this.victime = new Victime();
-    this.demande = new Demande();
-    this.priseencharge = new PriseEnCharge();
+    this.victime = <IVictime>{};
+    this.demande = <IDemande>{};
+    this.priseencharge = <IPriseEnCharge>{};
   }
 
   // ControleEnfant(enfant: string, nb: string, age: string, ar: string, dretour: string, hretour: string): ValidatorFn {
@@ -216,36 +240,51 @@ export class DemandeEditComponent implements OnInit {
 
   async InitDemande(): Promise<void> {
     if (this.variables.IdPriseEnCharge > 0) {
-      this.retour = await this.priseenchargeService.PriseEnChargeDonneesModif(this.variables.IdPriseEnCharge);
-      this.dt = formatDate(this.retour.dateRetour, 'yyyy-MM-dd', 'Fr');
-      if (this.dt === '2001-01-01') {
-        this.retour.dateRetour = null;
-        this.retour.heureRetour = '';
+      const httpResult = await this.priseenchargeService.getPriseEnChargeDonneesModif(this.variables.IdPriseEnCharge)
+        .execute(res => {
+          this.retour = res;
+        });
+      if (!httpResult.isOk) {
+        await this.router.navigate([RoutesEnum.ROOT]);
       }
+      // this.retour = await this.priseenchargeService.getPriseEnChargeDonneesModif(this.variables.IdPriseEnCharge);
     } else {
-      this.retour = new Retour();
+      this.retour = <IRetour>{};
       this.retour.dateDemande = new Date();
       this.retour.dateAller = new Date();
       this.retour.heureAller = formatDate(Date(), 'HH:mm', 'fr');
-//          this.retour.dateRetour = new Date();
-//          this.retour.heureRetour = formatDate(Date(),'HH:mm','fr');;
     }
-    this.loadAllMotif();
+    await this.loadAllMotif();
     this.loadAllStructureRequerante();
   }
 
-  loadAllMotif(): void {
-    const res = this.motifService.getAllMotif();
-    res.subscribe(tm => {
-      this.allMotifs = tm;
-    });
+  async loadAllMotif(): Promise<void> {
+    const httpResult = await this.motifService.getAllMotif()
+      .execute(res => {
+        this.allMotifs = res;
+      });
+    if (!httpResult.isOk) {
+      await this.router.navigate([RoutesEnum.ROOT]);
+    }
+    // const res = this.motifService.getAllMotif();
+    // res.subscribe(tm => {
+    //   this.allMotifs = tm;
+    // });
   }
 
-  loadAllStructureRequerante() {
-    const res = this.structureRequeranteService.getAllStructureRequerante(this.variables.currentUser.ut_typestructurerequerante);
-    res.subscribe(ts => {
-      this.allStructureRequerantes = ts;
-    });
+  async loadAllStructureRequerante() {
+    const httpResult = await this.structureRequeranteService.getAllStructureRequerante(this.currentUser.ut_typestructurerequerante)
+      .execute(res => {
+        this.allStructureRequerantes = res;
+      });
+    if (!httpResult.isOk) {
+      await this.router.navigate([RoutesEnum.ROOT]);
+    }
+
+    // const res = this.structureRequeranteService.getAllStructureRequerante(this.currentUser.ut_typestructurerequerante);
+    // res.subscribe(ts => {
+    //   this.allStructureRequerantes = ts;
+    // });
   }
 
   async CreationDemande(): Promise<void> {
@@ -259,14 +298,14 @@ export class DemandeEditComponent implements OnInit {
   }
 
   async DoCreationDemande(): Promise<void> {
-    this.DemandeForm.markAllAsTouched();
+    this.demandeForm.markAllAsTouched();
     this.errorService.reset();
 
-    if (this.DemandeForm.invalid) {
+    if (this.demandeForm.invalid) {
       return;
     }
 
-    const data = this.DemandeForm.value;
+    const data = this.demandeForm.value;
     this.victime.vi_nom = data.vi_nom;
     this.victime.vi_nomusage = data.vi_nomusage;
     this.victime.vi_prenom = data.vi_prenom;
@@ -286,20 +325,16 @@ export class DemandeEditComponent implements OnInit {
         this.variables.IdVictime = this.victimeret.id;
       }
     } catch (e) {
-      this.errorService.loadError(e, this.DemandeForm);
+      this.errorService.loadError(e, this.demandeForm);
       return;
     }
 
-    this.dt = formatDate(data.de_datealler, 'yyyy-MM-ddT', 'Fr') + data.de_heurealler + ':00';
-    this.demande.de_datealler = new Date(this.dt);
+    const dt = formatDate(data.de_datealler, 'yyyy-MM-ddT', 'Fr') + data.de_heurealler + ':00';
+    this.demande.de_datealler = new Date(dt);
 
     this.demande.idmotif = data.idmotif;
 
-    if (data.de_enfantpresent === 'O') {
-      this.demande.de_enfantpresent = true;
-    } else {
-      this.demande.de_enfantpresent = false;
-    }
+    this.demande.de_enfantpresent = data.de_enfantpresent === 'O';
 
     this.demande.de_nbenfant = data.de_nbenfant ?? 0;
     this.demande.de_ageenfant = data.de_ageenfant;
@@ -309,12 +344,12 @@ export class DemandeEditComponent implements OnInit {
 
     if (data.de_allerretour === 'O') {
       this.demande.de_allerretour = true;
-      this.dt = formatDate(data.de_dateretour, 'yyyy-MM-ddT', 'Fr') + data.de_heureretour + ':00';
-      this.demande.de_dateretour = new Date(this.dt);
+      const dt = formatDate(data.de_dateretour, 'yyyy-MM-ddT', 'Fr') + data.de_heureretour + ':00';
+      this.demande.de_dateretour = new Date(dt);
     } else {
       this.demande.de_allerretour = false;
-      this.dt = '2001-01-01T00:00:00';
-      this.demande.de_dateretour = new Date(this.dt);
+      const dt = '2001-01-01T00:00:00';
+      this.demande.de_dateretour = new Date(dt);
     }
 
     try {
@@ -326,7 +361,7 @@ export class DemandeEditComponent implements OnInit {
         this.variables.IdDemande = this.demande.id;
       }
     } catch (e) {
-      this.errorService.loadError(e, this.DemandeForm);
+      this.errorService.loadError(e, this.demandeForm);
       return;
     }
 
@@ -337,7 +372,7 @@ export class DemandeEditComponent implements OnInit {
     this.priseencharge.pe_mail = data.pe_mail;
 
     this.priseencharge.pe_nofacture = '';
-    this.priseencharge.idprescripteur = this.variables.currentUser.id;
+    this.priseencharge.idprescripteur = this.currentUser.id;
     this.priseencharge.idvictime = this.variables.IdVictime;
     this.priseencharge.iddemande = this.variables.IdDemande;
     this.priseencharge.idcourse = 0;
@@ -345,28 +380,29 @@ export class DemandeEditComponent implements OnInit {
     try {
       if (this.variables.IdPriseEnCharge > 0) {
         this.priseencharge.id = this.variables.IdPriseEnCharge;
-        this.priseencharge.pe_nodemande = this.variables.NoDemande,
-          this.priseencharge = await this.priseenchargeService.updatePriseEnCharge(this.priseencharge);
+        this.priseencharge.pe_nodemande = this.variables.NoDemande;
+        this.priseencharge = await this.priseenchargeService.updatePriseEnCharge(this.priseencharge);
         this.variables.IdPriseEnCharge = 0;
         await this.router.navigate([RoutesEnum.DEMANDE, RoutesEnum.DEMANDE_LIST]);
       } else {
         this.priseencharge.pe_nodemande = '';
         this.priseencharge = await this.priseenchargeService.createPriseEnCharge(this.priseencharge);
-        this.dialogueService.confirm({message: 'No de la demande : ' + this.priseencharge.pe_nodemande});
+        await alert('La demande n° ' + this.priseencharge.pe_nodemande + ' a été créée.', "Création demande");
+        //this.dialogueService.confirm({message: 'No de la demande : ' + this.priseencharge.pe_nodemande});
         await this.router.navigate([RoutesEnum.ROOT]);
       }
     } catch (e) {
-      this.errorService.loadError(e, this.DemandeForm);
+      this.errorService.loadError(e, this.demandeForm);
       return;
     }
   }
 
   fillValues() {
-    this.DemandeForm.controls.idstructurerequerante.setValue(1);
-    this.DemandeForm.controls.pe_nomdemandeur.setValue('NOM DEMANDEUR');
-    this.DemandeForm.controls.vi_nom.setValue('NOM VICTIME');
-    this.DemandeForm.controls.idmotif.setValue(1);
-    this.DemandeForm.controls.de_adressedepart.setValue('Adresse de la prise en charge de la victime');
-    this.DemandeForm.controls.de_adressearrivee.setValue('Adresse de dépôt de la victime');
+    this.demandeForm.controls.idstructurerequerante.setValue(1);
+    this.demandeForm.controls.pe_nomdemandeur.setValue('NOM DEMANDEUR');
+    this.demandeForm.controls.vi_nom.setValue('NOM VICTIME');
+    this.demandeForm.controls.idmotif.setValue(1);
+    this.demandeForm.controls.de_adressedepart.setValue('Adresse de la prise en charge de la victime');
+    this.demandeForm.controls.de_adressearrivee.setValue('Adresse de dépôt de la victime');
   }
 }
