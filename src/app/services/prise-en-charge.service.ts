@@ -37,9 +37,27 @@ export class PriseEnChargeService {
     }).withMessage(404, 'Prise en charge non trouvé');
   }
 
-/*  async PriseEnChargeAllDonnees(id: number) {
-    return await this.http.get<IRetour>(environment.url + '/priseencharge/prise_en_charge_all_donnees/' + id.toString()).toPromise();
-  } */
+  getPDFFacture(numDemande: string): HttpErrorHandler<Blob> {
+    return this.httpService.request<Blob>(httpClient => {
+      return httpClient.get<Blob>(
+        environment.url + '/priseencharge/getPDFFacture/' + numDemande,
+        {responseType: 'blob' as 'json'}
+      ).toPromise();
+    });
+  }
+
+  envoiPDFFactureParMail(numDemande: string): HttpErrorHandler<any> {
+    return this.httpService.request<any>(httpClient => {
+      return httpClient.put<any>(
+        environment.url + '/priseencharge/envoiPDFFactureParMail/' + numDemande,
+        null
+      ).toPromise();
+    });
+  }
+
+  /*  async PriseEnChargeAllDonnees(id: number) {
+      return await this.http.get<IRetour>(environment.url + '/priseencharge/prise_en_charge_all_donnees/' + id.toString()).toPromise();
+    } */
 
   getPriseEnChargeDonneesModif(id: number): HttpErrorHandler<IRetour> {
     return this.httpService.request(async httpClient => {

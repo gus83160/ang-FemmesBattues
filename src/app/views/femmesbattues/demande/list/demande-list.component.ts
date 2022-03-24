@@ -2,12 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {GlobalVariables} from '../../global/global_variables';
 import {UtilService} from '../../global/util.service';
-import {IRetour} from '../../../../models/IRetour';
 import {PriseEnChargeService} from '../../../../services/prise-en-charge.service';
 import {DemandeService} from '../../../../services/demande.service';
 import {VictimeService} from '../../../../services/victime.service';
-// import {DialogueService} from '../../dialogue/dialogue.service';
-import {SupprimerComponent} from '../../dialogue/supprimer.component';
 import {RoutesEnum} from '../../RoutesEnum';
 import DataSource from 'devextreme/data/data_source';
 import {DxDataGridComponent} from 'devextreme-angular';
@@ -18,7 +15,6 @@ import {JsonService} from '../../../../services/json.service';
 import {ViewPdfComponent} from '../../view-pdf/view-pdf.component';
 import {Router} from '@angular/router';
 import { alert } from "devextreme/ui/dialog"
-import { confirm } from "devextreme/ui/dialog"
 
 @Component({
   selector: 'app-demande-list',
@@ -72,7 +68,7 @@ export class DemandeListComponent implements OnInit {
       this.buttonColSize = 180;
     } else {
       if (this.bChauffeur) {
-        this.buttonColSize = 230;
+        this.buttonColSize = 280;
       } else {
         this.buttonColSize = 140;
       }
@@ -281,29 +277,11 @@ export class DemandeListComponent implements OnInit {
     } */
   }
 
-  async PdfVisuFacture(id: number): Promise<void> {
-    await this.priseenchargeservice.PriseEnChargeById(id)
-      .execute(async priseEnCharge => {
-        if (priseEnCharge.pe_nofacture === '' || priseEnCharge.pe_nofacture == null) {
-          await alert('La course n\'est pas facturée.', 'Inforamtion')
-          // this.dialogueService.confirm({message: 'La course n\'est pas facturée.'});
-        } else {
-          this.viewPdf.showPdfFromFile(priseEnCharge.pe_nofacture);
-          //await this.utilservice.openFileInNewWindow(this.priseencharge.pe_nofacture);
-        }
+  async PdfVisuFacture(numDemande: string): Promise<void> {
+    await this.priseenchargeservice.getPDFFacture(numDemande)
+      .execute(async pdf => {
+        this.viewPdf.showPdfFromBlob(pdf);
       });
-
-/*    const priseencharge = await this.priseenchargeservice.PriseEnChargeById(id);
-    if (priseencharge !== null) {
-      if (priseencharge.pe_nofacture === '' || priseencharge.pe_nofacture == null) {
-        this.dialogueService.confirm({message: 'La course n\'est pas facturée.'});
-      } else {
-        this.viewPdf.showPdfFromFile(priseencharge.pe_nofacture);
-        //await this.utilservice.openFileInNewWindow(this.priseencharge.pe_nofacture);
-      }
-    } else {
-      console.log('Detail ERREUR ');
-    } */
   }
 
   // async PdfVisuDemande(id: number): Promise<void> {
@@ -384,5 +362,12 @@ export class DemandeListComponent implements OnInit {
     } else {
       return filter;
     }
+  }
+
+  async envoyerLaFactureParMail(numDemande: string) {
+      await this.priseenchargeservice.envoiPDFFactureParMail(numDemande)
+        .execute(async () => {
+          await alert('Email envoyé.', 'Email');
+        });
   }
 }

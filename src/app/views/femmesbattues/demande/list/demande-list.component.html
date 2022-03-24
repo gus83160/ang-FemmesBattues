@@ -145,7 +145,10 @@
         <button *ngIf="bChauffeur" title="Facturer la Course" (click)="facturerLaCourse(e.data.noDemande)">
           <img src="assets/images/facture.png" alt="">
         </button>
-        <button title="Visualiser la Facture" (click)="PdfVisuFacture(e.data.idPriseEnCharge)">
+        <button *ngIf="bChauffeur" title="Envoyer la facture par mail" (click)="envoyerLaFactureParMail(e.data.noDemande)">
+          <img src="assets/images/mail.png" alt="">
+        </button>
+        <button title="Visualiser la Facture" (click)="PdfVisuFacture(e.data.noDemande)">
           <img src="assets/images/pdf.png" alt="">
         </button>
       </div>

@@ -57,7 +57,6 @@ export class HttpErrorHandler<TModel> {
 
   private async analyseResult(httpError: any) : Promise<HttpError | ValidationError> {
     if (httpError instanceof HttpErrorResponse) {
-      console.log(httpError.constructor.name);
       if (httpError.error instanceof ErrorEvent) {
         // client side error
         return this.buildHttpError(1000, `Erreur de communication avec le serveur. (${httpError.error.message})`);
@@ -67,7 +66,7 @@ export class HttpErrorHandler<TModel> {
       } else if (httpError.error instanceof Blob) {
         const str = await httpError.error.text();
         return this.analyseError(httpError, JSON.parse(str));
-      } else if (typeof httpError.error.status !== undefined) {
+      } else if (typeof httpError.error.status !== "undefined") {
         return this.analyseError(httpError, httpError.error);
       } else {
         return this.buildHttpError(1002, 'Type de réponse inconnu.');
