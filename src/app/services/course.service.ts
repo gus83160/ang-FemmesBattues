@@ -29,6 +29,7 @@ export class CourseService {
 
   updateCourse(course: ICourse): HttpErrorHandler<ICourse>  {
     return this.httpService.request<ICourse>(async httpClient => {
+      let json = JSON.stringify(course);
       return await httpClient.put<ICourse>(environment.url + '/course/' + course.id.toString(), course).toPromise();
     })
   }

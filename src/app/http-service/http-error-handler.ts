@@ -3,6 +3,7 @@ import {alert} from 'devextreme/ui/dialog';
 import {HttpError} from './models/HttpError';
 import {ValidationError, ValidationErrorField} from './models/ValidationError';
 import {HttpResult} from './models/HttpResult';
+import {environment} from '../../environments/environment';
 
 export class HttpErrorHandler<TModel> {
   private _catchAllErrors: ((error: ValidationError | HttpError) => void) | null = null;
@@ -37,18 +38,20 @@ export class HttpErrorHandler<TModel> {
         const errorMethod = this.errorMap.get(status);
         if (errorMethod != null) {
           errorMethod(err);
-          if (this._catchOtherErrors != null) {
-            this._catchOtherErrors(err);
-          }
         } else {
           if (this._catchAllErrors != null) {
             this._catchAllErrors(err);
+          } else if (this._catchOtherErrors != null) {
+            this._catchOtherErrors(err);
           } else {
             await alert(`${err.message}`, `Erreur`);
           }
         }
       } else {
         await alert(`Erreur inconnu`, `Erreur`);
+        if (!environment.production) {
+          throw ex;
+        }
       }
     }
 
@@ -125,7 +128,11 @@ export class HttpErrorHandler<TModel> {
           message: Reflect.get(e.errors, key),
         };
         fieldError.message.forEach(m => {
-          messages.push(`\'${fieldName}\' : ${m}`);
+          if (fieldName != null && fieldName != '') {
+            messages.push(`\'${fieldName}\' : ${m}`);
+          } else {
+            messages.push(`${m}`);
+          }
         });
         model.ValidationErrors.push(fieldError);
       });

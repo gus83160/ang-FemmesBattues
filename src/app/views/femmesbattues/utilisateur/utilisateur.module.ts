@@ -17,6 +17,7 @@ import {UtilisateurRoutingModule} from './utilisateur-routing.module';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {MatDividerModule} from '@angular/material/divider';
 import {LibelleTypeUtilisateurPipe} from '../libelle-type-utilisateur.pipe';
+import {DxButtonModule, DxDataGridModule} from 'devextreme-angular';
 
 @NgModule({
   imports: [
@@ -27,6 +28,9 @@ import {LibelleTypeUtilisateurPipe} from '../libelle-type-utilisateur.pipe';
     NgxDatatableModule,
     FormsModule,
     ReactiveFormsModule,
+
+    DxDataGridModule,
+    DxButtonModule,
 
     FlexLayoutModule,
     MatFormFieldModule,
@@ -42,7 +46,6 @@ import {LibelleTypeUtilisateurPipe} from '../libelle-type-utilisateur.pipe';
   declarations: [
     UtilisateurListComponent,
     UtilisateurEditComponent,
-
     LibelleTypeUtilisateurPipe,
   ],
   providers: [

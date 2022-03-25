@@ -1,12 +1,11 @@
 import {DxFormComponent} from 'devextreme-angular';
 
 export class ValidationError {
-  ValidationErrors: ValidationErrorField[];
+  ValidationErrors: ValidationErrorField[] = [];
   status!: number;
   message!: string;
 
   constructor() {
-    this.ValidationErrors = [];
   }
 
   applyToForm(form: DxFormComponent): string[] {

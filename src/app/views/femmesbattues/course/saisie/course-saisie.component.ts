@@ -81,7 +81,7 @@ export class CourseSaisieComponent implements AfterViewInit {
 
     this.isDevMode = isDevMode();
     if (this.isDevMode) {
-      this.searchData.numDemande = 'DEM899236';
+      this.searchData.numDemande = 'DEM245599';
       this.validateOnlyRemotelly = true;
       // this.variables.NomVictime = 'NOM DE LA VICTIME';
       // this.variables.AdresseDepart = 'Adresse de départ';
@@ -105,23 +105,23 @@ export class CourseSaisieComponent implements AfterViewInit {
     let formPost = Object.assign({}, this.formData);
 
     function convertToTime(dt: Date | string | undefined): string | undefined {
-      if (typeof dt === 'string') {
+      if (dt instanceof Date) {
         return formatDate(dt, 'HH:mm', 'fr-FR') + ':00';
       } else {
         return undefined;
       }
     }
 
-    formPost.co_heuredebut = convertToTime(formPost.co_heuredebut);
-    formPost.co_heurefin = convertToTime(formPost.co_heurefin);
-    formPost.co_attjour = convertToTime(formPost.co_attjour);
-    formPost.co_attnuit = convertToTime(formPost.co_attnuit);
+    formPost.co_heuredebut = convertToTime(this.formData.co_heuredebut);
+    formPost.co_heurefin = convertToTime(this.formData.co_heurefin);
+    formPost.co_attjour = convertToTime(this.formData.co_attjour);
+    formPost.co_attnuit = convertToTime(this.formData.co_attnuit);
 
 
     let ok = false;
-    if (this.formData.id === 0) {
+    if (this.formData.id == null || this.formData.id === 0) {
       let httpResult = await this.courseService.createCourse(formPost, this.priseEnCharge.idPriseEnCharge)
-        .catchValidationError(err => err.applyToForm(this.form!))
+        .catchValidationError(err => this.globalErrorMessage.push(...err.applyToForm(this.form!)))
         .catchOtherErrors(err => this.globalErrorMessage.push(err.message))
         .execute();
       if (httpResult.isOk) {
@@ -130,7 +130,7 @@ export class CourseSaisieComponent implements AfterViewInit {
       }
     } else {
       let httpResult = await this.courseService.updateCourse(formPost)
-        .catchValidationError(err => err.applyToForm(this.form!))
+        .catchValidationError(err => this.globalErrorMessage.push(...err.applyToForm(this.form!)))
         .catchOtherErrors(err => this.globalErrorMessage.push(err.message))
         .execute();
       ok = httpResult.isOk;
