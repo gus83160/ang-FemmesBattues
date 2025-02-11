@@ -45,14 +45,16 @@ export class LoginComponent implements OnInit {
         if (utilisateur.ut_mdp === this.variables.MDPInitial) {
           await this.router.navigate([RoutesEnum.AUTH, RoutesEnum.LOGINMDP]);
         } else {
-          // localStorage.setItem('MotDePasse',utilisateur.ut_mdp);
+          this.variables.currentUser = utilisateur; 
           this.navigationservice.publishNavigationChange('Demande');
-          // await this.router.navigate([RoutesEnum.ROOT]);
           await this.router.navigate([this.returnUrl]);
         }
       } else {
         this.errorLogin = true;
       }
+    } catch (error) {
+      console.error('Login error:', error);
+      this.errorLogin = true;
     } finally {
       this.executing = false;
     }

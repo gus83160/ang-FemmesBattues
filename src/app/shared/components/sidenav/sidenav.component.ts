@@ -28,4 +28,6 @@ export class SidenavComponent {
   //     ]
   //   });
   // }
+
+  // Add a new menu item for 'Utilisateurs_v0'
 }

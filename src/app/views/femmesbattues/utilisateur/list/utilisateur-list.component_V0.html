@@ -1,0 +1,99 @@
+<!--<div class="mat-box-shadow margin-333">-->
+<!--  <button md-button (click)="detail(0)">-->
+<!--    Nouveau-->
+<!--  </button>-->
+<!--  <ngx-datatable class="material bg-white"-->
+<!--                 [columnMode]="'force'"-->
+<!--                 [headerHeight]="50"-->
+<!--                 [footerHeight]="50"-->
+<!--                 [rowHeight]="50"-->
+<!--                 [limit]="8"-->
+<!--                 [rows]="dataSource"-->
+<!--                 [scrollbarH]="true"-->
+<!--                 [sorts]="[ {prop: 'ut_nom',dir:'asc'}]"-->
+<!--  >-->
+<!--    <ngx-datatable-column name="" prop="id">-->
+<!--      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>-->
+
+<!--        <button md-button (click)="detail(value)">-->
+<!--          Detail-->
+<!--        </button>-->
+<!--      </ng-template>-->
+<!--    </ngx-datatable-column>-->
+<!--    <ngx-datatable-column name="Nom" prop="ut_nom"></ngx-datatable-column>-->
+<!--    <ngx-datatable-column name="Prenom" prop="ut_prenom"></ngx-datatable-column>-->
+<!--    <ngx-datatable-column name="Type" prop="idtypeutilisateur">-->
+<!--      <ng-template let-value="value"-->
+<!--                   ngx-datatable-cell-template> {{ value | LibelleTypeUtilisateur:idtypeutilisateur }}</ng-template>-->
+<!--    </ngx-datatable-column>-->
+
+<!--  </ngx-datatable>-->
+<!--</div>-->
+
+<dx-data-grid
+  id="gridContainer"
+  [dataSource]="dataSource"
+  keyExpr="id"
+  [focusedRowEnabled]="true"
+  [showBorders]="true"
+  [columnAutoWidth]="true"
+  wordWrapEnabled="true"
+>
+  <dxo-filter-row
+    [visible]="true"
+  ></dxo-filter-row>
+  <dxo-search-panel
+    [visible]="true"
+    [width]="240"
+    placeholder="Recherche..."
+  ></dxo-search-panel>
+  <dxo-paging [pageSize]="10"></dxo-paging>
+  <dxo-pager
+    [visible]="true"
+    [allowedPageSizes]="[7, 10, 20, 50]"
+    [showPageSizeSelector]="true"
+    [showInfo]="true"
+    [showNavigationButtons]="true"
+  >
+  </dxo-pager>
+
+  <dxo-toolbar>
+    <dxi-item location="before">
+      <dx-button
+        text="Nouveau"
+        (onClick)="detail(0)"
+      ></dx-button>
+    </dxi-item>
+    <dxi-item location="after">
+      <dx-button icon="refresh" (onClick)="refreshDataGrid()">
+      </dx-button>
+    </dxi-item>
+    <!--      <dxi-item name="columnChooserButton"></dxi-item>-->
+    <!--      <dxi-item location="before">-->
+    <!--        <dx-button-->
+    <!--          text="Test"-->
+    <!--          (onClick)="test()"-->
+    <!--        ></dx-button>-->
+    <!--      </dxi-item>-->
+  </dxo-toolbar>
+  <dxi-column
+    cellTemplate="buttonTemplate"
+    caption=""
+    alignment="center"
+    [width]="100"
+  ></dxi-column>
+  <dxi-column dataField="ut_departement" caption="Dpt" sortOrder="asc" sortIndex="0" [filterOperations]="['=']" alignment="center"></dxi-column>
+  <dxi-column dataField="ut_nom" caption="Nom" sortOrder="asc" sortIndex="1"></dxi-column>
+  <dxi-column dataField="ut_prenom" caption="Prénom" [allowSorting]="false"></dxi-column>
+  <dxi-column dataField="idtypeutilisateur" caption="Type" [allowSorting]="false" [allowFiltering]="false"
+              cellTemplate="typeTemplate">
+  </dxi-column>
+  <div *dxTemplate="let e of 'buttonTemplate'">
+    <button title="Détail" (click)="detail(e.data.id)">
+      <img src="assets/images/modifier.png" alt="">
+    </button>
+  </div>
+  <div *dxTemplate="let data of 'typeTemplate'">
+    {{ data.value | LibelleTypeUtilisateur }}
+  </div>
+</dx-data-grid>

@@ -1,0 +1,86 @@
+<div class="container">
+    <h2>Liste des utilisateurs</h2>
+    
+    <div class="actions" *ngIf="isAdmin()">
+        <button mat-raised-button color="primary" (click)="createUser()">
+            <i class="fas fa-plus"></i> Nouvel utilisateur
+        </button>
+    </div>
+
+    <dx-data-grid
+        [dataSource]="utilisateurs"
+        [showBorders]="true"
+        [columnAutoWidth]="true"
+        [rowAlternationEnabled]="true"
+        [showColumnLines]="true"
+        [showRowLines]="true"
+        [focusedRowEnabled]="true"
+        keyExpr="id">
+        
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager
+            [showPageSizeSelector]="true"
+            [allowedPageSizes]="[10, 20, 50, 100]"
+            [showNavigationButtons]="true">
+        </dxo-pager>
+        
+        <dxo-search-panel
+            [visible]="true"
+            [highlightCaseSensitive]="false">
+        </dxo-search-panel>
+        
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        
+        <dxi-column
+        cellTemplate="buttonTemplate"
+        caption=""
+        alignment="center"
+        [width]="50">
+        </dxi-column>  
+        <dxi-column dataField="ut_departement" caption="Dépt" sortOrder="asc" sortIndex="0" [filterOperations]="['=']" alignment="center"></dxi-column>
+        <dxi-column dataField="ut_nom" caption="Nom" sortOrder="asc" sortIndex="1"></dxi-column>
+        <dxi-column dataField="ut_prenom" caption="Prénom"></dxi-column>
+        <dxi-column dataField="ut_login" caption="Login"></dxi-column>
+        <dxi-column dataField="ut_email" caption="Email"></dxi-column>
+        <dxi-column dataField="idtypeutilisateur" caption="Type" [allowSorting]="false" [allowFiltering]="false"
+        cellTemplate="typeTemplate">
+        </dxi-column>
+        <dxi-column
+        cellTemplate="buttonResetTemplate"
+        caption=""
+        alignment="center"
+        [width]="50">
+        </dxi-column>  
+
+        <dxi-column *ngIf="isAdmin()"
+            cellTemplate="buttonDeleteTemplate"
+            caption=""
+            alignment="center"
+            [width]="50">
+        </dxi-column>
+
+        <div *dxTemplate="let e of 'buttonTemplate'">
+            <button title="Détail" (click)="detail(e.data.id)">
+              <img src="assets/images/modifier.png" alt="">
+            </button>
+        </div>
+        <div *dxTemplate="let e of 'buttonResetTemplate'">
+            <button *ngIf="isResetVisible(e)" title="Reinit. mot de passe" (click)="resetPassword(e)">
+              <img src="assets/images/resetpassword.png" alt="">
+            </button>
+        </div>
+        <div *dxTemplate="let e of 'buttonDeleteTemplate'">
+            <button *ngIf="isResetVisible(e)" title="Supprimer" (click)="deleteUser(e)">
+                <img src="assets/images/delete.jpg" alt="">
+            </button>
+        </div>
+        <div *dxTemplate="let data of 'typeTemplate'">
+            {{ data.value | LibelleTypeUtilisateur }}
+        </div>
+        
+    </dx-data-grid>
+
+    <div *ngIf="loading" class="loading-overlay">
+        <mat-spinner diameter="50"></mat-spinner>
+    </div>
+</div>

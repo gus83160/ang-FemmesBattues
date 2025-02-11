@@ -1,0 +1,12 @@
+.validation-errors {
+  text-align: right;
+  margin-left: 16px;
+  flex-grow: 1;
+}
+
+.error-message {
+  color: #f44336;  // Rouge Material Design
+  font-size: 14px;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}

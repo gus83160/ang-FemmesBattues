@@ -3,7 +3,6 @@ import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 
-
 import {GlobalVariables} from '../../global/global_variables';
 import {IUtilisateur} from '../../../../models/IUtilisateur';
 import {UtilisateurService} from '../../../../services/utilisateur.service';
@@ -25,6 +24,26 @@ export class UtilisateurEditComponent implements OnInit {
   UtilisateurForm!: FormGroup;
   utilisateur!: IUtilisateur;
   idtype!: number;
+
+  // Mapping des IDs vers les labels
+  fieldLabels: { [key: string]: string } = {
+    ut_nom: 'Nom',
+    ut_prenom: 'Prénom',
+    ut_adresse: 'Adresse',
+    ut_codepostal: 'Code Postal',
+    ut_ville: 'Ville',
+    ut_telephone: 'Téléphone',
+    ut_email: 'Email',
+    ut_siren: 'SIREN',
+    ut_rib: 'RIB',
+    ut_login: 'Login',
+    ut_departement: 'Département',
+    ut_adsville: 'ADS Ville',
+    ut_adsnumero: 'ADS Numéro',
+    ut_souchefacture: 'Souche Facture',
+    ut_sequencefacture: 'Séquence Facture',
+    ut_codechauffeur: 'Code Chauffeur'
+  };
 
   async ngOnInit() {
     await this.InitUser();
@@ -90,6 +109,29 @@ export class UtilisateurEditComponent implements OnInit {
       this.utilisateur = <IUtilisateur>{};
       this.utilisateur.idtypeutilisateur = this.variables.TypeChauffeur;
     }
+  }
+
+  getFormValidationErrors() {
+    const errors: string[] = [];
+    Object.keys(this.UtilisateurForm.controls).forEach(key => {
+      const controlErrors = this.UtilisateurForm.get(key)?.errors;
+      if (controlErrors != null) {
+        const fieldLabel = this.fieldLabels[key] || key;
+        Object.keys(controlErrors).forEach(keyError => {
+          switch (keyError) {
+            case 'required':
+              errors.push(`Le champ ${fieldLabel} est obligatoire`);
+              break;
+            case 'maxlength':
+              errors.push(`Le champ ${fieldLabel} ne doit pas dépasser ${controlErrors[keyError].requiredLength} caractères`);
+              break;
+            default:
+              errors.push(`${fieldLabel}: ${keyError}`);
+          }
+        });
+      }
+    });
+    return errors;
   }
 
   async CreationModification() {

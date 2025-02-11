@@ -73,7 +73,7 @@
             </mat-form-field>
             <small
             *ngIf="UtilisateurForm.controls['ut_codepostal'].hasError('maxlength') && UtilisateurForm.controls['ut_codepostal'].touched"
-            class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_codpostal'].errors.maxlength.requiredLength}} caractères pour le code postal </small>
+            class="form-error-msg"> Au plus {{UtilisateurForm.controls['ut_codepostal'].errors.maxlength.requiredLength}} caractères pour le code postal </small>
           </div>
         </div>
 
@@ -311,13 +311,19 @@
 
       </div>
 
-      <br>
-      <br>
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="UtilisateurForm.invalid">Valider
-      </button>
+      <div fxLayout="row" fxLayoutAlign="space-between center" class="mb-1">
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="UtilisateurForm.invalid">Valider
+        </button>
+        
+        <div *ngIf="UtilisateurForm.invalid" class="validation-errors">
+          <div class="error-message" *ngFor="let error of getFormValidationErrors()">
+            {{ error }}
+          </div>
+        </div>
+      </div>
 
     </form>
   </mat-card-content>

@@ -14,54 +14,81 @@ import {ParmsLogin} from '../views/femmesbattues/global/ParmsLogin';
 export class UtilisateurService {
   constructor(private http: HttpClient,
               private variables: GlobalVariables) {
-    // this.variables.currentUser = null;
-    // sessionStorage.setItem('login', '');
-    // sessionStorage.setItem('password', '');
+  }
+
+  private getHttpOptions() {
+    const login = sessionStorage.getItem('login');
+    const password = sessionStorage.getItem('password');
+    
+    if (!login || !password) {
+      throw new Error('Utilisateur non connecté');
+    }
+
+    return {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(login + ':' + password)
+      })
+    };
   }
 
   getAllUtilisateur(): Observable<IUtilisateur[]> {
-//      const httpOptions = {
-//           headers: new HttpHeaders({
-//             'Content-Type': 'application/json',
-//             'Authorization': 'Basic ' + btoa(this.variables.Login + ':' + this.variables.MotDePasse)
-//           })
-//      };
-//     return this.http.get<Utilisateur[]>(environment.url + '/utilisateur/allutilisateurs',httpOptions );
-    return this.http.get<IUtilisateur[]>(environment.url + '/utilisateur/allutilisateurs');
+    return this.http.get<IUtilisateur[]>(environment.url + '/utilisateur/allutilisateurs', this.getHttpOptions());
   }
-
 
   async VerificationLoginMDP(login: string, mdp: string): Promise<IUtilisateur> {
     const params = new ParmsLogin(login, mdp);
     const utilisateur = await this.http.post<IUtilisateur>(environment.url + '/utilisateur/verifloginmdp', params).toPromise();
 
     this.variables.currentUser = utilisateur;
+    sessionStorage.setItem('login', login);
+    sessionStorage.setItem('password', mdp);
     return utilisateur;
   }
 
   async VerificationIdMDP(id: number, mdp: string) {
-    return await this.http.get<IUtilisateur>(environment.url + '/utilisateur/verifidmdp/' + id.toString() + '/' + mdp).toPromise();
+    return await this.http.get<IUtilisateur>(environment.url + '/utilisateur/verifidmdp/' + id.toString() + '/' + mdp, this.getHttpOptions()).toPromise();
   }
-
-  // async Payeur(dep) {
-  //   return await this.http.get<IUtilisateur>(environment.url + '/utilisateur/payeur/' + dep).toPromise();
-  // }
 
   async UtilisateurByID(id: number) {
-    return await this.http.get<IUtilisateur>(environment.url + '/utilisateur/getutilisateurbyid/' + id.toString()).toPromise();
+    return await this.http.get<IUtilisateur>(environment.url + '/utilisateur/getutilisateurbyid/' + id.toString(), this.getHttpOptions()).toPromise();
   }
 
-  // GetUtilisateurByID(id) {
-  //   return this.UtilisateurByID(id);
-  // }
+  async GetUtilisateurRecords(): Promise<any[]> {
+    return await this.http.get<any[]>(environment.url + '/utilisateur', this.getHttpOptions()).toPromise();
+  }
 
   async UpdateUtilisateur(utilisateur: IUtilisateur) {
-    const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
-    return await this.http.put<IUtilisateur>(environment.url + '/utilisateur/', utilisateur, httpOptions).toPromise();
+    return await this.http.put<IUtilisateur>(environment.url + '/utilisateur/', utilisateur, this.getHttpOptions()).toPromise();
   }
 
   async InsertUtilisateur(utilisateur: IUtilisateur) {
-    const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
-    return await this.http.post<any>(environment.url + '/utilisateur/', utilisateur, httpOptions).toPromise();
+    return await this.http.post<any>(environment.url + '/utilisateur/', utilisateur, this.getHttpOptions()).toPromise();
+  }
+
+  reinitialiserMotDePasse(idUtilisateur: number): Observable<boolean> {
+    const login = sessionStorage.getItem('login');
+    const password = sessionStorage.getItem('password');
+    
+    if (!login || !password) {
+      return new Observable(observer => {
+        observer.error(new Error('Utilisateur non connecté'));
+        observer.complete();
+      });
+    }
+
+    return this.http.post<boolean>(
+      environment.url + '/utilisateur/reinitialisermdp/' + idUtilisateur, 
+      {}, 
+      this.getHttpOptions()
+    );
+  }
+
+  deleteUtilisateur(idUtilisateur: number): Observable<boolean> {
+    return this.http.post<boolean>(
+      environment.url + '/utilisateur/delete/' + idUtilisateur,
+      {},  // corps vide car l'ID est dans l'URL
+      this.getHttpOptions()
+    );
   }
 }

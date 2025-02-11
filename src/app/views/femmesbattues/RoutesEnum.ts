@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 
-
 export enum RoutesEnum {
   ROOT = '',
 
@@ -16,18 +15,14 @@ export enum RoutesEnum {
 
   COURSE = 'course',
     COURSE_INFORMATION = 'information',
-    // COURSE_RECH = 'recherche',
-    // COURSE_RECUP = 'recupcourse',
     COURSE_SAISIE = 'saisie',
 
   UTILISATEUR = 'utilisateur',
-    UTILISATEUR_LIST = 'utilisateur',
+    UTILISATEUR_LIST = 'liste',
     UTILISATEUR_EDIT = 'edit',
+    UTILISATEUR_LIST_V0 = 'listev0',
 
 
   ADMIN = 'admin',
-//  MENU = 'menu',
   PRISE_EN_CHARGE = 'priseencharge',
-//  FACTURE = 'facture',
 }
-

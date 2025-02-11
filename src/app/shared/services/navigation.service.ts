@@ -32,9 +32,9 @@ interface IBadge {
 @Injectable()
 export class NavigationService {
   constructor(private variables: GlobalVariables) {
-    // Variables.isUserLoggedIn.subscribe(value => {
-    //   this.publishNavigationChange('');
-    // });
+    variables.isUserLoggedIn$.subscribe(value => {
+      this.publishNavigationChange('');
+    });
   }
 
 
@@ -80,7 +80,14 @@ export class NavigationService {
       icon: 'person',
       state: RoutesEnum.UTILISATEUR + '/' + RoutesEnum.UTILISATEUR_LIST,
       disabled: true
-    }
+    },
+    {
+      name: 'Utilisateurs V0',
+      type: 'link',
+      icon: 'person',
+      state: RoutesEnum.UTILISATEUR + '/' + RoutesEnum.UTILISATEUR_LIST_V0,
+      disabled: false
+    },
   ];
 
   // Icon menu TITLE at the very top of navigation.
@@ -97,20 +104,6 @@ export class NavigationService {
   // different user type.
   publishNavigationChange(menuType: string) {
     if (this.variables.currentUser != null) {
-      // if (this.variables.currentUser.idtypeutilisateur === this.variables.TypePrescripteur) {
-      //   this.plainMenu[0].name = 'Prescripteur';
-      // }
-      // if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeChauffeur) {
-      //   this.plainMenu[0].name = 'Chauffeur';
-      // }
-      // if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAssociation) {
-      //   this.plainMenu[0].name = 'Association';
-      // }
-      // if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAdmin) {
-      //   this.plainMenu[0].name = 'Admin';
-      // }
-      // this.plainMenu[0].type = 'separator';
-      // this.plainMenu[0].disabled = false;
       this.plainMenu[3].disabled = false;
 
       if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeChauffeur) {
@@ -123,6 +116,7 @@ export class NavigationService {
       if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAdmin) {
         this.plainMenu[1].disabled = false;
         this.plainMenu[5].disabled = false;
+        this.plainMenu[6].disabled = false;  // Active "Utilisateurs V0" pour les admins
       }
     } else {
       this.plainMenu[0].name = '';
