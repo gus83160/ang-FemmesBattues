@@ -86,7 +86,7 @@ export class NavigationService {
       type: 'link',
       icon: 'person',
       state: RoutesEnum.UTILISATEUR + '/' + RoutesEnum.UTILISATEUR_LIST_V0,
-      disabled: false
+      disabled: true
     },
   ];
 
@@ -116,7 +116,7 @@ export class NavigationService {
       if (this.variables.currentUser.idtypeutilisateur === this.variables.TypeAdmin) {
         this.plainMenu[1].disabled = false;
         this.plainMenu[5].disabled = false;
-        this.plainMenu[6].disabled = false;  // Active "Utilisateurs V0" pour les admins
+        //this.plainMenu[6].disabled = false;  // Active "Utilisateurs V0" pour les admins
       }
     } else {
       this.plainMenu[0].name = '';
