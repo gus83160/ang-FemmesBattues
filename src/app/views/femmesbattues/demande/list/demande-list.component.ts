@@ -298,16 +298,28 @@ export class DemandeListComponent implements OnInit {
 
   async PdfVisuDemande(id: number): Promise<void> {
     this.showGeneratingPDF = true;
-
-    await this.priseenchargeservice.PriseEnChargeById(id)
-      .execute(async priseEnCharge => {
-        await this.demandeservice.genererPDFDemande(priseEnCharge.pe_nodemande)
-          .execute(res => {
-            this.viewPdf.showPdfFromBlob(res);
-          });
-      });
-
-    this.showGeneratingPDF = false;
+    console.log('PdfVisuDemande - Début avec ID:', id);
+    try {
+      await this.priseenchargeservice.PriseEnChargeById(id)
+        .execute(async priseEnCharge => {
+          console.log('PriseEnChargeById - Données reçues:', priseEnCharge);
+          if (priseEnCharge && priseEnCharge.pe_nodemande) {
+            console.log('Génération du PDF pour la demande:', priseEnCharge.pe_nodemande);
+            await this.demandeservice.genererPDFDemande(priseEnCharge.pe_nodemande)
+              .execute(res => {
+                console.log('PDF généré avec succès, taille:', res.size, 'bytes');
+                this.viewPdf.showPdfFromBlob(res);
+              });
+          } else {
+            console.error('Erreur: Données de prise en charge invalides ou numéro de demande manquant');
+          }
+        });
+    } catch (error) {
+      console.error('Erreur lors de la génération du PDF:', error);
+    } finally {
+      this.showGeneratingPDF = false;
+      console.log('PdfVisuDemande - Fin');
+    }
   }
 
   ExportExcel() {
